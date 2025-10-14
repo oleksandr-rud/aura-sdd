@@ -1,0 +1,145 @@
+{
+  "commands": [
+    {
+      "id": "cmd.analytics-research",
+      "title": "Analytics & Research Command Spec",
+      "path": ".spec/commands/analytics-research.command.md",
+      "notes": "Defines required fields for hypotheses, metrics, and rolling summary updates."
+    },
+    {
+      "id": "cmd.architect-plan",
+      "title": "Architect Plan Command Spec",
+      "path": ".spec/commands/architect-plan.command.md",
+      "notes": "Guides architectural decision capture, validation plans, and risk logging."
+    },
+    {
+      "id": "cmd.product-prd",
+      "title": "Product PRD Command Spec",
+      "path": ".spec/commands/product-prd.command.md",
+      "notes": "Outlines product narrative structure, KPIs, and acceptance criteria expectations."
+    },
+    {
+      "id": "cmd.code-implement",
+      "title": "Code Implement Command Spec",
+      "path": ".spec/commands/code-implement.command.md",
+      "notes": "Captures implementation scope, feature flags, and delivery checkpoints."
+    },
+    {
+      "id": "cmd.code-review",
+      "title": "Code Review Command Spec",
+      "path": ".spec/commands/code-review.command.md",
+      "notes": "Structures review context, risk focus, and required summary output."
+    },
+    {
+      "id": "cmd.code-unit",
+      "title": "Code Unit Command Spec",
+      "path": ".spec/commands/code-unit.command.md",
+      "notes": "Defines unit testing goals, coverage targets, and reporting format."
+    },
+    {
+      "id": "cmd.qa-contract",
+      "title": "QA Contract Command Spec",
+      "path": ".spec/commands/qa-contract.command.md",
+      "notes": "Outlines API/event contract validation scope, tooling, and summary block."
+    },
+    {
+      "id": "cmd.qa-e2e",
+      "title": "QA End-to-End Command Spec",
+      "path": ".spec/commands/qa-e2e.command.md",
+      "notes": "Frames cross-system journey validation and readiness reporting."
+    },
+    {
+      "id": "cmd.qa-stress",
+      "title": "QA Stress Command Spec",
+      "path": ".spec/commands/qa-stress.command.md",
+      "notes": "Captures load/resilience objectives, SLO targets, and stress summary requirements."
+    },
+    {
+      "id": "cmd.general-research",
+      "title": "General Research Command Spec",
+      "path": ".spec/commands/general-research.command.md",
+      "notes": "Supports open-ended research questions with structured outputs and citations."
+    },
+    {
+      "id": "cmd.general-compact",
+      "title": "General Compact Command Spec",
+      "path": ".spec/commands/general-compact.command.md",
+      "notes": "Guides context compaction, archival instructions, and summary format."
+    },
+    {
+      "id": "cmd.agile-plan",
+      "title": "Agile Plan Command Spec",
+      "path": ".spec/commands/agile-plan.command.md",
+      "notes": "Collects sprint planning inputs and Rolling Summary deltas."
+    },
+    {
+      "id": "cmd.pm-sync",
+      "title": "PM Sync Command Spec",
+      "path": ".spec/commands/pm-sync.command.md",
+      "notes": "Coordinates product sync payloads between Task Package and trackers."
+    }
+  ],
+  "agents": [
+    {
+      "id": "agent.product-ops-orchestrator",
+      "title": "Product Ops Orchestrator",
+      "path": ".spec/agents/product-ops.agent.md",
+      "notes": "Source of truth for Task Package stewardship workflows and command routing."
+    },
+    {
+      "id": "agent.architect-orchestrator",
+      "title": "Architect Orchestrator",
+      "path": ".spec/agents/architect.agent.md",
+      "notes": "Architecture-focused collaboration guardrails, decision logging, and validation templates."
+    },
+    {
+      "id": "agent.tech-lead-orchestrator",
+      "title": "Tech Lead Orchestrator",
+      "path": ".spec/agents/tech-lead.agent.md",
+      "notes": "Implementation planning, review coordination, and testing oversight playbook."
+    },
+    {
+      "id": "agent.qa-orchestrator",
+      "title": "QA Orchestrator",
+      "path": ".spec/agents/qa.agent.md",
+      "notes": "Quality strategy, coverage expectations, evidence logging, and readiness gating."
+    }
+  ],
+  "concepts": [
+    {
+      "term": "SpecStory",
+      "source": ".spec/glossary.md",
+      "notes": "Legacy term for single document specs; use Task Packages instead."
+    },
+    {
+      "term": "Specx",
+      "source": ".spec/glossary.md",
+      "notes": "Controller that integrates Spec Kit, BMAD, Specmatic, and PM adapters."
+    },
+    {
+      "term": "Rolling Summary",
+      "source": ".spec/commands/general-compact.command.md",
+      "notes": "Canonical compact context format: `Context, Facts, Decisions, Risks, Next`."
+    },
+    {
+      "term": "Task Package",
+      "source": ".spec/constitution.yaml",
+      "notes": "Multi-section artifact storing end-to-end initiative context, decisions, plans, and logs."
+    },
+    {
+      "term": "Compaction Archive",
+      "source": ".spec/commands/general-compact.command.md",
+      "notes": "Location where detailed historical notes are stored when context is compressed."
+    },
+    {
+      "term": "Sev-High/Medium/Low",
+      "source": ".spec/commands/qa-e2e.command.md",
+      "notes": "Severity shorthand for defects used across QA reporting."
+    },
+    {
+      "term": "RAG Status",
+      "source": ".spec/commands/code-review.command.md",
+      "notes": "Risk categorization (Red/Amber/Green) applied to findings and readiness."
+    }
+  ]
+}
