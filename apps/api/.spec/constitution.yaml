@@ -1,0 +1,21 @@
+slug: api
+description: Fastify REST service with Zod contracts and swagger documentation.
+tech_stack:
+  framework: fastify
+  language: typescript
+  runtime: nodejs-20
+  validation: zod
+  documentation: swagger
+non_functional_targets:
+  latency:
+    p50_ms: 100
+    p95_ms: 250
+  error_budget: 0.005
+  availability: 0.995
+deployment:
+  docker_image: spec-gen-api
+  ports:
+    - 4000
+glossary_refs:
+  - zod
+  - fastify

@@ -1,0 +1,24 @@
+slug: client
+description: React web client powered by Vite and Redux Toolkit.
+tech_stack:
+  framework: react
+  bundler: vite
+  language: typescript
+  state_management: redux-toolkit
+  testing:
+    unit: vitest
+    integration: "@testing-library/react"
+non_functional_targets:
+  core_web_vitals:
+    LCP: 2500 # ms
+    CLS: 0.1
+    INP: 200 # ms
+  accessibility: wcag-2.1-aa
+  uptime: "99.5"
+deployment:
+  docker_image: spec-gen-client
+  ports:
+    - 5173
+glossary_refs:
+  - redux-toolkit
+  - vite
