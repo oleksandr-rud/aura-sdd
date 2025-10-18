@@ -5,27 +5,118 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
+      target: development
     environment:
       API_PORT: 4000
       API_HOST: 0.0.0.0
+      NODE_ENV: development
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:password@postgres:5432/specgen_dev}
+      JWT_SECRET: ${JWT_SECRET:-dev-jwt-secret}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
     ports:
       - "4000:4000"
+    volumes:
+      - ./apps/api/src:/app/src
+      - ./apps/api/package.json:/app/package.json
     networks:
       - spec-gen
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   client:
     build:
       context: .
-      dockerfile: apps/client/Dockerfile
+      dockerfile: apps/crm-client/Dockerfile
+      target: development
     environment:
       VITE_API_BASE_URL: http://api:4000
+      NODE_ENV: development
     ports:
       - "8080:80"
-    depends_on:
-      - api
+    volumes:
+      - ./apps/crm-client/src:/app/src
+      - ./apps/crm-client/public:/app/public
     networks:
       - spec-gen
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: specgen_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./tooling/docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - spec-gen
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - spec-gen
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./tooling/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./tooling/nginx/dev.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - spec-gen
+    depends_on:
+      - api
+      - client
+    restart: unless-stopped
 
 networks:
   spec-gen:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local

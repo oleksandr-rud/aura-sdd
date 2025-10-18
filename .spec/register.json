@@ -1,0 +1,139 @@
+{
+  "skills": [
+    {
+      "id": "skill.analytics-research",
+      "title": "Analytics Research Skill",
+      "path": ".spec/skills/analytics-research.skill.md",
+      "notes": "Transforms business questions into data-driven insights through hypothesis testing, metrics validation, and experimental design."
+    },
+    {
+      "id": "skill.architect-plan",
+      "title": "Architect Plan Skill",
+      "path": ".spec/skills/architect-plan.skill.md",
+      "notes": "Provides structured architectural guidance through systematic design decisions, risk assessment, and validation planning."
+    },
+    {
+      "id": "skill.product-prd",
+      "title": "Product PRD Skill",
+      "path": ".spec/skills/product-prd.skill.md",
+      "notes": "Transforms business problems and user needs into structured Product Requirements Documents within Task Packages."
+    },
+    {
+      "id": "skill.code-review",
+      "title": "Code Review Skill",
+      "path": ".spec/skills/code-review.skill.md",
+      "notes": "Provides systematic code review evaluation with severity classifications, risk assessments, and actionable next steps."
+    },
+    {
+      "id": "skill.code-unit",
+      "title": "Code Unit Skill",
+      "path": ".spec/skills/code-unit.skill.md",
+      "notes": "Validates unit-level code quality through systematic testing, coverage analysis, and component reliability verification."
+    },
+    {
+      "id": "skill.qa-contract",
+      "title": "QA Contract Skill",
+      "path": ".spec/skills/qa-contract.skill.md",
+      "notes": "Validates interface compatibility across systems through systematic contract testing and verification."
+    },
+    {
+      "id": "skill.qa-e2e",
+      "title": "QA End-to-End Skill",
+      "path": ".spec/skills/qa-e2e.skill.md",
+      "notes": "Validates end-to-end user journeys and cross-system workflows through comprehensive testing across multiple services."
+    },
+    {
+      "id": "skill.qa-stress",
+      "title": "QA Stress Skill",
+      "path": ".spec/skills/qa-stress.skill.md",
+      "notes": "Validates system capacity, resilience, and scalability under load through systematic stress testing and capacity planning."
+    },
+    {
+      "id": "skill.research",
+      "title": "Research Skill",
+      "path": ".spec/skills/research.skill.md",
+      "notes": "Transforms uncertainty into actionable knowledge through systematic investigation and evidence-based analysis."
+    },
+    {
+      "id": "skill.context-compact",
+      "title": "Context Compact Skill",
+      "path": ".spec/skills/context-compact.skill.md",
+      "notes": "Maintains task file usability by managing Activity Log growth while preserving audit trail and essential information."
+    },
+    {
+      "id": "skill.agile-plan",
+      "title": "Agile Plan Skill",
+      "path": ".spec/skills/agile-plan.skill.md",
+      "notes": "Transforms delivery intentions into structured agile plans with coordinated sprint execution and capacity management."
+    },
+    {
+      "id": "skill.pm-sync",
+      "title": "PM Sync Skill",
+      "path": ".spec/skills/pm-sync.skill.md",
+      "notes": "Synchronizes Task Packages with external work trackers, ensuring bidirectional consistency across systems."
+    }
+  ],
+  "agents": [
+    {
+      "id": "agent.product-ops-orchestrator",
+      "title": "Product Ops Orchestrator",
+      "path": ".spec/agents/product-ops.agent.md",
+      "notes": "Source of truth for Task Package stewardship workflows and skill routing."
+    },
+    {
+      "id": "agent.orchestrator",
+      "title": "Architect Orchestrator",
+      "path": ".spec/agents/architect.agent.md",
+      "notes": "Architecture-focused collaboration guardrails, decision logging, and validation templates."
+    },
+    {
+      "id": "agent.orchestrator",
+      "title": "Tech Lead Orchestrator",
+      "path": ".spec/agents/tech-lead.agent.md",
+      "notes": "Implementation planning, review coordination, and testing oversight playbook."
+    },
+    {
+      "id": "agent.qa-orchestrator",
+      "title": "QA Orchestrator",
+      "path": ".spec/agents/qa.agent.md",
+      "notes": "Quality strategy, coverage expectations, evidence logging, and readiness gating."
+    }
+  ],
+  "concepts": [
+    {
+      "term": "SpecStory",
+      "source": ".spec/glossary.md",
+      "notes": "Legacy term for single document specs; use Task Packages instead."
+    },
+    {
+      "term": "Specx",
+      "source": ".spec/glossary.md",
+      "notes": "Controller that integrates Spec Kit, BMAD, Specmatic, and PM adapters."
+    },
+    {
+      "term": "Rolling Summary",
+      "source": ".spec/skills/context-compact.skill.md",
+      "notes": "Canonical compact context format: `Context, Facts, Decisions, Risks, Next`."
+    },
+    {
+      "term": "Task Package",
+      "source": ".spec/constitution.yaml",
+      "notes": "Multi-section artifact storing end-to-end initiative context, decisions, plans, and logs."
+    },
+    {
+      "term": "Compaction Archive",
+      "source": ".spec/skills/context-compact.skill.md",
+      "notes": "Location where detailed historical notes are stored when context is compressed."
+    },
+    {
+      "term": "Sev-High/Medium/Low",
+      "source": ".spec/skills/qa-e2e.skill.md",
+      "notes": "Severity shorthand for defects used across QA reporting."
+    },
+    {
+      "term": "RAG Status",
+      "source": ".spec/skills/code-review.skill.md",
+      "notes": "Risk categorization (Red/Amber/Green) applied to findings and readiness."
+    }
+  ]
+}

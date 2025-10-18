@@ -1,0 +1,157 @@
+# Production Environment Configuration
+
+metadata:
+  name: spec-gen-prod
+  description: Production environment for Spec Gen applications
+  environment: production
+
+# Stack configuration for production
+stack:
+  version: "3.9"
+
+  services:
+    api:
+      image: ${IMAGE_REGISTRY}/spec-gen/api:${VERSION}
+      environment:
+        API_PORT: 4000
+        API_HOST: 0.0.0.0
+        NODE_ENV: production
+        DATABASE_URL: ${DATABASE_URL}
+        JWT_SECRET: ${JWT_SECRET}
+        REDIS_URL: ${REDIS_URL}
+      networks:
+        - spec-gen-prod
+      replicas: 3
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: 2000m
+          memory: 2Gi
+      health_check:
+        path: /health
+        interval: 15s
+        timeout: 5s
+        retries: 3
+        start_period: 60s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      deployment:
+        strategy: rolling
+        max_unavailable: 1
+        max_surge: 1
+
+    crm-client:
+      image: ${IMAGE_REGISTRY}/spec-gen/crm-client:${VERSION}
+      environment:
+        VITE_API_BASE_URL: https://api.spec-gen.com
+        NODE_ENV: production
+      networks:
+        - spec-gen-prod
+      replicas: 2
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+      health_check:
+        path: /
+        interval: 30s
+        timeout: 10s
+        retries: 3
+        start_period: 30s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      deployment:
+        strategy: rolling
+        max_unavailable: 0
+        max_surge: 1
+
+  networks:
+    spec-gen-prod:
+      driver: overlay
+      encrypted: true
+
+# Production-specific settings
+production:
+  debug: false
+  log_level: info
+  metrics_enabled: true
+  tracing_enabled: true
+
+# Ingress configuration with SSL
+ingress:
+  host: spec-gen.com
+  tls:
+    enabled: true
+    secret_name: spec-gen-tls
+  paths:
+    - path: /api
+      service: api
+      port: 4000
+    - path: /
+      service: crm-client
+      port: 80
+
+# Load balancer configuration
+load_balancer:
+  type: external
+  external_ip: ${LOAD_BALANCER_IP}
+  health_check:
+    path: /health
+    port: 4000
+
+# Storage and secrets for production
+storage:
+  type: persistent
+  class: fast-ssd
+  size: 100Gi
+
+secrets:
+  - name: database_url
+    source: prod-secrets
+    key: DATABASE_URL
+  - name: jwt_secret
+    source: prod-secrets
+    key: JWT_SECRET
+  - name: redis_url
+    source: prod-secrets
+    key: REDIS_URL
+  - name: tls_cert
+    source: prod-secrets
+    key: TLS_CERT
+  - name: tls_key
+    source: prod-secrets
+    key: TLS_KEY
+
+# Monitoring and observability
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+  grafana:
+    enabled: true
+    port: 3000
+  loki:
+    enabled: true
+    port: 3100
+
+# Autoscaling
+autoscaling:
+  api:
+    min_replicas: 3
+    max_replicas: 10
+    target_cpu_utilization: 70
+    target_memory_utilization: 80
+  crm-client:
+    min_replicas: 2
+    max_replicas: 6
+    target_cpu_utilization: 70
+    target_memory_utilization: 80
