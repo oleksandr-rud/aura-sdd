@@ -9,7 +9,31 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/libs/*": ["src/libs/*"],
+      "@/modules/*": ["src/modules/*"],
+      "@/shared/*": ["src/shared/*"],
+      "@/config/*": ["src/config/*"],
+      "@/libs/email": ["src/libs/email/index"],
+      "@/libs/redis": ["src/libs/redis/index"],
+      "@/libs/http-client": ["src/libs/http-client/index"],
+      "@/libs/utils": ["src/libs/utils/index"],
+      "@/libs/validation": ["src/libs/validation/index"],
+      "@/libs/logging": ["src/libs/logging/index"],
+      "@/libs/cache": ["src/libs/cache/index"],
+      "@/libs/queue": ["src/libs/queue/index"],
+      "@/libs/storage": ["src/libs/storage/index"]
+    },
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src", "vitest.config.ts"],
   "exclude": ["dist", "node_modules"]

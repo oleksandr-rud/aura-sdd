@@ -1,178 +1,174 @@
-architect-plan.skill
+# architect-plan.skill
 
-## **Purpose**
-Provides structured architectural guidance for existing initiatives, transforming business requirements into technical architecture through systematic design decisions, risk assessment, and validation planning.
+**Target Agent**: architect-orchestrator
+**Purpose**: Dynamic architecture planning with intelligent decision support and automated trade-off analysis.
 
-## **Target Agent**
-architect-orchestrator
+## Dynamic Architecture Configuration
+```yaml
+Planning Mode: {{planning-type}}  # greenfield/evolution/optimization
+Complexity Level: {{complexity-score}}/10
+Auto-Generation: {{auto-gen-enabled}}
+Decision Framework: {{decision-framework}}
+```
 
-## **Trigger Scenarios**
-- **Solution Design**: When technical architecture needs to be defined or updated
-- **Risk Assessment**: When architectural risks require identification and mitigation
-- **Validation Planning**: When technical decisions need experimental validation
-- **Integration Design**: When system integration patterns must be established
-- **Performance Planning**: When non-functional requirements need architectural solutions
-
-## **Required MCPs/Tools**
-- **Documentation Systems**: Task Package access, architectural decision logs
-- **Analysis Tools**: System modeling, dependency mapping, risk assessment frameworks
-- **Communication**: Stakeholder coordination, design review facilitation
-- **Validation**: Prototyping environments, proof-of-concept execution
-
-## **Core Procedure (SOP)**
-
-### **Phase 1: Context Analysis**
-1. **Extract Requirements**: Parse business requirements from Task Package
-2. **Identify Constraints**: Document technical, business, and regulatory constraints
-3. **Assess Current State**: Evaluate existing architecture and technical debt
-4. **Define Quality Targets**: Establish measurable performance, reliability, and scalability targets
-
-### **Phase 2: Solution Design**
-1. **Generate Options**: Create multiple architectural approaches
-2. **Trade-off Analysis**: Evaluate options against quality targets and constraints
-3. **Decision Documentation**: Record architectural decisions with clear rationale
-4. **Integration Planning**: Define system interfaces and data flows
-
-### **Phase 3: Risk Management**
-1. **Risk Identification**: Catalog technical, operational, and business risks
-2. **Impact Assessment**: Evaluate probability and impact of each risk
-3. **Mitigation Strategy**: Develop specific mitigation actions and owners
-4. **Contingency Planning**: Create fallback approaches for high-risk scenarios
-
-### **Phase 4: Validation Planning**
-1. **Experiment Design**: Plan proof-of-concepts and validation tests
-2. **Success Criteria**: Define measurable validation outcomes
-3. **Resource Planning**: Identify tools, environments, and expertise needed
-4. **Timeline Definition**: Establish validation milestones and dependencies
-
-## **Required Parameters**
-| Parameter | Description | Format | Example |
+## Architecture Decision Engine
+| Decision Type | Trigger Condition | Priority | Auto-Suggest |
 |---|---|---|---|
-| `task_reference` | Task-ID or slug for the existing task | ULID or kebab-case | `20251013-onboarding-funnel` |
-| `architecture_goal` | What the architecture work must enable or decide | sentence | `Select a resilient KYC document processing pipeline` |
-| `constraints` | Key technical or business constraints | bullet list | `GDPR storage, <200ms p95, vendor SLA 1s` |
-| `quality_targets` | Performance, reliability, security, or scalability targets | list or table | `p95 < 150ms, 99.9% availability` |
-| `update_scope` | Sections to refresh (Architecture Overview, Decision Log, Validation) | list | `Architecture Overview`, `Decision Log` |
+| **Pattern Selection** | Architecture gaps identified | **HIGH** | 🎯 |
+| **Technology Choice** | Stack decisions needed | **HIGH** | 🔧 |
+| **Integration Design** | Service boundaries required | MEDIUM | 🔗 |
+| **Risk Assessment** | Complexity > threshold | MEDIUM | ⚠️ |
+| **Performance Planning** | NFRs specified | **HIGH** | ⚡ |
 
-## **Optional Parameters**
-| Parameter | Description | Usage |
+## Required Parameters
+| Parameter | Description | Example |
 |---|---|---|
-| `decision_hypotheses` | Hypotheses or questions under evaluation | Seeds Decision Log and experiments |
-| `current_state` | Description of existing architecture/process | Provides baseline for comparison |
-| `candidate_approaches` | Options already considered or desired | Guides trade-off analysis |
-| `risk_register` | List of risks with severity/likelihood | Feeds Architecture Overview and mitigations |
-| `mitigation_plan` | Actions, owners, timelines for risks | Aligns with Implementation Guidance |
-| `validation_plan` | Planned experiments, owners, target metrics | Populates Validation & Experiments |
-| `dependencies` | Teams, systems, approvals involved | Aligns with Product Ops/Tech Lead planning |
-| `prototype_requests` | Desired spikes or proof-of-concepts | Directs collaboration with code-implement |
+| `task_reference` | Task ID or slug | `20251013-onboarding-funnel` |
+| `architecture_goal` | Primary objective | `Select resilient KYC document processing pipeline` |
+| `constraints` | Technical/business limits | `GDPR storage, <200ms p95, vendor SLA 1s` |
+| `quality_targets` | Performance/reliability goals | `p95 < 150ms, 99.9% availability` |
+| `complexity_factor` | Architecture complexity (1-10) | `7` |
 
-## **Execution Templates**
+## Optional Parameters
+- `decision_weights` - Priority factors for decisions
+- `pattern_library` - Available architecture patterns
+- `technology_stack` - Preferred/constrained technologies
+- `integration_patterns` - Known integration approaches
 
-### **Architecture Decision Summary**
+## Dynamic Architecture Generator
+```mermaid
+graph TD
+    A[Analyze Requirements] --> B[Constraint Processing]
+    B --> C[Pattern Matching]
+    C --> D[Option Generation]
+
+    D --> E[Trade-off Analysis]
+    E --> F[Scoring Engine]
+    F --> G[Decision Selection]
+
+    G --> H[Risk Assessment]
+    H --> I[Validation Planning]
+    I --> J[Documentation]
+
+    J --> K{Auto-Validate?}
+    K -->|Yes| L[Proof-of-Concept Generation]
+    K -->|No| M[Manual Review Required]
+    L --> N[Architecture Package]
+    M --> N
+```
+
+## Intelligent Decision Framework
+```yaml
+Decision Scoring:
+  Technical Fit (30%): {{technical-fit-score}}
+  Business Impact (25%): {{business-impact-score}}
+  Implementation Risk (20%): {{risk-score}}
+  Operational Complexity (15%): {{ops-complexity-score}}
+  Future Proofing (10%): {{future-proof-score}}
+
+Pattern Recommendations:
+  Based on: {{analysis-factors}}
+  Confidence: {{confidence-level}}%
+  Alternatives: {{alternative-patterns}}
+
+Auto-Generated Decisions:
+  - {{decision-1}} (Score: {{score}}, Rationale: {{reasoning}})
+  - {{decision-2}} (Score: {{score}}, Rationale: {{reasoning}})
+```
+
+## Output Templates
+### Architecture Decision Package
 ```
 Architecture Decision Summary
-- Goal: [What this architecture enables]
-- Approach Selected: [Chosen architectural approach]
-- Key Decisions: [Critical architectural decisions with IDs]
-- Trade-offs: [Primary trade-offs and rationale]
-- Validation Required: [Experiments or proof-of-concepts needed]
+Goal: {{architecture-goal}}
+Timestamp: {{decision-time}}
+Complexity: {{complexity-factor}}/10
+Confidence: {{confidence-level}}%
+
+Recommended Approach:
+🏗️ Pattern: {{selected-pattern}} (Fit: {{fit-score}}%)
+🔧 Technology Stack: {{tech-stack}}
+🔗 Integration Strategy: {{integration-approach}}
+⚡ Performance Design: {{performance-approach}}
+
+Key Decisions:
+ARCH-{{sequence}}: {{decision-1}} (Rationale: {{reasoning}})
+ARCH-{{sequence}}: {{decision-2}} (Rationale: {{reasoning}})
+
+Trade-off Analysis:
+Option A - {{option-a}}:
+  Pros: {{pros}}, Cons: {{cons}}, Score: {{score}}
+Option B - {{option-b}}:
+  Pros: {{pros}}, Cons: {{cons}}, Score: {{score}}
+
+Risk Assessment:
+🔴 High Risk: {{high-risks}}
+🟠 Medium Risk: {{medium-risks}}
+🟡 Low Risk: {{low-risks}}
+
+Validation Required:
+- {{validation-1}} (Success: {{criteria}})
+- {{validation-2}} (Success: {{criteria}})
+
+Next Actions:
+- {{action-1}} (Owner: {{owner}}, Due: {{date}})
+- {{action-2}} (Owner: {{owner}}, Due: {{date}})
 ```
 
-### **Decision Log Template**
-| Decision ID | Description | Rationale | Owner | Status |
-|---|---|---|---|---|
-| ARCH-001 | [Decision description] | [Reasoning and trade-offs] | [Owner] | [Proposed/Approved/Rejected] |
-
-### **Risk Assessment Template**
-| Risk | Probability | Impact | Mitigation | Owner |
-|---|---|---|---|---|
-| [Risk description] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation strategy] | [Owner] |
-
-### **Rolling Summary Update Template**
+### Rolling Summary Update
 ```
-Context: [Updated architectural context and constraints]
-Facts: [Technical baselines, benchmarks, and validation results]
-Decisions: [Architectural decisions made and their implications]
-Risks: [Technical risks identified and mitigation status]
-Next: [Next architectural validation or implementation steps]
+Context: Architecture approach selected for {{problem-domain}}
+Facts: Pattern {{selected-pattern}} chosen, {{key-deisions}} documented
+Decisions: Architecture decisions {{decision-ids}} approved with {{confidence}} confidence
+Risks: {{risk-count}} risks identified, mitigation plans in place
+Next: Begin {{implementation-phase}} with {{next-steps}}
 ```
 
-## **Quality Standards & Guardrails**
+## Dynamic Quality Gates
+```yaml
+Architecture Validation:
+  Pattern Completeness: 100%
+  Constraint Compliance: 100%
+  Decision Rationale: Clear and documented
+  Risk Assessment: Comprehensive with mitigation
+  Performance Planning: Quantified NFRs defined
 
-### **Principled Design Requirements**
-- Follow established architectural principles and patterns
-- Ensure all non-functional requirements are measurable and quantified
-- Maintain traceability from business requirements to technical decisions
-- Require validation before committing to major architectural decisions
-
-### **Process Compliance**
-- Document all architectural decisions with clear rationale and trade-offs
-- Ensure quality targets are specific, measurable, and time-bound
-- Include probability, impact, and mitigation strategies in risk assessments
-- Define owners, success criteria, and timelines for all validation plans
-- Identify and track dependencies across all relevant teams
-
-### **Boundary Conditions**
-- Never propose solutions that violate specified constraints
-- Always consider impact and dependencies before making decisions
-- Address scalability, maintainability, and operational concerns
-- Validate critical assumptions before proceeding with implementation
-- Respect security, compliance, and governance requirements
-
-### **Validation Protocols**
-- Verify proposed solutions meet all quality targets and constraints
-- Validate architectural decisions through prototyping or proof-of-concepts
-- Test scalability and performance under realistic conditions
-- Review security implications and compliance adherence
-- Ensure operational readiness and monitoring capabilities
-
-## **Execution Parameters**
-
-### **Success Criteria**
-- Architecture decisions are documented with clear rationale
-- Quality targets are established and measurable
-- Risks are identified with mitigation strategies
-- Validation plans have defined success criteria and owners
-- Dependencies are documented and tracked
-
-### **Error Handling**
-- When constraints conflict with requirements, escalate with trade-off analysis
-- When validation fails, document learnings and revise approach
-- When dependencies are blocked, create mitigation plans and alternative paths
-- When quality targets cannot be met, adjust scope or timeline with stakeholder approval
-
-## **Example Usage**
+Auto-Approval Criteria:
+  Confidence ≥ 90%: ✅ Auto-approve
+  Confidence 70-89%: 🔍 Review required
+  Confidence < 70%: ❌ More analysis needed
 ```
-Use the architect-plan skill with these parameters:
+
+## Quality Standards
+- **🎯 Evidence-Based Decisions**: All decisions supported by analysis
+- **📊 Quantified Trade-offs**: Measurable comparison of options
+- **⚠️ Proactive Risk Management**: Identify and mitigate risks early
+- **🔄 Continuous Validation**: Test assumptions through proof-of-concepts
+- **📋 Clear Documentation**: Decision rationale and trade-offs documented
+
+## Dynamic Features
+- **🤖 Pattern Recognition**: Auto-suggest architecture patterns based on requirements
+- **📊 Smart Scoring**: Intelligent evaluation of architecture options
+- **⚡ Risk Prediction**: Proactive identification of potential issues
+- **🔗 Integration Planning**: Automated service boundary design
+- **📈 Performance Modeling**: Predict performance characteristics
+
+## Example Usage
+```
 task_reference: 20251013-onboarding-funnel
 architecture_goal: Select resilient architecture for automated KYC document processing
-constraints:
-  - GDPR-compliant storage in EU region only
-  - Vendor API SLA 99.5%, max 3 retries
-  - Latency budget p95 < 150ms end-to-end
-quality_targets:
-  - p95 latency < 150ms
-  - Error rate < 0.5%
-  - Availability 99.9%
-update_scope:
-  - Architecture Overview
-  - Decision Log
-  - Validation & Experiments
-decision_hypotheses:
-  - H1: Queue-based retry reduces failure rate by 40%
-  - H2: Streaming pipeline improves latency but adds complexity
-current_state: Manual review workflow with synchronous vendor calls; no retries
-candidate_approaches:
-  - Queue + worker retry
-  - Streaming pipeline with backpressure
-risk_register:
-  - Vendor throttling under spikes (Severity High, Likelihood Medium)
-  - Increased operational load for monitoring queues (Severity Medium, Likelihood Medium)
-mitigation_plan:
-  - Implement autoscaling for retry workers (Owner: Tech Lead, due 2025-11-15)
-  - Add vendor status cache with circuit breaker (Owner: Architect, due 2025-11-10)
-validation_plan:
-  - Load test vendor failure scenarios (Owner: Engineer, target p95 < 150ms)
-prototype_requests:
-  - Spike: simulate vendor failure rates with queue retry logic
+constraints: [GDPR storage, <200ms p95, vendor SLA 1s]
+quality_targets: [p95 < 150ms, 99.9% availability]
+complexity_factor: 7
+decision_weights: [technical: 0.3, business: 0.35, risk: 0.2, ops: 0.15]
+pattern_library: [microservices, event-driven, saga]
+technology_stack: [node.js, postgres, redis, kafka]
 ```
+
+## Success Criteria
+- Architecture approach selected with confidence ≥ 80%
+- All constraints addressed in design
+- Performance targets quantified and achievable
+- Risks identified with mitigation strategies
+- Clear implementation path defined
+- Validation plan established with success criteria

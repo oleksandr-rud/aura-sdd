@@ -1,21 +1,149 @@
+# API Service Configuration
 slug: api
-description: Fastify REST service with Zod contracts and swagger documentation.
+description: Fastify REST service with intelligent automation, dynamic contracts, and comprehensive monitoring.
+
+# Constitution Apps Framework
+app_id: api-service
+app_type: REST API Service
+version: "{{current-version}}"
+last_updated: "{{current-date}}"
+active_skills: 8/8
+automation_level: "{{automation-percentage}}%"
+
+# Agent Orchestration
+primary_agents:
+  - tech-lead-orchestrator
+  - architect-orchestrator
+  - qa-orchestrator
+  - product-ops-orchestrator
+
+skill_matrix:
+  development: [api-development, code-quality, devops-automation]
+  quality: [qa-testing, research-analysis]
+  architecture: [architect-plan]
+  management: [context-compact]
+
+# Technology Stack
 tech_stack:
   framework: fastify
   language: typescript
   runtime: nodejs-20
   validation: zod
-  documentation: swagger
+  documentation: swagger/openapi-3.0
+  testing: jest+supertest
+  monitoring: prometheus+grafana
+  bundling: tsup
+
+# Dynamic Capabilities
+api_intelligence:
+  schema_generation: "{{schema-generation-status}}"
+  client_generation: "{{client-generation-status}}"
+  performance_monitoring: "{{perf-monitoring-status}}"
+  quality_scoring: "{{quality-scoring-status}}"
+
+automation_features:
+  endpoint_scaffolding: "{{endpoint-scaffolding}}"
+  validation_generation: "{{validation-generation}}"
+  documentation_auto_update: "{{doc-auto-update}}"
+  test_generation: "{{test-generation}}"
+  monitoring_setup: "{{monitoring-auto-gen}}"
+
+# Performance Targets
 non_functional_targets:
   latency:
     p50_ms: 100
     p95_ms: 250
+  throughput: "{{target-throughput}}"
   error_budget: 0.005
   availability: 0.995
+  coverage_threshold: 0.90
+
+# Quality Gates
+quality_gates:
+  code_coverage: ">90%"
+  api_compliance: "100%"
+  security_scan: "100%"
+  performance_tests: "all_pass"
+
+# Deployment Configuration
 deployment:
   docker_image: spec-gen-api
   ports:
     - 4000
+  health_endpoint: "/health"
+  metrics_endpoint: "/metrics"
+  docs_endpoint: "/docs"
+  runtime_user: "non-root"
+
+# Security Configuration
+security:
+  https_enforcement: "reverse_proxy"
+  input_validation: "zod_schemas"
+  pii_redaction: "automatic"
+  secret_management: "vault/kubernetes"
+  rate_limiting: "per_client"
+  cors: "configured_origins"
+
+# Risk Management
+risk_mitigation:
+  schema_drift:
+    risk: "high"
+    mitigation: "auto_generated_clients+backward_compat_tests"
+    status: "{{mitigation-status}}"
+  blocking_io:
+    risk: "medium"
+    mitigation: "async_worker_queue"
+    status: "{{mitigation-status}}"
+  performance_degradation:
+    risk: "medium"
+    mitigation: "real_time_monitoring+auto_scaling"
+    status: "{{mitigation-status}}"
+
+# Integration Points
+integrations:
+  internal:
+    - postgresql_connection_pool
+    - redis_cache
+    - async_queue
+    - prometheus_metrics
+  external:
+    - oauth_provider
+    - payment_gateway
+    - notification_services
+    - analytics_tracking
+
+# Compliance
+compliance:
+  standards: ["{{compliance-framework}}"]
+  audit_logging: true
+  data_retention: true
+  security_scans: true
+  gdpr_compliant: true
+
+# Monitoring & Observability
+monitoring:
+  metrics_collection:
+    - request_response_metrics
+    - error_rates_types
+    - performance_distribution
+    - resource_utilization
+  logging:
+    format: "structured_json"
+    correlation_ids: true
+    error_traces: true
+    performance_benchmarks: true
+  alerting:
+    - high_error_rate
+    - performance_degradation
+    - security_events
+    - resource_exhaustion
+
 glossary_refs:
   - zod
   - fastify
+  - openapi
+  - typescript
+  - nodejs
+  - prometheus
+  - grafana
+  - docker
