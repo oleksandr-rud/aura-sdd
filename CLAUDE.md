@@ -16,6 +16,33 @@ This guide serves as the comprehensive manual for Claude AI assistants working w
 3. **Task Management**: Record task IDs and maintain Rolling Summaries
 4. **Context Reset**: Archive conclusions in Activity Log when switching tasks
 
+### Development Environment
+**🆕 Development Startup Script**: Use the comprehensive development script for managing all services:
+
+```bash
+# Start all services (API + Client)
+npm run dev:full
+# or: ./dev-startup.sh start
+
+# Stop all services
+npm run dev:stop
+# or: ./dev-startup.sh stop
+
+# Check service status
+npm run dev:status
+
+# Install dependencies and setup environment
+npm run dev:install
+
+# Show help
+npm run dev:help
+```
+
+**Services Started**:
+- **API Server**: http://localhost:4000 (with demo endpoints)
+- **Client App**: http://localhost:5173 (React application)
+- **Demo Endpoints**: Auth, CRM, Chat, Content Generation with realistic AI responses
+
 ### 🆕 **Enhanced Template Features**
 The templates now include BMAD-inspired interactive guidance:
 - **Template Variables**: Use `{{project-type}}`, `{{agent-name}}`, `{{current-date}}` for personalization

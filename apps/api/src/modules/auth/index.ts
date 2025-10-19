@@ -34,7 +34,7 @@ export {
 // Infrastructure layer
 export { UserRepositoryImpl } from './infrastructure/repositories/user-repository.impl'
 export { PasswordHasherService } from './infrastructure/services/password-hasher.service'
-export { JwtTokenService } from './infrastructure/services/jwt-token.service'
+export { JWTTokenService } from './infrastructure/services/jwt-token.service'
 export { EmailProviderService } from './infrastructure/external/email-provider.service'
 export { CacheProviderService } from './infrastructure/external/cache-provider.service'
 export { setupAuthInfrastructure } from './infrastructure/setup'

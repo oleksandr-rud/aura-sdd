@@ -6,6 +6,12 @@
   "scripts": {
     "build": "pnpm -r build",
     "dev": "concurrently \"pnpm --filter @spec-gen/client dev\" \"pnpm --filter @spec-gen/api dev\"",
+    "dev:full": "./dev-startup.sh start",
+    "dev:stop": "./dev-startup.sh stop",
+    "dev:restart": "./dev-startup.sh restart",
+    "dev:status": "./dev-startup.sh status",
+    "dev:install": "./dev-startup.sh install",
+    "dev:help": "./dev-startup.sh help",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test"
   },

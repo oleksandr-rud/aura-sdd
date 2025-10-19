@@ -108,3 +108,6 @@ export class JWTTokenService implements TokenService {
     }
   }
 }
+
+// Alias for backward compatibility
+export { JWTTokenService as JwtTokenService }

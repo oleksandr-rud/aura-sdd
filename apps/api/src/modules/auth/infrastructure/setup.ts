@@ -134,3 +134,6 @@ export function validateAuthEnvironment(): { isValid: boolean; missing: string[]
     missing
   }
 }
+
+// Alias for backward compatibility
+export const setupAuthInfrastructure = createAuthInfrastructure
