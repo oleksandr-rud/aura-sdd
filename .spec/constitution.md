@@ -1,105 +1,202 @@
 # Spec Gen Constitution
 
 ## Metadata
-- **Version:** 2  
-- **Last Updated:** 2025-02-20  
-- **Owners:** Product Ops Orchestrator, Architect Orchestrator, Tech Lead Orchestrator, QA Orchestrator
+- **Version:** 3.0
+- **Last Updated:** 2025-10-23
+- **Owners:** Product Ops, Architect, Tech Lead, QA personas
 
 ## Purpose
-- Establish a single-file task workflow for each `task_reference`.
-- Capture the architecture, coding principles, delivery philosophy, infra guidance, and diagram practices that every agent must follow.
-- Ensure every command run leaves an auditable, single-line Activity Log entry.
+- Establish the Workflow Transition System as the controlling workflow for all persona deliverables.
+- Capture architecture, coding principles, delivery philosophy, and quality guardrails for Orient → Scope → Execute → Gate sequence.
+- Ensure every transition leaves auditable metadata in Lifecycle Logs with proper tag formatting.
 
-## Task File Workflow
+## Workflow System
 
-### Location & Sections
-- Path template: `.spec/tasks/<task_reference>/task.md`
+### Core Principles
+- **Orient → Scope → Execute → Gate**: Mandatory sequence for all persona deliverables
+- **Lifecycle Log**: Centralized story log capturing all transition metadata (AGENTS.MD:14-18)
+- **Single Source of Truth**: All updates to terminology must mirror in both glossary and constitution
+- **Registry Authority**: Agents must route through registry to load personas/skills and respect prescribed gate order
+
+### Task File Structure
+- Path template: `.spec/tasks/PROJECT-XXX.md`
 - Required sections (ordered):
-  1. Header (Task ID, Slug, Status, Owners, Last Updated)
-  2. Product Brief (Problem, Audience, Goals, Constraints)
-  3. Rolling Summary (`Context | Facts | Decisions | Risks | Next`)
-  4. Implementation Notes (architecture + engineering highlights)
-  5. Testing Notes (QA coverage: unit, contract, E2E, stress)
-  6. Metrics & Evidence (links to logs, dashboards, coverage)
-  7. Activity Log (newest-first, single-line entries)
+  1. Header (DOMAIN, STATUS, OWNER, LAST UPDATED)
+  2. Product Brief (Problem, Goals, Success Metrics, Constraints, Context)
+  3. Lifecycle Log (transition entries with structured format)
 
-### Principles
-- Maintain exactly one task file per `task_reference`; no parallel briefs.
-- Prefer terse bullets or short sentences—link out to artifacts stored under `.spec/tasks/<task_reference>/artifacts/`.
-- Keep feature flags, NFR targets, and risk owners explicitly noted.
+### Gate Order (Prescribed Sequence)
+1. **product.discovery** → Validate problem and market need
+2. **product.prd** → Capture requirements and acceptance criteria
+3. **agile.planning** → Sequence backlog and allocate capacity
+4. **code.implement** → Build feature with automated tests
+5. **code.review** → Verify code quality and architecture compliance
+6. **qa.ready** → Prepare test environment and fixtures
+7. **qa.contract** → Validate API/event contracts
+8. **qa.e2e** → Verify end-to-end user journeys
+9. **pm.sync** → Update stakeholders and close story
 
-## Initial Creation Playbook (Product Ops)
-1. Create the task file with all sections populated.
-2. Capture problem framing, KPIs, hypotheses, and the command plan.
-3. Seed the Rolling Summary with a one-line snapshot.
-4. Pre-log expected command payloads in the Activity Log with status `Planned`.
+## Monorepo Infrastructure
 
-## Command Usage Matrix
-| Payload | Expectation |
-| --- | --- |
-| `analytics-research` | Validate hypotheses/metrics before design choices; cite sources and log outcome. |
-| `architect-plan` | Record options, selected decision, risks, and validation plan inside Implementation Notes. |
-| `code-implement` | Outline delivery scope, feature flags, dependencies; sync with Tech Lead plan. |
-| `code-review` | Summarize verdict, blockers, follow-ups; log review result line. |
-| `code-unit` | Document coverage expectations, frameworks, and results under Testing Notes. |
-| `qa-contract` | Verify API/event contracts; note pass/fail and downstream impact. |
-| `qa-e2e` | Capture journey readiness and Go/No-Go decision. |
-| `qa-stress` | Record load results, achieved SLOs, and capacity risks. |
-| `general-research` | Provide cited findings; update Product Brief or Metrics & Evidence. |
-| `general-compact` | Archive verbose history, refresh Rolling Summary, and reference archive path. |
+### Repository Structure
+- **Monorepo Architecture**: Single repository containing all projects with shared dependencies and tooling
+- **Root Orchestration**: Docker Compose configuration at repository root for service coordination
+- **Development Environment**: Local development setup using Docker Compose with hot-reload capabilities
 
-## Activity Log Standard
-- Format: `YYYY-MM-DDTHH:MM:SS+03:00 - <agent_or_command_id> - <≤120 char summary>`
-- One entry per run; append newest entries at the top.
-- Summaries must contain the verdict or next action (e.g., `Go`, `Blocked`, `Needs follow-up`) and link to artifacts when relevant.
+### Container Orchestration
+- **Tesseract Platform**: Production deployment and service management platform
+- **Docker Compose**: Local development environment orchestration
+- **Service Ports**: API Server (4000), Client App (5173), additional services as configured
 
-## Rolling Summary Standard
-- Maintain a single-line snapshot using `Context | Facts | Decisions | Risks | Next`.
-- Refresh after any material change; remove stale items promptly.
-- Mark assumptions as `- Inferred`; highlight owners and due dates in the `Next` portion.
+### Development Services
+- **API Server**: Backend service with demo endpoints for development and testing
+  - Location: `apps/api/src/`
+  - Port: 4000
+  - Features: Auth, CRM, Chat, Content Generation endpoints
+- **Client App**: Frontend React application for user interface development
+  - Location: Root of monorepo
+  - Port: 5173
+  - Features: React application with development server
 
-## Quality Bars
+### Environment Management
+- **Local Development**: Docker Compose with volume mounts for hot-reload
+- **Production Deployment**: Tesseract orchestration with scaling and monitoring
+- **Configuration Management**: Environment-specific configuration through Docker Compose overrides
 
-### Documentation
-- Header metadata stays current (Task ID, Slug, Status, Last Updated).
-- Product Brief includes measurable goals and constraints.
-- Implementation & Testing Notes reference artifacts instead of embedding large logs.
+## Transition Execution Standards
 
-### Testing
-- Record frameworks, commands, environments, and evidence paths for every suite.
-- Highlight coverage gaps with owner and target date.
+### Transition Modes
+- **strict**: All prerequisites must be satisfied, normal state progression
+- **tolerant**: Continue with missing inputs but flag gaps and owners
+- **branch**: Create parallel work streams for complex features
 
-### Risk Management
-- Attach RAG status to every open risk; mirror critical changes in the Activity Log.
-- Escalate Sev-High issues immediately in both Rolling Summary and Activity Log.
+### Progress Log Format
+```
+[PROGRESS|<phase.tag>] by <persona>
+MODE: strict|tolerant|branch
+FROM: <current_phase>
+TO: <target_phase>
+WHY:
+- <concise bullet 1>
+- <concise bullet 2>
+OUTPUT:
+=== <PHASE_NAME> ===
+summary: <concise summary>
+inputs: <key references or n/a>
+evidence: |result=<pass/fail>|ref=<artifact_path>
+risks: [ ]|owner=<persona>|mitigation=<action>
+next_steps: <follow-up needed or n/a>
+=== END <PHASE_NAME> ===
+FOLLOW-UP:
+- owner=<persona> - due=<date>
+```
 
-## Knowledge Base
+### BLOCKED Protocol
+```
+BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, step2])
+```
 
-### Architecture Principles
-- Prefer modular service boundaries with versioned contracts.
-- Strive for stateless execution paths; document stateful components explicitly.
-- Quantify NFR commitments (latency, availability, throughput) alongside decisions.
+## Architecture and Engineering Standards
 
-### Code Principles
-- Keep new functionality behind feature flags until validated; record flag names in the task file.
-- Require automated tests for critical paths; note expected coverage and commands.
-- Enforce secure defaults (least privilege, sanitized inputs, audited outputs).
+### Engineering Execution Principles
+- **Async/Await Patterns**: Use structured async programming for all service interactions
+- **Repository Helpers**: Leverage standardized data access patterns
+- **Structured Logging**: Maintain consistent log formats across all services
+- **Backward Compatibility**: Ensure all payload changes maintain compatibility
+- **Redis Channel Validation**: Mandatory validation loop for all pub/sub operations
 
-### Design Philosophy
-- Start from user journeys in the Product Brief; derive architecture and QA scope from them.
-- Maintain one source of truth per `task_reference`; avoid parallel specs or slide decks.
-- Compact historical context early so the Rolling Summary remains actionable.
+### System Integration Requirements
+- **Lifecycle Artifacts**: QA handoff and story logs must use shared abstractions
+- **Operational Utilities**: QueueInstance and connection tracking provide reusable patterns
+- **State Management**: All state transitions must be auditable and reversible
 
-### Infrastructure Guidance
-- Store infrastructure-as-code under `infra/`; reference module paths in task files.
-- Mirror staging, preprod, and prod parity; document deltas and mitigations.
-- Log monitoring and alert expectations (dashboards, SLOs) within Metrics & Evidence.
+### Quality Guardrails
+- **CLI Readability**: Keep entries ≤120 chars per line for command line compatibility
+- **Evidence Citation**: Use actionable references (ref=path#Lx or URLs)
+- **Risk Management**: Document risks with owners and mitigation strategies
+- **Documentation Updates**: Update glossary/constitution when introducing new concepts
 
-### Diagram Practices
-- Save diagrams under `.spec/tasks/<task_reference>/artifacts/diagrams/`.
-- Link diagrams via relative paths and annotate captions with review date + owner.
-- Use ASCII diagrams when lightweight visuals suffice to keep diffs readable.
+## Persona Responsibilities
 
-## Fallback Playbooks
-- **Insufficient Context:** Trigger `general-research` or `analytics-research`, mark assumptions `- Inferred`, and log a `Blocked` entry with owner.
-- **Token Pressure:** Run `general-compact`, note archive path in Activity Log, and capture remaining gaps in Rolling Summary if compaction fails.
+### Universal Requirements (All Personas)
+- Perform orientation checks before executing transitions
+- Follow prescribed gate order without deviation
+- Use standardized transition log format
+- Maintain CLI readability constraints
+- Escalate scope gaps through proper channels
+
+### Product Ops Persona
+- Own task file lifecycle and product framing
+- Validate problem statements and market needs
+- Manage stakeholder communication
+- Ensure KPI alignment and success metrics
+
+### Architect Persona
+- Provide technical direction and NFR targets
+- Assess architecture decisions and risks
+- Validate system design patterns
+- Ensure compliance with architectural guardrails
+
+### Tech Lead Persona
+- Coordinate engineering execution
+- Manage code quality and reviews
+- Ensure test coverage and quality
+- Coordinate technical handoffs
+
+### QA Persona
+- Validate quality standards and testing
+- Ensure proper test environment setup
+- Validate end-to-end user journeys
+- Provide Go/No-Go decisions
+
+## Compliance and Security
+
+### Documentation Requirements
+- All transitions must be documented in Lifecycle Log
+- Evidence must be embedded directly in task files
+- Risk owners and mitigation strategies must be explicit
+- Decision rationale must be clearly documented
+
+### Quality Standards
+- Code must pass all quality gates before progression
+- Automated tests are required for critical paths
+- Security scanning must be integrated into workflow
+- Performance benchmarks must be established
+
+### Escalation Protocols
+- Sev-High issues must be escalated immediately
+- Scope gaps must be routed through Product persona
+- Technical risks must be surfaced via Tech Lead
+- Quality concerns must be flagged by QA persona
+
+## Context Management
+
+### Context Snapshot Protocol
+- Use context.snapshot skill before handoffs between personas
+- Capture unresolved questions and decision deadlines
+- Document required evidence for next agent
+- Maintain audit trail in Lifecycle Log
+
+### Context Management Procedure
+- Run context.snapshot compact operation when Activity Log grows large
+- Archive detailed history to bottom of file or separate archive
+- Reference archive path in Lifecycle Log
+- Maintain Rolling Summary for current state
+
+## Tool and Infrastructure Requirements
+
+### MCP Tools Integration
+- All skills must specify required MCP tools
+- Tool access must be validated before execution
+- Tool failures must be documented and escalated
+- Registry must track tool availability and usage
+
+### Infrastructure Standards
+- Services must be containerized with proper health checks
+- Monitoring and alerting must be integrated
+- Configuration must be externalized and versioned
+- Deployment must be automated and reversible
+
+---
+
+*This constitution establishes the State Machine Transition Mechanism as the authoritative workflow for all persona deliverables, ensuring consistent quality, auditability, and coordination across the development lifecycle.*

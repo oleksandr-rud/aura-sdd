@@ -1,71 +1,85 @@
-# product-prd.skill
+# Product PRD Skill
 
-**Target Agent**: product-ops-orchestrator
-**Purpose**: Transforms business problems into structured Product Requirements Documents.
+product-prd
+OVERVIEW
+actor: product-ops | mandate: Capture requirements and acceptance criteria | bounds: No technical implementation details
 
-**When to Use**:
-- New initiatives requiring product specification
-- PRD updates and modifications
-- Success metrics definition and timeline planning
+ORIENTATION
+Confirm .spec/constitution.md for current architecture and delivery guardrails.
+Review .spec/glossary.md entries relevant to PRD development to keep terminology aligned.
+Load the product-ops persona brief from .spec/agents/product-ops.agent.md for format expectations.
 
-**Required Parameters**:
-| Parameter | Description | Example |
-|---|---|---|
-| `task_reference` | Task ID or slug | `20251013-onboarding-funnel` |
-| `title` | Initiative name | `Onboarding friction fix` |
-| `problem` | Problem statement | `New EU users abandon during KYC review` |
-| `goal` | Business outcome with target | `Raise D1 activation to 45%` |
-| `audience` | Target segments | `New EU consumer accounts` |
-| `success_metrics` | KPIs tied to goal | `Activation rate (P1)` |
-| `deadline_or_window` | Launch date or timeframe | `2025-11-30` |
+LIFECYCLE TRANSITION
+from: PRD_READY ➜ to: PRD_READY
+ACCEPTS_FROM: [product-discovery]
+tag: [product.prd] (append to story ## Lifecycle Log)
 
-**Optional Parameters**:
-- `constraints` - Legal/technical/operational limits
-- `dependencies` - Teams/systems/approvals needed
-- `alignment` - Strategy/OKR/roadmap links
-- `update_scope` - Sections to refresh
+WHEN TO RUN
+Requirements need detailed specification after discovery
+Acceptance criteria must be defined with measurable outcomes
+Success metrics require clarification and quantification
+Stakeholder requirements need formal documentation
 
-**Procedure**:
-1. **Problem Definition**: Articulate business problem and user impact
-2. **Solution Specification**: Define requirements, success metrics, timeline
-3. **Risk Analysis**: Identify constraints, dependencies, mitigation strategies
-4. **Integration**: Align with task package structure and stakeholders
+REQUIRED INPUTS
+story_id
+validated_problem (from product-discovery)
+stakeholder_requirements (detailed stakeholder inputs)
+acceptance_criteria (measurable success criteria)
+MCP tooling: [Read, Write]
 
-**Output Format**:
-```
-Title: [Initiative name]
-Problem: [Problem statement with user impact]
-Goal: [Measurable business outcome]
-Target Audience: [User segments]
-Deadline: [Launch date]
+CONTEXT PACK
+<<story.current_state>>
+<<personas.active_assignments>>
+<<recent_transition_log>>
+<<<GLOSSARY(term=acceptance_criteria)>>>
 
-Success Metrics:
-- [KPI] → [Target] (Measurement: [tracking])
+EXECUTION ALGORITHM
+Validate prerequisites (validated_problem, stakeholder_requirements). If anything missing → BLOCKED format below.
+Collect evidence: stakeholder inputs, requirement specifications, success criteria.
+Define measurable acceptance criteria with clear pass/fail conditions.
+Document user stories with specific, testable outcomes.
+Validate success metrics are SMART (Specific, Measurable, Achievable, Relevant, Time-bound).
+Draft gate artifact using the structure in ARTIFACT OUTPUT.
+Append the TRANSITION LOG entry to the story's ## Lifecycle Log, matching persona tone.
+Update glossary/constitution if new terminology or workflows were introduced.
 
-Key Requirements:
-- [Functional/non-functional requirements]
+ARTIFACT OUTPUT
+=== PRD Requirements ===
+summary:<concise summary of requirements captured>
+inputs:validated_problem=<ref> stakeholder_requirements=<ref> acceptance_criteria=<ref>
+evidence:stakeholder_review|result=<approved/pending>|ref=<path_to_review>
+risks:[ ]<risk_description>|owner=<persona>|mitigation=<action>
+next_steps:<follow-up needed or n/a>
+=== END PRD Requirements ===
 
-Constraints & Dependencies:
-- [Constraints]: [Impact]
-- [Dependencies]: [Owner, Timeline]
+TRANSITION LOG TEMPLATE
+[TRANSITION|product.prd] by product-ops
+MODE: strict|tolerant|branch
+FROM_STATE: PRD_READY
+TO_STATE: PRD_READY
+WHY:
+- Requirements need detailed specification with measurable outcomes
+- Acceptance criteria must be defined for implementation success
+OUTPUT:
+=== PRD Requirements ===
+summary:Captured detailed requirements with measurable acceptance criteria and success metrics.
+inputs:validated_problem=refs=discovery/summary.md stakeholder_requirements=docs/stakeholder-inputs.pdf
+evidence:stakeholder_review|result=approved|ref=reviews/prd-approval-2025-10-23.md
+risks:[ ]Requirements scope may exceed timeline|owner=product-ops|mitigation=prioritize_mvp_features
+next_steps:Proceed with agile planning and resource allocation.
+=== END PRD Requirements ===
+FOLLOW-UP:
+- Schedule implementation planning - owner=product-ops - due=2025-10-26
 
-Acceptance Criteria:
-- [Success criteria with clear definitions]
-```
+BLOCKED FORMAT
+BLOCKED(missing_inputs=[validated_problem, stakeholder_requirements], unblock_steps=[complete_discovery, gather_requirements])
 
-**Quality Standards**:
-- Use clear, concise language with measurable targets
-- Focus on what, not how (avoid implementation details)
-- Ensure problem statement articulates user impact
-- Provide measurable success criteria with tracking mechanisms
+GUARDRAILS
+Keep entries <=120 chars per line for CLI readability.
+All acceptance criteria must be measurable and testable.
+Success metrics must include specific targets and measurement methods.
+Update .spec/glossary.md if you introduce new terms, channels, or artifacts.
 
-**Example Usage**:
-```
-task_reference: 20251013-onboarding-funnel
-title: KYC flow uplift
-problem: EU consumers abandon during document upload causing 32% drop in activation
-goal: Lift activation from 38% to 48% by Q1 2026
-audience: New EU consumer accounts
-success_metrics: [Activation rate (P1) → 48% weekly]
-deadline_or_window: 2026-03-31
-```
+---
+
+*Product PRD skill for capturing detailed requirements and acceptance criteria with measurable success metrics.*

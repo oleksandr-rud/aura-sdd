@@ -1,468 +1,382 @@
 {
-  "version": "2.0",
-  "last_updated": "{{current-date}}",
-  "description": "Comprehensive registry for Spec Gen 2.0 with dynamic skills, agents, and constitution apps",
-  "constitution_apps": {
-    "api-service": {
-      "app_id": "api-service",
-      "app_type": "REST API Service",
-      "location": "./apps/api",
-      "primary_agents": ["tech-lead-orchestrator", "architect-orchestrator", "qa-orchestrator", "product-ops-orchestrator"],
-      "skill_matrix": {
-        "development": ["api-development", "code-quality", "devops-automation"],
-        "quality": ["qa-testing", "research-analysis"],
-        "architecture": ["architect-plan"],
-        "management": ["context-compact"]
-      },
-      "active_skills": 8,
-      "automation_level": "{{automation-percentage}}%"
-    },
-    "crm-client": {
-      "app_id": "crm-client",
-      "app_type": "React Frontend Application",
-      "location": "./apps/crm-client",
-      "primary_agents": ["tech-lead-orchestrator", "architect-orchestrator", "qa-orchestrator", "product-ops-orchestrator"],
-      "skill_matrix": {
-        "development": ["frontend-development", "code-quality", "devops-automation"],
-        "quality": ["qa-testing", "research-analysis"],
-        "architecture": ["architect-plan"],
-        "management": ["context-compact"]
-      },
-      "active_skills": 6,
-      "automation_level": "{{automation-percentage}}%"
-    }
+  "version": "3.0",
+  "last_updated": "2025-10-23",
+  "description": "Workflow Transition System registry with structured phase workflow and persona coordination",
+  "state_machine": {
+    "workflow_name": "Orient → Scope → Execute → Gate",
+    "gate_order": [
+      "product.discovery",
+      "product.prd",
+      "agile.planning",
+      "code.implement",
+      "code.review",
+      "qa.ready",
+      "qa.contract",
+      "qa.e2e",
+      "pm.sync"
+    ],
+    "transition_modes": ["strict", "tolerant", "branch"],
+    "lifecycle_log_format": "structured_transitions",
+    "cli_readability_limit": 120
   },
   "agents": {
-    "tech-lead-orchestrator": {
-      "id": "tech-lead-orchestrator",
-      "title": "Tech Lead Orchestrator",
-      "path": ".spec/agents/tech-lead.agent.md",
-      "target_agent": "tech-lead-orchestrator",
-      "purpose": "Converts architectural intent into executable engineering plans with dynamic automation and intelligent coordination",
-      "core_responsibilities": [
-        "Lead technical implementation across all development phases",
-        "Coordinate code reviews, testing, and quality assurance",
-        "Maintain Implementation Notes, Testing Notes, and Rolling Summary",
-        "Embed technical evidence directly in task file",
-        "Log timestamped Activity Log entries"
-      ],
-      "skill_portfolio": {
-        "development": ["code-development", "frontend-development", "api-development", "database-development"],
-        "quality": ["code-quality", "qa-testing"],
-        "architecture": ["architect-plan"],
-        "operations": ["devops-automation"],
-        "research": ["research-analysis"],
-        "management": ["context-compact"]
-      },
-      "active_skills": 12,
-      "automation_level": "{{automation-percentage}}%",
-      "activation_phrase": "As tech lead orchestrator, execute complete development pipeline with intelligent automation and quality gates."
-    },
-    "architect-orchestrator": {
-      "id": "architect-orchestrator",
-      "title": "Architect Orchestrator",
+    "architect": {
+      "id": "architect",
+      "title": "Architect",
       "path": ".spec/agents/architect.agent.md",
-      "target_agent": "architect-orchestrator",
-      "purpose": "Provides architectural guidance in task files, translating product goals to technical decisions",
-      "core_responsibilities": [
-        "Translate product requirements into feasible architecture",
-        "Maintain Implementation Notes with design decisions and NFR targets",
-        "Log architectural interactions with Activity Log entries",
-        "Quantify NFR targets for all decisions"
+      "mission": "Provide architectural guidance and technical direction, translating product goals into feasible technical architecture with measurable NFR targets and risk assessment",
+      "success_criteria": [
+        "All architecture decisions documented with clear rationale and NFR impact",
+        "Technical risks identified with mitigation strategies",
+        "System design patterns validated and documented",
+        "Architecture compliance verified before implementation"
       ],
-      "skill_portfolio": {
-        "architecture": ["architect-plan"],
-        "research": ["research-analysis"],
-        "analytics": ["research-analysis"],
-        "management": ["context-compact"]
+      "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
+      "mandate": {
+        "own": ["Architecture decisions", "System design patterns", "NFR target definition", "Technical risk assessment", "Architecture compliance validation"],
+        "collaborate": ["Product Ops", "Tech Lead", "QA"],
+        "out_of_scope": ["Code implementation", "Detailed testing plans", "Product requirements definition"]
       },
-      "active_skills": 4,
-      "automation_level": "{{automation-percentage}}%",
-      "activation_phrase": "As architect orchestrator, design technical architecture with intelligent decision support."
-    },
-    "qa-orchestrator": {
-      "id": "qa-orchestrator",
-      "title": "QA Orchestrator",
-      "path": ".spec/agents/qa.agent.md",
-      "target_agent": "qa-orchestrator",
-      "purpose": "Dynamic quality assurance with intelligent testing orchestration and automated Go/No-Go decisions",
-      "core_responsibilities": [
-        "Design comprehensive testing strategies for all development phases",
-        "Coordinate automated and manual testing across all levels",
-        "Implement and enforce dynamic quality gates with clear decision criteria",
-        "Provide clear Go/No-Go decisions with supporting evidence"
-      ],
-      "skill_portfolio": {
-        "quality": ["qa-testing", "code-quality"],
-        "research": ["research-analysis"],
-        "management": ["context-compact"]
+      "interacts_with_states": ["DRAFT", "PRD_READY", "PLANNED", "BUILT", "REVIEWED"],
+      "authorised_skills": {
+        "architect-plan": "ANY ➜ PLANNED",
+        "research": "ANY ➜ SAME",
+        "context.snapshot": "ANY ➜ SAME"
       },
-      "active_skills": 4,
-      "automation_level": "{{automation-percentage}}%",
-      "activation_phrase": "As qa orchestrator, execute comprehensive testing strategy with dynamic quality gates."
+      "activation_phrase": "As architect, design technical architecture with measurable NFR targets and risk assessment."
     },
-    "product-ops-orchestrator": {
-      "id": "product-ops-orchestrator",
-      "title": "Product Ops Orchestrator",
+    "product-ops": {
+      "id": "product-ops",
+      "title": "Product Ops",
       "path": ".spec/agents/product-ops.agent.md",
-      "target_agent": "product-ops-orchestrator",
-      "purpose": "Stewards task files with dynamic coordination, intelligent skill orchestration, and automated progress tracking",
-      "core_responsibilities": [
-        "Maintain single task file at .spec/tasks/<task_reference>.md",
-        "Prepare Product Brief and coordinate skill execution",
-        "Track progress and provide status updates",
-        "Log Activity Log entries"
+      "mission": "Own task file lifecycle and product framing, from problem validation through stakeholder communication, ensuring KPI alignment and successful delivery",
+      "success_criteria": [
+        "Problem statements validated with clear market need",
+        "Requirements captured with measurable acceptance criteria",
+        "Stakeholder communication maintained throughout lifecycle",
+        "KPIs defined and tracked for success validation"
       ],
-      "skill_portfolio": {
-        "product": ["product-prd", "agile-plan", "pm-sync"],
-        "research": ["research-analysis"],
-        "management": ["context-compact"]
+      "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
+      "mandate": {
+        "own": ["Task file lifecycle", "Problem validation", "Requirements capture", "Stakeholder communication", "KPI alignment", "Product framing"],
+        "collaborate": ["Architect", "Tech Lead", "QA"],
+        "out_of_scope": ["Technical architecture decisions", "Code implementation", "Detailed testing execution"]
       },
-      "active_skills": 6,
-      "automation_level": "{{automation-percentage}}%",
-      "activation_phrase": "As product ops orchestrator, manage task lifecycle with intelligent skill orchestration."
+      "interacts_with_states": ["DRAFT", "PRD_READY", "PLANNED", "BUILT", "REVIEWED", "READY", "CONTRACT_VALIDATED", "E2E_COMPLETE", "SYNCED"],
+      "authorised_skills": {
+        "product-discovery": "DRAFT ➜ PRD_READY",
+        "product-prd": "PRD_READY ➜ PRD_READY",
+        "agile-planning": "PRD_READY ➜ PLANNED",
+        "research": "ANY ➜ SAME",
+        "pm-sync": "E2E_COMPLETE ➜ SYNCED",
+        "context.snapshot": "ANY ➜ SAME"
+      },
+      "activation_phrase": "As product ops, manage task lifecycle with problem validation and stakeholder coordination."
+    },
+    "tech-lead": {
+      "id": "tech-lead",
+      "title": "Tech Lead",
+      "path": ".spec/agents/tech-lead.agent.md",
+      "mission": "Coordinate engineering execution, code quality, and technical coordination, ensuring successful implementation with proper testing and architecture compliance",
+      "success_criteria": [
+        "Code implemented according to architectural specifications",
+        "Quality gates passed with proper testing coverage",
+        "Technical coordination successful across all stakeholders",
+        "Implementation delivered on time with measurable quality metrics"
+      ],
+      "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
+      "mandate": {
+        "own": ["Engineering execution", "Code quality management", "Technical coordination", "Implementation planning", "Testing strategy", "Code reviews"],
+        "collaborate": ["Architect", "Product Ops", "QA"],
+        "out_of_scope": ["Architecture decisions", "Product requirements definition", "Stakeholder communication"]
+      },
+      "interacts_with_states": ["PLANNED", "BUILT", "REVIEWED", "READY", "CONTRACT_VALIDATED"],
+      "authorised_skills": {
+        "code-implement": "PLANNED ➜ BUILT",
+        "code-review": "BUILT ➜ REVIEWED",
+        "architect-plan": "ANY ➜ SAME",
+        "research": "ANY ➜ SAME",
+        "qa-contract": "REVIEWED ➜ CONTRACT_VALIDATED",
+        "context.snapshot": "ANY ➜ SAME"
+      },
+      "activation_phrase": "As tech lead, coordinate engineering execution with quality gates and architecture compliance."
+    },
+    "qa": {
+      "id": "qa",
+      "title": "QA",
+      "path": ".spec/agents/qa.agent.md",
+      "mission": "Validate quality standards and testing strategy, ensuring comprehensive test coverage and providing Go/No-Go decisions with clear evidence and risk assessment",
+      "success_criteria": [
+        "All quality standards validated with proper test coverage",
+        "Go/No-Go decisions provided with clear evidence and rationale",
+        "Test environments properly prepared and maintained",
+        "End-to-end user journeys validated and documented"
+      ],
+      "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
+      "mandate": {
+        "own": ["Quality assurance", "Testing strategy", "Test environment setup", "Validation", "Go/No-Go decisions"],
+        "collaborate": ["Tech Lead", "Architect", "Product Ops"],
+        "out_of_scope": ["Code implementation", "Architecture decisions", "Product requirements definition"]
+      },
+      "interacts_with_states": ["REVIEWED", "READY", "CONTRACT_VALIDATED", "E2E_COMPLETE", "SYNCED"],
+      "authorised_skills": {
+        "qa-ready": "REVIEWED ➜ READY",
+        "qa-contract": "READY ➜ CONTRACT_VALIDATED",
+        "qa-e2e": "CONTRACT_VALIDATED ➜ E2E_COMPLETE",
+        "code-review": "ANY ➜ SAME",
+        "context.snapshot": "ANY ➜ SAME"
+      },
+      "activation_phrase": "As qa, execute comprehensive testing strategy with Go/No-Go decisions."
     }
   },
   "skills": {
-    "development_skills": {
-      "code-development": {
-        "id": "code-development",
-        "title": "Code Development Skill",
-        "path": ".spec/skills/code-development.skill.md",
-        "target_agent": "tech-lead-orchestrator",
-        "purpose": "Dynamic code development with intelligent scaffolding, automated testing, and best practices enforcement",
-        "trigger_scenarios": ["New functionality required", "Bug fixing", "Refactoring", "API development", "Database changes"],
-        "required_parameters": ["task_reference", "development_goal", "component_type", "tech_stack", "testing_level"],
-        "automation_level": "high",
-        "dynamic_features": [
-          "Smart scaffolding",
-          "Code generation",
-          "Quality automation",
-          "Performance optimization",
-          "Documentation generation"
-        ]
+    "gate_transitions": {
+      "product-discovery": {
+        "id": "product-discovery",
+        "title": "Product Discovery",
+        "path": ".spec/skills/product-discovery.skill.md",
+        "target_agent": "product-ops",
+        "purpose": "Validate problem and market need with customer evidence and market analysis",
+        "from_state": "DRAFT",
+        "to_state": "PRD_READY",
+        "tag": "product.discovery",
+        "trigger_scenarios": ["New initiative requires problem validation", "Market gap needs confirmation", "Customer pain points need quantification"],
+        "required_inputs": ["story_id", "customer_interviews", "market_analysis"],
+        "mcp_tooling": ["WebSearch", "WebFetch"],
+        "accepts_from": []
       },
-      "frontend-development": {
-        "id": "frontend-development",
-        "title": "Frontend Development Skill",
-        "path": ".spec/skills/frontend-development.skill.md",
-        "target_agent": "tech-lead-orchestrator",
-        "purpose": "Dynamic frontend development with intelligent component generation, automated testing, and performance optimization",
-        "trigger_scenarios": ["UI components needed", "Complete pages required", "State management needed", "API integration", "Performance optimization"],
-        "required_parameters": ["task_reference", "frontend_goal", "component_types", "framework_requirements", "performance_targets"],
-        "automation_level": "high",
-        "dynamic_features": [
-          "Smart component generation",
-          "Performance optimization",
-          "Accessibility automation",
-          "Responsive generation",
-          "Bundle optimization"
-        ]
-      },
-      "api-development": {
-        "id": "api-development",
-        "title": "API Development Skill",
-        "path": ".spec/skills/api-development.skill.md",
-        "target_agent": "tech-lead-orchestrator",
-        "purpose": "Dynamic API development with intelligent contract generation, automated documentation, and comprehensive testing",
-        "trigger_scenarios": ["HTTP endpoints needed", "Flexible queries required", "High-performance internal APIs", "Real-time communication"],
-        "required_parameters": ["task_reference", "api_goal", "api_specification", "endpoints_required", "performance_targets"],
-        "automation_level": "high",
-        "dynamic_features": [
-          "Smart contract generation",
-          "Auto-documentation",
-          "Performance optimization",
-          "Security automation",
-          "Usage analytics"
-        ]
-      },
-      "database-development": {
-        "id": "database-development",
-        "title": "Database Development Skill",
-        "path": ".spec/skills/database-development.skill.md",
-        "target_agent": "tech-lead-orchestrator",
-        "purpose": "Dynamic database development with intelligent schema design, automated migrations, and performance optimization",
-        "trigger_scenarios": ["New project/data model", "Schema changes required", "Performance optimization", "Data seeding needed", "Production deployment"],
-        "required_parameters": ["task_reference", "database_goal", "data_model", "database_type", "performance_requirements"],
-        "automation_level": "high",
-        "dynamic_features": [
-          "Smart schema design",
-          "Auto-indexing",
-          "Migration management",
-          "Performance tuning",
-          "Security hardening"
-        ]
-      },
-      "devops-automation": {
-        "id": "devops-automation",
-        "title": "DevOps Automation Skill",
-        "path": ".spec/skills/devops-automation.skill.md",
-        "target_agent": "tech-lead-orchestrator",
-        "purpose": "Dynamic DevOps automation with intelligent infrastructure provisioning, CI/CD pipelines, and deployment strategies",
-        "trigger_scenarios": ["New project/environment", "Code repository setup", "Application deployment", "Service deployment", "Monitoring setup"],
-        "required_parameters": ["task_reference", "automation_goal", "infrastructure_needs", "deployment_targets", "monitoring_requirements"],
-        "automation_level": "medium",
-        "dynamic_features": [
-          "Intelligent provisioning",
-          "Self-healing systems",
-          "Predictive scaling",
-          "Security automation",
-          "Cost optimization"
-        ]
-      }
-    },
-    "quality_skills": {
-      "code-quality": {
-        "id": "code-quality",
-        "title": "Code Quality Skill",
-        "path": ".spec/skills/code-quality.skill.md",
-        "target_agent": ["tech-lead-orchestrator", "qa-orchestrator"],
-        "purpose": "Comprehensive code quality evaluation with dynamic analysis and automated scoring",
-        "trigger_scenarios": ["Pull requests", "Branch assessment", "Change set validation", "Risk-based review", "Compliance review"],
-        "required_parameters": ["task_reference", "review_target", "change_scope", "quality_focus"],
-        "automation_level": "high",
-        "dynamic_features": [
-          "Smart issue detection",
-          "Quality scoring",
-          "Trend analysis",
-          "Auto-fix suggestions",
-          "Custom dashboards"
-        ]
-      },
-      "qa-testing": {
-        "id": "qa-testing",
-        "title": "QA Testing Skill",
-        "path": ".spec/skills/qa-testing.skill.md",
-        "target_agent": ["tech-lead-orchestrator", "qa-orchestrator"],
-        "purpose": "Consolidated quality assurance across all testing levels with dynamic test selection",
-        "trigger_scenarios": ["Code changes", "Testing coverage needed", "Quality gates", "Contract validation", "Performance testing"],
-        "required_parameters": ["task_reference", "test_scope", "test_target", "quality_gates"],
-        "automation_level": "high",
-        "dynamic_features": [
-          "Smart test selection",
-          "Coverage tracking",
-          "Performance regression",
-          "Parallel execution",
-          "Evidence collection"
-        ]
-      }
-    },
-    "architecture_skills": {
-      "architect-plan": {
-        "id": "architect-plan",
-        "title": "Architect Plan Skill",
-        "path": ".spec/skills/architect-plan.skill.md",
-        "target_agent": "architect-orchestrator",
-        "purpose": "Dynamic architecture planning with intelligent decision support and automated trade-off analysis",
-        "trigger_scenarios": ["Solution design", "Risk assessment", "Validation planning", "Integration design", "Performance planning"],
-        "required_parameters": ["task_reference", "architecture_goal", "constraints", "quality_targets", "complexity_factor"],
-        "automation_level": "medium",
-        "dynamic_features": [
-          "Pattern recognition",
-          "Smart scoring",
-          "Risk prediction",
-          "Integration planning",
-          "Performance modeling"
-        ]
-      }
-    },
-    "research_skills": {
-      "research-analysis": {
-        "id": "research-analysis",
-        "title": "Research Analysis Skill",
-        "path": ".spec/skills/research-analysis.skill.md",
-        "target_agent": ["product-ops-orchestrator", "tech-lead-orchestrator", "architect-orchestrator", "qa-orchestrator"],
-        "purpose": "Unified research and analytics with dynamic methodology selection and intelligent insights",
-        "trigger_scenarios": ["Business decisions require data validation", "Performance metrics analysis", "Experimental design", "Stakeholder insights", "Existing analytics refresh"],
-        "required_parameters": ["task_reference", "research_goal", "analysis_type", "data_sources"],
-        "automation_level": "medium",
-        "dynamic_features": [
-          "Smart source discovery",
-          "Pattern recognition",
-          "Insight generation",
-          "Predictive analytics",
-          "Visualization"
-        ]
-      }
-    },
-    "product_skills": {
       "product-prd": {
         "id": "product-prd",
-        "title": "Product PRD Skill",
+        "title": "Product PRD",
         "path": ".spec/skills/product-prd.skill.md",
-        "target_agent": "product-ops-orchestrator",
-        "purpose": "Transforms business problems into structured Product Requirements Documents",
-        "trigger_scenarios": ["New initiatives", "PRD updates", "Metrics definition", "Timeline planning", "Stakeholder alignment"],
-        "required_parameters": ["task_reference", "title", "problem", "goal", "audience", "success_metrics", "deadline_or_window"],
-        "automation_level": "low",
-        "dynamic_features": [
-          "Requirement analysis",
-          "Success metric tracking",
-          "Stakeholder integration",
-          "Progress automation"
-        ]
+        "target_agent": "product-ops",
+        "purpose": "Capture requirements and acceptance criteria with measurable success metrics",
+        "from_state": "PRD_READY",
+        "to_state": "PRD_READY",
+        "tag": "product.prd",
+        "trigger_scenarios": ["Requirements need detailed specification", "Acceptance criteria must be defined", "Success metrics require clarification"],
+        "required_inputs": ["story_id", "validated_problem", "stakeholder_requirements"],
+        "mcp_tooling": ["Read", "Write"],
+        "accepts_from": ["product-discovery"]
       },
-      "agile-plan": {
-        "id": "agile-plan",
-        "title": "Agile Plan Skill",
-        "path": ".spec/skills/agile-plan.skill.md",
-        "target_agent": "product-ops-orchestrator",
-        "purpose": "Structured agile planning with sprint execution and capacity management",
-        "trigger_scenarios": ["Sprint planning", "Capacity management", "Milestone tracking", "Team coordination"],
-        "required_parameters": ["task_reference", "sprint_goals", "team_capacity", "timeline", "dependencies"],
-        "automation_level": "low",
-        "dynamic_features": [
-          "Capacity optimization",
-          "Dependency resolution",
-          "Progress tracking",
-          "Risk identification"
-        ]
+      "agile-planning": {
+        "id": "agile-planning",
+        "title": "Agile Planning",
+        "path": ".spec/skills/agile-planning.skill.md",
+        "target_agent": "product-ops",
+        "purpose": "Sequence backlog and allocate capacity with timeline and resource planning",
+        "from_state": "PRD_READY",
+        "to_state": "PLANNED",
+        "tag": "agile.planning",
+        "trigger_scenarios": ["Backlog requires sequencing", "Capacity needs allocation", "Timeline must be established"],
+        "required_inputs": ["story_id", "requirements", "team_capacity", "dependencies"],
+        "mcp_tooling": ["Read", "Write"],
+        "accepts_from": ["product-prd"]
+      },
+      "code-implement": {
+        "id": "code-implement",
+        "title": "Code Implementation",
+        "path": ".spec/skills/code-implement.skill.md",
+        "target_agent": "tech-lead",
+        "purpose": "Build feature with automated tests and architecture compliance",
+        "from_state": "PLANNED",
+        "to_state": "BUILT",
+        "tag": "code.implement",
+        "trigger_scenarios": ["Implementation plan approved", "Architecture guidance available", "Development resources allocated"],
+        "required_inputs": ["story_id", "architecture_plan", "implementation_requirements"],
+        "mcp_tooling": ["Read", "Write", "Edit", "Bash"],
+        "accepts_from": ["agile-planning", "architect-plan"]
+      },
+      "code-review": {
+        "id": "code-review",
+        "title": "Code Review",
+        "path": ".spec/skills/code-review.skill.md",
+        "target_agent": "tech-lead",
+        "purpose": "Verify code quality and architecture compliance with structured review",
+        "from_state": "BUILT",
+        "to_state": "REVIEWED",
+        "tag": "code.review",
+        "trigger_scenarios": ["Code implementation complete", "Quality gates required", "Architecture compliance needed"],
+        "required_inputs": ["story_id", "implemented_code", "test_results"],
+        "mcp_tooling": ["Read", "Write", "Bash"],
+        "accepts_from": ["code-implement"]
+      },
+      "qa-ready": {
+        "id": "qa-ready",
+        "title": "QA Ready",
+        "path": ".spec/skills/qa-ready.skill.md",
+        "target_agent": "qa",
+        "purpose": "Prepare test environment and fixtures for comprehensive testing",
+        "from_state": "REVIEWED",
+        "to_state": "READY",
+        "tag": "qa.ready",
+        "trigger_scenarios": ["Code review complete", "Test environment setup required", "Test fixtures needed"],
+        "required_inputs": ["story_id", "reviewed_code", "test_requirements"],
+        "mcp_tooling": ["Read", "Write", "Bash"],
+        "accepts_from": ["code-review"]
+      },
+      "qa-contract": {
+        "id": "qa-contract",
+        "title": "QA Contract Testing",
+        "path": ".spec/skills/qa-contract.skill.md",
+        "target_agent": "qa",
+        "purpose": "Validate API/event contracts for compatibility and compliance",
+        "from_state": "READY",
+        "to_state": "CONTRACT_VALIDATED",
+        "tag": "qa.contract",
+        "trigger_scenarios": ["API contracts need validation", "Event schemas require testing", "Integration compatibility needed"],
+        "required_inputs": ["story_id", "api_contracts", "integration_specs"],
+        "mcp_tooling": ["Read", "Write", "Bash"],
+        "accepts_from": ["qa-ready"]
+      },
+      "qa-e2e": {
+        "id": "qa-e2e",
+        "title": "QA E2E Testing",
+        "path": ".spec/skills/qa-e2e.skill.md",
+        "target_agent": "qa",
+        "purpose": "Verify end-to-end user journeys with comprehensive validation",
+        "from_state": "CONTRACT_VALIDATED",
+        "to_state": "E2E_COMPLETE",
+        "tag": "qa.e2e",
+        "trigger_scenarios": ["Contract validation complete", "User journeys require testing", "Release readiness needed"],
+        "required_inputs": ["story_id", "test_scenarios", "performance_baselines"],
+        "mcp_tooling": ["Read", "Write", "Bash"],
+        "accepts_from": ["qa-contract"]
       },
       "pm-sync": {
         "id": "pm-sync",
-        "title": "PM Sync Skill",
+        "title": "PM Sync",
         "path": ".spec/skills/pm-sync.skill.md",
-        "target_agent": "product-ops-orchestrator",
-        "purpose": "Synchronize Task Packages with external work trackers",
-        "trigger_scenarios": ["External tracker updates", "Stakeholder coordination", "Progress reporting"],
-        "required_parameters": ["task_reference", "sync_targets", "update_frequency", "stakeholders"],
-        "automation_level": "low",
-        "dynamic_features": [
-          "Automated synchronization",
-          "Stakeholder notification",
-          "Progress reporting",
-          "Change tracking"
-        ]
+        "target_agent": "product-ops",
+        "purpose": "Update stakeholders and close story with delivery summary",
+        "from_state": "E2E_COMPLETE",
+        "to_state": "SYNCED",
+        "tag": "pm.sync",
+        "trigger_scenarios": ["Testing complete", "Stakeholder updates needed", "Story closure required"],
+        "required_inputs": ["story_id", "test_results", "delivery_metrics"],
+        "mcp_tooling": ["Read", "Write"],
+        "accepts_from": ["qa-e2e"]
       }
     },
-    "management_skills": {
-      "context-compact": {
-        "id": "context-compact",
-        "title": "Context Compact Skill",
-        "path": ".spec/skills/context-compact.skill.md",
-        "target_agent": ["product-ops-orchestrator", "tech-lead-orchestrator", "architect-orchestrator", "qa-orchestrator"],
-        "purpose": "Activity Log management to maintain task file usability while preserving audit trail",
-        "trigger_scenarios": ["Activity Log > threshold", "Documentation compaction needed", "Knowledge transfer"],
-        "required_parameters": ["task_reference", "compact_level", "archive_location"],
-        "automation_level": "low",
-        "dynamic_features": [
-          "Intelligent archiving",
-          "Knowledge preservation",
-          "Context extraction",
-          "Audit trail maintenance"
-        ]
+    "supporting_skills": {
+      "architect-plan": {
+        "id": "architect-plan",
+        "title": "Architect Plan",
+        "path": ".spec/skills/architect-plan.skill.md",
+        "target_agent": "architect",
+        "purpose": "Define system architecture and technical approach with measurable NFRs",
+        "from_state": "ANY",
+        "to_state": "SAME",
+        "tag": "architect-plan",
+        "trigger_scenarios": ["Architecture gaps identified", "System design needed", "Technical decisions required"],
+        "required_inputs": ["story_id", "requirements", "constraints"],
+        "mcp_tooling": ["Read", "Write", "WebSearch"]
+      },
+            "research": {
+        "id": "research",
+        "title": "Research",
+        "path": ".spec/skills/research.skill.md",
+        "target_agent": ["product-ops", "architect", "tech-lead", "qa"],
+        "purpose": "Conduct systematic investigation and analysis",
+        "from_state": "ANY",
+        "to_state": "SAME",
+        "tag": "research",
+        "trigger_scenarios": ["Research investigations needed", "Hypotheses need validation", "Technical patterns require analysis", "Market research needed"],
+        "required_inputs": ["story_id", "research_type", "research_questions", "research_context"],
+        "mcp_tooling": ["WebSearch", "WebFetch", "Read"]
+      },
+      "context.snapshot": {
+        "id": "context.snapshot",
+        "title": "Context Snapshot",
+        "path": ".spec/skills/context.snapshot.skill.md",
+        "target_agent": ["architect", "product-ops", "tech-lead", "qa"],
+        "purpose": "Capture current status and manage log organization",
+        "from_state": "ANY",
+        "to_state": "SAME",
+        "tag": "context.snapshot",
+        "trigger_scenarios": ["Handoff between personas required", "Work stalling", "Status checkpoint needed", "Lifecycle Log exceeds threshold", "Content compaction needed"],
+        "required_inputs": ["story_id", "operation_type"],
+        "mcp_tooling": ["Read", "Write"]
       }
     }
   },
-  "skill_mappings": {
-    "by_agent": {
-      "tech-lead-orchestrator": [
-        "code-development", "frontend-development", "api-development", "database-development",
-        "devops-automation", "code-quality", "qa-testing", "architect-plan",
-        "research-analysis", "context-compact"
-      ],
-      "architect-orchestrator": [
-        "architect-plan", "research-analysis", "context-compact"
-      ],
-      "qa-orchestrator": [
-        "qa-testing", "code-quality", "research-analysis", "context-compact"
-      ],
-      "product-ops-orchestrator": [
-        "product-prd", "agile-plan", "pm-sync", "research-analysis", "context-compact"
-      ]
-    },
-    "by_category": {
-      "development": ["code-development", "frontend-development", "api-development", "database-development", "devops-automation"],
-      "quality": ["code-quality", "qa-testing"],
-      "architecture": ["architect-plan"],
-      "research": ["research-analysis"],
-      "product": ["product-prd", "agile-plan", "pm-sync"],
-      "management": ["context-compact"]
-    },
-    "by_app_type": {
-      "api_service": {
-        "primary_skills": ["api-development", "code-quality", "devops-automation"],
-        "supporting_skills": ["architect-plan", "qa-testing", "research-analysis", "context-compact"]
-      },
-      "frontend_application": {
-        "primary_skills": ["frontend-development", "code-quality", "devops-automation"],
-        "supporting_skills": ["architect-plan", "qa-testing", "research-analysis", "context-compact"]
-      }
-    },
-    "automation_levels": {
-      "high": ["code-development", "api-development", "frontend-development", "database-development", "qa-testing", "code-quality"],
-      "medium": ["architect-plan", "devops-automation", "research-analysis"],
-      "low": ["context-compact", "pm-sync", "agile-plan", "product-prd"]
-    }
-  },
-  "consolidated_skills": {
-    "previous_count": 12,
-    "new_count": 11,
-    "consolidations": [
+  "gate_flow": {
+    "transitions": [
       {
-        "old_skills": ["qa-contract", "qa-e2e", "qa-stress"],
-        "new_skill": "qa-testing",
-        "rationale": "Unified quality assurance across all testing levels"
+        "from": "DRAFT",
+        "skill": "product-discovery",
+        "to": "PRD_READY",
+        "owner": "product-ops"
       },
       {
-        "old_skills": ["code-review", "code-unit"],
-        "new_skill": "code-quality",
-        "rationale": "Comprehensive code quality evaluation with dynamic analysis"
+        "from": "PRD_READY",
+        "skill": "product-prd",
+        "to": "PRD_READY",
+        "owner": "product-ops"
       },
       {
-        "old_skills": ["research", "analytics-research"],
-        "new_skill": "research-analysis",
-        "rationale": "Unified research and analytics with dynamic methodology selection"
+        "from": "PRD_READY",
+        "skill": "agile-planning",
+        "to": "PLANNED",
+        "owner": "product-ops"
+      },
+      {
+        "from": "PLANNED",
+        "skill": "code-implement",
+        "to": "BUILT",
+        "owner": "tech-lead"
+      },
+      {
+        "from": "BUILT",
+        "skill": "code-review",
+        "to": "REVIEWED",
+        "owner": "tech-lead"
+      },
+      {
+        "from": "REVIEWED",
+        "skill": "qa-ready",
+        "to": "READY",
+        "owner": "qa"
+      },
+      {
+        "from": "READY",
+        "skill": "qa-contract",
+        "to": "CONTRACT_VALIDATED",
+        "owner": "qa"
+      },
+      {
+        "from": "CONTRACT_VALIDATED",
+        "skill": "qa-e2e",
+        "to": "E2E_COMPLETE",
+        "owner": "qa"
+      },
+      {
+        "from": "E2E_COMPLETE",
+        "skill": "pm-sync",
+        "to": "SYNCED",
+        "owner": "product-ops"
       }
     ]
   },
   "quality_standards": {
-    "documentation": {
-      "append_only_logs": true,
-      "structured_format": true,
-      "evidence_embedding": true
-    },
-    "decision_tracking": {
-      "architect_decisions": "ARCH-XXX format",
-      "quality_decisions": "clear verdicts",
-      "timeline_tracking": true
-    },
-    "performance_targets": {
-      "measurable_nfrs": true,
-      "baseline_comparison": true,
-      "continuous_monitoring": true
-    },
-    "activity_log": {
-      "append_only": true,
-      "timestamp_format": "ISO 8601",
-      "agent_attribution": true
-    }
+    "cli_readability": "Entries must be ≤120 chars per line",
+    "evidence_citation": "Use actionable references (ref=path#Lx or URLs)",
+    "risk_management": "Document risks with owners and mitigation strategies",
+    "documentation_updates": "Update glossary/constitution when introducing new concepts",
+    "transition_format": "Structured transition logs with MODE, FROM_STATE, TO_STATE, WHY, OUTPUT, FOLLOW-UP",
+    "blocked_protocol": "BLOCKED(missing_inputs=[...], unblock_steps=[...]) format for missing prerequisites"
   },
-  "glossary_refs": [
-    {
-      "term": "Rolling Summary",
-      "definition": "Compact context format: `Context | Facts | Decisions | Risks | Next`",
-      "source": ".spec/templates/task-template.md"
-    },
-    {
-      "term": "Task Package",
-      "definition": "Multi-section artifact storing end-to-end initiative context, decisions, plans, and logs",
-      "source": ".spec/templates/task-template.md"
-    },
-    {
-      "term": "Constitution Apps",
-      "definition": "Framework defining core applications and services that implement the Spec Gen methodology",
-      "source": ".spec/apps/constitution.md"
-    },
-    {
-      "term": "Dynamic Skills",
-      "definition": "Skills with intelligent automation and adaptive execution patterns",
-      "source": "All skill files"
-    },
-    {
-      "term": "Quality Gates",
-      "definition": "Automated decision frameworks for Go/No-Go decisions based on metrics",
-      "source": "QA and development skills"
-    }
-  ]
+  "templates": {
+    "task_template": ".spec/templates/task-template.md",
+    "skill_template": ".spec/templates/skill-template.md",
+    "agent_template": ".spec/templates/agent-template.md",
+    "skill_scaffold": ".spec/skills/skill.template.md",
+    "agent_scaffold": ".spec/agents/agent.template.md"
+  },
+  "documentation": {
+    "constitution": ".spec/constitution.md",
+    "glossary": ".spec/glossary.md",
+    "claude_guide": ".spec/CLAUDE.md",
+    "implementation_summary": ".spec/STATE_MACHINE_IMPLEMENTATION_SUMMARY.md"
+  }
 }

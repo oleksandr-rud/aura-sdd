@@ -43,15 +43,17 @@ npm run dev:help
 - **Client App**: http://localhost:5173 (React application)
 - **Demo Endpoints**: Auth, CRM, Chat, Content Generation with realistic AI responses
 
-### 🆕 **Enhanced Template Features**
-The templates now include BMAD-inspired interactive guidance:
-- **Template Variables**: Use `{{project-type}}`, `{{agent-name}}`, `{{current-date}}` for personalization
-- **Interactive Guidance**: Built-in tips and examples in each template section
-- **Quick Start Guides**: Step-by-step instructions for template usage
-- **Pro Tips**: Expert guidance for best practices and common pitfalls
-- **Success Criteria**: Clear validation checklists for each template type
-- **Template Creation Guides**: Comprehensive guides for creating new templates
-- **Quality Standards**: Measurable requirements and validation procedures
+### 🆕 **State Machine Templates**
+The templates have been consolidated into 5 main files with comprehensive State Machine features:
+- **Constitution Template**: Complete workflow definition with 8 markdown segments
+- **Agent Template**: Agent specifications with transition mechanisms and specializations
+- **Skill Template**: Skill specifications with orientation, execution, and validation procedures
+- **Glossary Template**: Comprehensive terminology definitions with cross-references
+- **Task Template**: Single-file task package with Lifecycle Log
+- **Template Variables**: Use `{{PROJECT_NAME}}`, `{{AGENT_NAME}}`, `{{CURRENT_DATE}}` for personalization
+- **Segment Headers**: Clean markdown organization with `## Segment:` format
+- **Transition Protocols**: BLOCKED protocol and structured transition logging
+- **Quality Standards**: Built-in validation checklists and compliance requirements
 
 ### Project Structure
 ```
@@ -59,32 +61,45 @@ The templates now include BMAD-inspired interactive guidance:
 ├── agents/          # Agent specifications and workflows
 ├── skills/          # Standard Operating Procedures (SOPs) for tasks
 ├── tasks/           # Single-file task packages (PROJECT-XXX.md)
-├── templates/       # Reusable templates for tasks, skills, agents
+├── templates/       # Consolidated templates (5 main files)
+│   ├── constitution.template.md
+│   ├── agent.template.md
+│   ├── skill.template.md
+│   ├── glossary.template.md
+│   └── task-template.md
 ├── glossary.md      # Domain vocabulary and terminology
 └── register.json    # Skill and concept registry
 ```
 
 ## Core Concepts
 
-### Single File Documentation
-- **Principle**: All evidence, metrics, and results embedded directly in task files
-- **Benefit**: Complete traceability, no scattered artifacts, easy handoffs
-- **Implementation**: Use markdown code blocks, structured lists, and tables within task files
+### State Machine Transition Mechanism
+- **Principle**: Orient → Scope → Execute → Gate sequence governs all persona deliverables
+- **Benefit**: Consistent workflow, auditability, and structured handoffs
+- **Implementation**: Use prescribed gate order with structured transition logging
 
 ### Task Package Structure
 Each task follows the `PROJECT-XXX` naming convention and contains:
-- **Header**: Project metadata and task identification
-- **Product Brief**: Problem definition, goals, constraints, KPIs
-- **Rolling Summary**: Evolving context (Context | Facts | Decisions | Risks | Next)
-- **Implementation Notes**: Technical architecture and execution details
-- **Testing Notes**: Multi-layered testing strategy and results
-- **Metrics & Evidence**: Quantitative validation and performance data
-- **Activity Log**: Chronological append-only record of all actions
+- **Header**: Domain, Status, Owner, Last Updated
+- **Product Brief**: Problem, Goals, Success Metrics, Constraints, Attached Context
+- **Lifecycle Log**: Centralized story log with structured transition entries
 
 ### Context Management
-- **Rolling Summary**: One-line status updates with clear sections
-- **Activity Log**: Append-only entries with timestamps and agent attribution
-- **Context Compact**: Skill to manage log size when content grows large
+- **Lifecycle Log**: Centralized log capturing all transition metadata with proper tag formatting
+- **Context Snapshot**: Skill to capture current status before/after handoffs or stalls
+- **BLOCKED Protocol**: Format for missing prerequisites with resolution steps
+- **Transition Modes**: strict, tolerant, or branch execution modes
+
+### Gate Order (Prescribed Sequence)
+1. **product.discovery** → Validate problem and market need
+2. **product.prd** → Capture requirements and acceptance criteria
+3. **agile.planning** → Sequence backlog and allocate capacity
+4. **code.implement** → Build feature with automated tests
+5. **code.review** → Verify code quality and architecture compliance
+6. **qa.ready** → Prepare test environment and fixtures
+7. **qa.contract** → Validate API/event contracts
+8. **qa.e2e** → Verify end-to-end user journeys
+9. **pm.sync** → Update stakeholders and close story
 
 ## Agent System
 
@@ -92,55 +107,61 @@ Each task follows the `PROJECT-XXX` naming convention and contains:
 
 | Agent | ID | Activation Phrase | Primary Focus |
 |-------|----|-------------------|---------------|
-| Architect Orchestrator | `architect-orchestrator` | `As architect orchestrator, …` | Architecture decisions, NFR targets, risk assessment |
-| Product Ops Orchestrator | `product-ops-orchestrator` | `As product ops orchestrator, …` | Task file ownership, product framing, stakeholder communication |
-| Tech Lead Orchestrator | `tech-lead-orchestrator` | `As tech lead orchestrator, …` | Engineering execution, code reviews, technical coordination |
-| QA Orchestrator | `qa-orchestrator` | `As qa orchestrator, …` | Quality assurance, testing coordination, Go/No-Go decisions |
+| Architect | `architect` | `As architect, …` | Architecture decisions, NFR targets, risk assessment |
+| Product Ops | `product-ops` | `As product ops, …` | Task file ownership, product framing, stakeholder communication |
+| Tech Lead | `tech-lead` | `As tech lead, …` | Engineering execution, code reviews, technical coordination |
+| QA | `qa` | `As qa, …` | Quality assurance, testing coordination, Go/No-Go decisions |
 
 ### Agent Responsibilities
 
-#### Architect Orchestrator
+#### Architect
 - **Location**: `.spec/agents/architect.agent.md`
 - **Core Focus**: Architecture decisions, non-functional requirements, risk mitigation
 - **Key Skills**: `architect-plan`, `analytics-research`, `research`, `context-compact`
-- **Output Location**: Implementation Notes with embedded architecture decisions
+- **Output Location**: Lifecycle Log with transition entries
 
-#### Product Ops Orchestrator
+#### Product Ops
 - **Location**: `.spec/agents/product-ops.agent.md`
 - **Core Focus**: Task file ownership, product lifecycle, stakeholder communication
 - **Key Skills**: `analytics-research`, `product-prd`, `agile-plan`, `pm-sync`, `context-compact`, `research`
-- **Output Location**: Product Brief, Rolling Summary, Activity Log
+- **Output Location**: Lifecycle Log with transition entries
 
-#### Tech Lead Orchestrator
+#### Tech Lead
 - **Location**: `.spec/agents/tech-lead.agent.md`
 - **Core Focus**: Engineering execution, code quality, technical coordination
 - **Key Skills**: `architect-plan`, `code-review`, `code-unit`, `qa-contract`, `qa-e2e`, `qa-stress`, `research`, `analytics-research`, `context-compact`
-- **Output Location**: Implementation Notes, Testing Notes, Rolling Summary
+- **Output Location**: Lifecycle Log with transition entries
 
-#### QA Orchestrator
+#### QA
 - **Location**: `.spec/agents/qa.agent.md`
 - **Core Focus**: Quality assurance, testing strategy, validation
 - **Key Skills**: `code-unit`, `qa-contract`, `qa-e2e`, `qa-stress`, `code-review`, `research`, `context-compact`
-- **Output Location**: Testing Notes with Go/No-Go decisions
+- **Output Location**: Lifecycle Log with transition entries
 
 ## Skill System
 
 ### Skill Surface (Routes)
 
+| Skill | Gate Transition | Typical Owner | Output Location |
+|-------|----------------|---------------|-----------------|
+| `product-discovery` | Validate problem and market need | Product Ops | Lifecycle Log |
+| `product-prd` | Capture requirements and acceptance criteria | Product Ops | Lifecycle Log |
+| `agile-planning` | Sequence backlog and allocate capacity | Product Ops | Lifecycle Log |
+| `code-implement` | Build feature with automated tests | Tech Lead | Lifecycle Log |
+| `code-review` | Verify code quality and architecture compliance | Tech Lead | Lifecycle Log |
+| `qa-ready` | Prepare test environment and fixtures | QA | Lifecycle Log |
+| `qa-contract` | Validate API/event contracts | QA | Lifecycle Log |
+| `qa-e2e` | Verify end-to-end user journeys | QA | Lifecycle Log |
+| `pm-sync` | Update stakeholders and close story | Product Ops | Lifecycle Log |
+| `context-snapshot` | Capture status before/after handoffs | Any agent | Lifecycle Log |
+| `context-compact` | Manage Lifecycle Log size | Any agent | Lifecycle Log/Archive |
+
+### Additional Skills
 | Skill | Trigger Scenario | Typical Owner | Output Location |
 |-------|------------------|---------------|-----------------|
-| `analytics-research` | Validate metrics, hypotheses, or data gaps | Product Ops / Analytics | Metrics & Evidence |
-| `architect-plan` | Architecture options, decisions, risks | Architect | Implementation Notes |
-| `agile-plan` | Sprint planning and execution breakdown | Product Ops | Implementation Notes |
-| `product-prd` | Product narratives, KPIs, acceptance criteria | Product Ops | Product Brief |
-| `code-review` | Code audit with severity classifications | Tech Lead / QA | Implementation Notes |
-| `code-unit` | Unit test scaffolding and coverage | Tech Lead / QA | Testing Notes |
-| `qa-contract` | Interface compatibility validation | QA | Testing Notes |
-| `qa-e2e` | End-to-end user journey validation | QA | Testing Notes |
-| `qa-stress` | System capacity and scalability validation | QA | Testing Notes |
-| `pm-sync` | Stakeholder update preparation | Product Ops | Rolling Summary |
-| `research` | Market, competitive, or feasibility investigation | Any agent | Relevant Section |
-| `context-compact` | Activity Log size management | Any agent | Activity Log/Archive |
+| `analytics-research` | Validate metrics, hypotheses, or data gaps | Product Ops / Analytics | Lifecycle Log |
+| `architect-plan` | Architecture options, decisions, risks | Architect | Lifecycle Log |
+| `research` | Market, competitive, or feasibility investigation | Any agent | Lifecycle Log |
 
 ### Skill Execution Pattern
 1. **Load Context**: Understand task state and requirements
@@ -192,20 +213,36 @@ Each task follows the `PROJECT-XXX` naming convention and contains:
 
 ## Communication Standards
 
-### Activity Log Format
+### Lifecycle Log Format
 ```
-YYYY-MM-DDTHH:MM:SS+TZ:TZ - agent-name - Detailed description of work completed, decisions made, and outcomes achieved
+[TRANSITION|<gate.tag>] by <persona>
+MODE: strict|tolerant|branch
+FROM_STATE: <current_state>
+TO_STATE: <target_state>
+WHY:
+- <concise bullet 1>
+- <concise bullet 2>
+OUTPUT:
+=== <GATE_NAME> ===
+summary: <concise summary>
+inputs: <key references or n/a>
+evidence: |result=<pass/fail>|ref=<artifact_path>
+risks: [ ]|owner=<persona>|mitigation=<action>
+next_steps: <follow-up needed or n/a>
+=== END <GATE_NAME> ===
+FOLLOW-UP:
+- owner=<persona> - due=<date>
 ```
 
-### Rolling Summary Format
+### BLOCKED Format
 ```
-Context: Brief evolving context statement | Facts: Key established facts and completed work | Decisions: Important decisions made and their rationale | Risks: Current risks and mitigation approaches | Next: Immediate next steps and priorities
+BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, step2])
 ```
 
 ### Status Updates
-- **Header Status**: Update task status (planning, in_progress, completed, blocked, on_hold)
-- **Progress Indicators**: Use checkboxes and completion percentages
-- **Blocking Issues**: Flag immediately with owners and resolution plans
+- **Header Status**: Update task status (draft, in_progress, blocked, done)
+- **Transition Modes**: Use strict, tolerant, or branch modes as appropriate
+- **CLI Readability**: Keep entries ≤120 chars per line for command line compatibility
 
 ## Quality Standards
 
@@ -304,37 +341,51 @@ Context: Brief evolving context statement | Facts: Key established facts and com
 ## Appendix
 
 ### Template Files
-- **Task Template**: `.spec/templates/task-template.md` - Enhanced with BMAD-inspired interactive guidance
-- **Skill Template**: `.spec/templates/skill-template.md` - Improved with comprehensive creation guide
-- **Agent Template**: `.spec/templates/agent-template.md` - Enhanced with workflow integration guidance
-- **Best Practices**: `.spec/templates/task-best-practices.md` - Success patterns and anti-patterns
+- **Task Template**: `.spec/templates/task-template.md` - Single-file task package with Lifecycle Log
+- **Constitution Template**: `.spec/templates/constitution.template.md` - Complete State Machine workflow with 8 segments
+- **Agent Template**: `.spec/templates/agent.template.md` - Agent specifications with transition mechanisms and specializations
+- **Skill Template**: `.spec/templates/skill.template.md` - Skill specifications with orientation, execution, and validation procedures
+- **Glossary Template**: `.spec/templates/glossary.template.md` - Comprehensive terminology definitions with cross-references
 
-### 🆕 **Template Enhancements**
-All templates have been enhanced with BMAD-inspired features while maintaining full backward compatibility:
+### 🆕 **State Machine Template Features**
 
-#### **Task Template Improvements**
-- **Quick Start Guide**: Step-by-step instructions for new users
-- **Interactive Guidance**: Tips and examples in every section
-- **Template Variables**: Dynamic content personalization
-- **Pro Tips**: Expert guidance for common scenarios
-- **Success Criteria**: Clear validation checklists
-- **Template Usage Guide**: Comprehensive usage instructions
+#### **Constitution Template**
+- **8 Segments**: Complete coverage from Header to Context Management
+- **Markdown Headers**: Clean `## Segment:` organization format
+- **Gate Sequence**: Prescribed 9-step workflow from product.discovery to pm.sync
+- **Persona Responsibilities**: Defined roles for architect, product-ops, tech-lead, qa
+- **Quality Standards**: Built-in compliance and validation requirements
+- **Infrastructure Integration**: MCP tools and registry coordination
 
-#### **Skill Template Improvements**
-- **Skill Creation Guide**: Complete step-by-step process
-- **Best Practices**: Detailed guidance for skill design
-- **Template Variables**: Context-aware personalization
-- **Quality Standards**: Measurable requirements
-- **Validation Checklist**: Pre-launch validation criteria
-- **Example Templates**: Real-world examples and patterns
+#### **Agent Template**
+- **Agent Specifications**: Complete agent definitions with mandates and bounds
+- **State Machine Compliance**: Orientation checks and transition protocols
+- **BLOCKED Protocol**: Structured escalation for missing prerequisites
+- **Specialization Patterns**: Architect, Product Ops, Tech Lead, QA patterns
+- **Quality Standards**: Documentation and execution standards
+- **Integration Guidelines**: Registry coordination and skill execution flow
 
-#### **Agent Template Improvements**
-- **Agent Creation Guide**: Specialization patterns and best practices
-- **Workflow Integration**: Enhanced coordination guidance
-- **Template Variables**: Role-specific personalization
-- **Coordination Patterns**: Handoff and collaboration procedures
-- **Quality Standards**: Implementation and communication standards
-- **Agent Specializations**: Tech Lead, Product Ops, Architect, QA patterns
+#### **Skill Template**
+- **Skill Specifications**: Complete skill definitions with purpose and execution
+- **Orientation Procedures**: Pre-execution validation and context loading
+- **Execution Algorithms**: Step-by-step procedures with quality gates
+- **Evidence Requirements**: Quantitative metrics and validation criteria
+- **Specialization Patterns**: Gate transitions and supporting skills
+- **Integration Guidelines**: MCP tools and registry coordination
+
+#### **Glossary Template**
+- **Comprehensive Terminology**: Complete State Machine and workflow terminology
+- **7 Segments**: Header, State Machine Terms, Agent & Workflow Terms, Quality & Compliance, Technical Infrastructure, Template Variables, Usage Examples
+- **Cross-Reference System**: Internal linking between related concepts
+- **Quality Standards**: Definition clarity, accuracy, completeness requirements
+- **Integration Guidelines**: Registry, template system, and usage coordination
+- **Maintenance Framework**: Update processes and evolution management
+
+#### **Template Usage**
+- **Variable System**: Handlebars syntax for dynamic content
+- **CLI Readability**: ≤120 characters per line constraint
+- **Quality Validation**: Built-in checklists and testing procedures
+- **Documentation Standards**: Evidence embedding and transition logging
 
 ### Registry and Glossary
 - **Skill Registry**: `.spec/register.json`
