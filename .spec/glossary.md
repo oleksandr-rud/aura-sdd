@@ -29,6 +29,20 @@
 - **Sev-High / Sev-Medium / Sev-Low**: Defect severity levels indicating impact to release readiness; Sev-High blocks launch until resolved.
 - **RAG Status**: Risk color coding (Red, Amber, Green) used to signal urgency and mitigation progress across findings.
 
+## Nested Applications Terms
+
+- **Monorepo**: Single repository containing multiple applications with shared dependencies and tooling.
+- **Nested Applications**: Separate applications within the monorepo with distinct architectures and purposes:
+  - **Chat API Backend**: Backend service using NestJS with hexagonal architecture pattern
+  - **Chat App Frontend**: Frontend application using React with feature-based organization
+- **Hexagonal Architecture**: Architectural pattern with domain/application/infrastructure/presentation layers for backend applications.
+- **Feature-Based Architecture**: Frontend architectural pattern organizing code by features rather than file types.
+- **Application Architecture Patterns**: Prescribed architectural approaches for different application types defined in the constitution.
+- **Cross-Application Integration**: Communication and dependencies between different applications within the monorepo.
+- **Module Organization**: Structural organization of code within applications following prescribed patterns.
+- **File Reference Format**: `ref=<path>` notation used to reference implementation files without including code.
+- **Application Task Format**: Task structure that includes application-specific context and references.
+
 ## Persona and Skill Terms
 
 - **Persona**: Agent role with specific responsibilities, skills, and authority within the Spec Workflow system (e.g., product-ops, tech-lead, architect, qa).

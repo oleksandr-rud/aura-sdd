@@ -423,7 +423,7 @@ Build features with automated tests following architectural specifications and q
 ### Tool Requirements
 - **IDE/Code Editor**: Code development environment with syntax highlighting
 - **Testing Framework**: Jest or equivalent for unit testing
-- **Linting Tools**: ESLint for code quality and style
+- **Linting Tools**: Biome for code quality, linting, and formatting
 - **Documentation Generator**: JSDoc or equivalent for API documentation
 
 ### Prerequisites

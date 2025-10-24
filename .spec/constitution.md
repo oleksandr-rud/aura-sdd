@@ -155,6 +155,25 @@ The research skill supports systematic investigation across multiple domains wit
 - **Monorepo Architecture**: Single repository containing all projects with shared dependencies and tooling
 - **Root Orchestration**: Docker Compose configuration at repository root for service coordination
 - **Development Environment**: Local development setup using Docker Compose with hot-reload capabilities
+- **Nested Applications**: Separate applications with distinct architectures and purposes
+  - **Chat API Backend**: `apps/chat-api/` - NestJS service with hexagonal architecture
+  - **Chat App Frontend**: `apps/chat-app/` - React application with feature-based organization
+
+### Application Architecture Patterns
+
+#### Chat API Backend - Hexagonal Architecture
+- **Domain Layer**: Core business logic, entities, repository interfaces, domain services
+- **Application Layer**: Use cases, application services, DTOs, business logic orchestration
+- **Infrastructure Layer**: Repository implementations, external service integrations, data persistence
+- **Presentation Layer**: Controllers, routes, request/response models, API documentation
+
+#### Chat App Frontend - Feature-Based Architecture
+- **Components**: Reusable UI components with composition patterns
+- **Pages**: Page-level components with routing and layout
+- **Hooks**: Custom React hooks for state and side effects
+- **Services**: API clients, WebSocket clients, external integrations
+- **Store**: Centralized state management with Redux Toolkit
+- **Utils**: Shared utility functions and helpers
 
 ### Container Orchestration
 - **Tesseract Platform**: Production deployment and service management platform
@@ -162,19 +181,64 @@ The research skill supports systematic investigation across multiple domains wit
 - **Service Ports**: API Server (4000), Client App (5173), additional services as configured
 
 ### Development Services
-- **API Server**: Backend service with demo endpoints for development and testing
-  - Location: `apps/api/src/`
+- **Chat API Server**: Backend service with real-time chat capabilities
+  - Location: `apps/chat-api/src/`
   - Port: 4000
-  - Features: Auth, CRM, Chat, Content Generation endpoints
-- **Client App**: Frontend React application for user interface development
-  - Location: Root of monorepo
+  - Features: Auth, Chat, Real-time messaging, Search and Archive endpoints
+  - Architecture: NestJS with hexagonal architecture pattern
+  - Real-time: Socket.IO with Redis adapter, Server-Sent Events
+- **Chat App**: Frontend React application for chat interface
+  - Location: `apps/chat-app/src/`
   - Port: 5173
-  - Features: React application with development server
+  - Features: React chat application with real-time messaging
+  - Architecture: Modern React with hooks, Socket.IO client, cross-tab sync
 
 ### Environment Management
 - **Local Development**: Docker Compose with volume mounts for hot-reload
 - **Production Deployment**: Tesseract orchestration with scaling and monitoring
 - **Configuration Management**: Environment-specific configuration through Docker Compose overrides
+
+### Nested Application Specifications
+
+#### Application Task Format
+- **Task Structure**: Single-file task packages with app-specific context
+- **Location**: `.spec/tasks/PROJECT-XXX.md` for application-specific tasks
+- **App Context**: Tasks reference specific application directories and modules
+- **Evidence Format**: File references using `ref=<path>` format for implementation artifacts
+- **Code Policy**: Tasks must NOT include code implementations, only file references and results
+
+#### Cross-Application Integration
+- **API Communication**: Frontend-backend integration through REST APIs and WebSocket connections
+- **Shared Libraries**: Common utilities and types shared across applications
+- **Authentication Flow**: Unified authentication across applications with token-based security
+- **Real-time Features**: WebSocket integration between frontend and backend applications
+- **Configuration Management**: Separate configurations with environment-specific overrides
+
+#### Module Organization Standards
+- **Backend Modules**: `apps/chat-api/src/modules/{module-name}/` with hexagonal layers
+- **Frontend Features**: `apps/chat-app/src/{feature-type}/` with component organization
+- **File References**: Use relative paths from monorepo root for consistency
+- **Documentation**: Module-specific README files with implementation details
+
+#### Quality Standards for Applications
+- **Architecture Compliance**: Follow prescribed patterns for each application type
+- **Testing Structure**: Unit, integration, and E2E tests appropriate to each application
+- **Code Quality**: Biome linting and formatting across all applications
+- **Documentation**: API documentation generated from backend, component docs from frontend
+
+#### Monorepo App Architecture
+- **Chat API Backend**: `apps/chat-api/` with NestJS hexagonal architecture
+  - Modules: Auth, Chat, Search, Archive, Real-time
+  - Structure: domain/{entities,repositories,services}, application/{use-cases,dto}, infrastructure/{repositories,providers}, presentation/{controllers,gateways}
+- **Chat App Frontend**: `apps/chat-app/` with modern React architecture
+  - Features: Real-time messaging, Search interface, Analytics dashboard
+  - Structure: components/, pages/, hooks/, services/, lib/
+
+#### Task-Application Integration
+- **Implementation References**: Tasks reference specific file paths within applications
+- **Cross-App Dependencies**: Tasks must specify dependencies between applications
+- **Validation Criteria**: Success metrics tied to application functionality
+- **Evidence Collection**: Artifacts located in application directories
 
 ## Transition Execution Standards
 
@@ -210,6 +274,13 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 ```
 
 ## Architecture and Engineering Standards
+
+### Tech Stack Requirements
+- **Code Linting and Formatting**: **Biome** is the required tool for all code linting, formatting, and quality checks across all applications
+- **TypeScript**: Strict TypeScript configuration is mandatory for all projects
+- **Testing Framework**: Jest for unit tests, Vitest for modern testing scenarios
+- **Build Tools**: Vite for frontend applications, NestJS CLI for backend services
+- **Package Manager**: pnpm is the preferred package manager for the monorepo
 
 ### Engineering Execution Principles
 - **Async/Await Patterns**: Use structured async programming for all service interactions

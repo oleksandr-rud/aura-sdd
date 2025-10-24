@@ -2,6 +2,20 @@
 
 AI-powered workspace API with CRM, chat, and content generation capabilities built with hexagonal architecture and KISS principles.
 
+## Tech Stack Requirements
+
+Per the [root constitution](../../../.spec/constitution.md#tech-stack-requirements), this application follows the standardized tech stack:
+
+- **Code Linting and Formatting**: **Biome** is the required tool for all code linting, formatting, and quality checks
+- **TypeScript**: Strict TypeScript configuration is mandatory
+- **Testing Framework**: Jest for unit tests, Vitest for modern testing scenarios
+- **Build Tools**: NestJS CLI for development and production builds
+- **Package Manager**: pnpm is the preferred package manager for the monorepo
+- **Framework**: NestJS with Fastify as the underlying server
+- **Real-time**: Socket.io for WebSocket connections
+- **Database**: TypeORM for database interactions
+- **Authentication**: JWT-based authentication with Passport
+
 ## 🚀 Features
 
 ### Core Modules
@@ -129,9 +143,13 @@ pnpm start
 # Run tests
 pnpm test
 
-# Lint code
+# Lint and format code with Biome
 pnpm lint
 ```
+
+## Code Quality
+
+All code must comply with Biome linting rules. Run `pnpm lint` before committing to ensure code quality standards are met.
 
 ## 📚 API Documentation
 

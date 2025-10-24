@@ -46,6 +46,13 @@ Align outputs with Orient → Scope → Execute → Gate; never skip lifecycle l
 4. VALIDATE INTEGRITY - Ensure no existing content modified, verify new content properly appended
 5. PREPARE HANDOFF - Flag blockers/risks, identify next persona, update context as needed
 
+### Task Content Policy:
+- NEVER include code implementations in task files
+- Use file references with `ref=<path>` format for implementation artifacts
+- Document evidence with file paths, metrics, and test results only
+- Keep implementation details in actual code files, not in task documentation
+- Reference specific application directories and modules within monorepo structure
+
 Keep artifacts concise (≤120 chars per line) and submit them under the story ## Activity Log by default.
 NEVER modify existing content - always append new log entries with progressive work documentation.
 Cite evidence with actionable references (ref=path#Lx or URLs) and call out risks with owners + due dates.

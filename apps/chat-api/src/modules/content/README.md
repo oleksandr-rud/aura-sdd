@@ -2,6 +2,15 @@
 
 AI-powered content creation and analysis module following hexagonal architecture patterns.
 
+## Tech Stack Requirements
+
+Per the [root constitution](../../../../.spec/constitution.md#tech-stack-requirements), this module follows the standardized tech stack:
+
+- **Code Linting and Formatting**: **Biome** is the required tool for all code linting, formatting, and quality checks
+- **TypeScript**: Strict TypeScript configuration is mandatory
+- **Testing Framework**: Jest for unit tests, Vitest for modern testing scenarios
+- **Package Manager**: pnpm is the preferred package manager for the monorepo
+
 ## Overview
 
 This module provides comprehensive content generation and analysis capabilities including:

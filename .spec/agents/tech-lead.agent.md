@@ -46,6 +46,13 @@ Align outputs with Orient → Scope → Execute → Gate; never skip lifecycle l
 4. VALIDATE INTEGRITY - Ensure no existing content modified, verify new content properly appended
 5. PREPARE HANDOFF - Flag blockers/risks, identify next persona, update context as needed
 
+### Task Content Policy:
+- NEVER include code implementations in task files
+- Use file references with `ref=<path>` format for implementation artifacts
+- Document evidence with file paths, metrics, and test results only
+- Keep implementation details in actual code files, not in task documentation
+- Reference specific application directories and modules within monorepo structure
+
 Keep artifacts concise (≤120 chars per line) and submit them under the story ## Activity Log by default.
 NEVER modify existing content - always append new log entries with progressive work documentation.
 Cite evidence with actionable references (ref=path#Lx or URLs) and call out risks with owners + due dates.
@@ -95,8 +102,10 @@ Snapshot: exec story=<ID> skill=context.snapshot mode=tolerant snapshots_section
 ### Implementation Template
 ```yaml
 Implementation Details:
+  Target Application: {{application_identifier}}
   Architecture Compliance: {{alignment_status}}
   Code Quality Standards: {{quality_measures_met}}
+  Module Structure: {{module_path_and_organization}}
   Testing Strategy:
     Unit Tests: {{coverage_percentage}}%
     Integration Tests: {{test_status}}
@@ -113,12 +122,18 @@ Implementation Details:
 ```
 
 ### Quality Standards
-- All code must follow established architectural patterns
+- All code must follow established architectural patterns defined in constitution
 - Automated tests required for all critical paths
 - Code coverage must meet defined thresholds
 - Performance benchmarks must be established and validated
 - All technical decisions must be documented with rationale
 - Security standards must be integrated into implementation
+- **Code Quality**: All code must comply with Biome linting and formatting standards
+- **Linting**: Run Biome before committing to ensure code quality standards are met
+- **Application Structure**: Follow application architecture patterns defined in constitution
+- **Module Organization**: Maintain clear separation between architectural layers as defined per application type
+- **File References**: Use `ref=<path>` format instead of including code implementations
+- **Cross-App Dependencies**: Document and manage inter-application dependencies properly
 
 ---
 

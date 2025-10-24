@@ -39,9 +39,13 @@ npm run dev:help
 ```
 
 **Services Started**:
-- **API Server**: http://localhost:4000 (with demo endpoints)
-- **Client App**: http://localhost:5173 (React application)
+- **Chat API Server**: http://localhost:4000 (NestJS backend with demo endpoints)
+- **Chat App Frontend**: http://localhost:5173 (React application)
 - **Demo Endpoints**: Auth, CRM, Chat, Content Generation with realistic AI responses
+
+**Application Architectures**:
+- **Chat API**: Hexagonal architecture with domain/application/infrastructure/presentation layers
+- **Chat App**: Feature-based React architecture with Redux Toolkit state management
 
 ### 🆕 **Unified Skills System**
 The skill system has been reorganized into unified skills with multiple templates:
@@ -90,6 +94,33 @@ The skill system has been reorganized into unified skills with multiple template
 ├── register.json    # Skill and concept registry
 └── constitution.md   # Spec Workflow Gateway Protocol
 ```
+
+### Nested Applications Structure
+
+The monorepo contains nested applications with specific architectures:
+
+#### Chat API Backend (`apps/chat-api/`)
+- **Architecture**: Hexagonal architecture with domain/application/infrastructure/presentation layers
+- **Module Structure**: `apps/chat-api/src/modules/{auth,chat,content,users,workspace}/`
+- **Configuration**: `package.json`, `tsconfig.json`, `nest-cli.json`, environment configs
+
+#### Chat App Frontend (`apps/chat-app/`)
+- **Architecture**: Modern React with feature-based organization
+- **Structure**: `apps/chat-app/src/{components,pages,hooks,services,store,utils}/`
+- **Configuration**: `package.json`, `vite.config.ts`, `tsconfig.json`, environment files
+
+### Task-Application Mapping
+- **CHAT-001**: Project cleanup and app renaming
+- **CHAT-002**: Backend architecture migration (NestJS + hexagonal)
+- **CHAT-003**: Frontend modernization (React + Redux Toolkit)
+- **CHAT-004**: Real-time features (Socket.IO + SSE)
+- **CHAT-005**: Search and archive system
+
+### Implementation Guidelines
+- **File References**: Use `ref=<path>` format instead of including code
+- **Application Boundaries**: Maintain clear separation between apps
+- **Cross-App Dependencies**: Document inter-application integrations
+- **Configuration Management**: Separate configs per application/environment
 
 ## Core Concepts
 
@@ -331,10 +362,11 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 - **Consistency**: Follow established templates and formatting guidelines
 
 ### Technical Quality
-- **Code Standards**: Follow language-specific best practices
+- **Code Standards**: Follow language-specific best practices and Biome linting rules
 - **Test Coverage**: Meet defined coverage thresholds
 - **Security**: Implement security-by-design principles
 - **Performance**: Meet defined performance targets
+- **Code Quality**: All code must comply with Biome linting and formatting standards per constitution
 
 ### Process Quality
 - **Traceability**: Complete audit trail of all decisions and actions
@@ -350,6 +382,7 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 - **GitHub Actions**: CI/CD pipeline automation
 - **Node.js**: Runtime environment for applications
 - **Testing Frameworks**: Jest, Cypress, or equivalent
+- **Biome**: Code linting, formatting, and quality checks (required per constitution)
 
 ### MCP Integration
 - **Context Management**: Maintain conversation context across sessions
@@ -385,6 +418,8 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 3. **Security First**: Implement security measures from the beginning
 4. **Performance Awareness**: Consider performance implications
 5. **Documentation**: Maintain clear, accurate documentation
+6. **Code Standards**: All code must comply with Biome linting and formatting requirements
+7. **Linting**: Run Biome before committing to ensure code quality standards are met
 
 ## Troubleshooting
 
