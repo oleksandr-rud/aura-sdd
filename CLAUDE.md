@@ -43,23 +43,45 @@ npm run dev:help
 - **Client App**: http://localhost:5173 (React application)
 - **Demo Endpoints**: Auth, CRM, Chat, Content Generation with realistic AI responses
 
-### 🆕 **State Machine Templates**
-The templates have been consolidated into 5 main files with comprehensive State Machine features:
-- **Constitution Template**: Complete workflow definition with 8 markdown segments
-- **Agent Template**: Agent specifications with transition mechanisms and specializations
-- **Skill Template**: Skill specifications with orientation, execution, and validation procedures
-- **Glossary Template**: Comprehensive terminology definitions with cross-references
-- **Task Template**: Single-file task package with Lifecycle Log
-- **Template Variables**: Use `{{PROJECT_NAME}}`, `{{AGENT_NAME}}`, `{{CURRENT_DATE}}` for personalization
-- **Segment Headers**: Clean markdown organization with `## Segment:` format
-- **Transition Protocols**: BLOCKED protocol and structured transition logging
-- **Quality Standards**: Built-in validation checklists and compliance requirements
+### 🆕 **Unified Skills System**
+The skill system has been reorganized into unified skills with multiple templates:
+
+#### **Unified Planning Skill**
+- **File**: `.spec/skills/planning.skill.md`
+- **Templates**: 4 integrated planning templates
+  - **Agile Planning** (product-ops) - Backlog sequencing and capacity allocation
+  - **Architect Planning** (architect) - System architecture and technical decisions
+  - **Testing Planning** (qa) - Test strategy and environment planning
+  - **Implementation Planning** (tech-lead) - Technical implementation coordination
+
+#### **Unified Research Skill**
+- **File**: `.spec/skills/research.skill.md`
+- **Templates**: 5 integrated research templates
+  - **Product Discovery** (product-ops) - Problem validation and market need confirmation
+  - **Analytics Research** - Quantitative analysis and hypothesis validation
+  - **Technical Research** - Feasibility studies and best practices
+  - **Market Research** - Market analysis and opportunity sizing
+  - **Competitive Research** - Competitive analysis and positioning
+
+#### **Template Selection Mechanism**
+- **Intent Interpretation**: System automatically determines appropriate template based on:
+  - Agent role and context
+  - Available inputs and keywords
+  - Current state and domain clues
+- **Parameter Override**: Agents can specify exact template: `exec story=<ID> skill=planning planning_type=agile`
+- **Cross-Agent Flexibility**: Any agent can use any template with appropriate parameters
 
 ### Project Structure
 ```
 .spec/
 ├── agents/          # Agent specifications and workflows
-├── skills/          # Standard Operating Procedures (SOPs) for tasks
+├── skills/          # Unified skills with multiple templates
+│   ├── planning.skill.md      # 4 planning templates (agile, architect, testing, implementation)
+│   ├── research.skill.md      # 5 research templates (product-discovery, analytics, technical, market, competitive)
+│   ├── product-discovery.skill.md  # REMOVED - now part of research.skill.md
+│   ├── agile-planning.skill.md     # REMOVED - now part of planning.skill.md
+│   ├── architect-plan.skill.md     # REMOVED - now part of planning.skill.md
+│   └── [other specialized skills...]
 ├── tasks/           # Single-file task packages (PROJECT-XXX.md)
 ├── templates/       # Consolidated templates (5 main files)
 │   ├── constitution.template.md
@@ -68,7 +90,8 @@ The templates have been consolidated into 5 main files with comprehensive State 
 │   ├── glossary.template.md
 │   └── task-template.md
 ├── glossary.md      # Domain vocabulary and terminology
-└── register.json    # Skill and concept registry
+├── register.json    # Skill and concept registry
+└── constitution.md   # State Machine Gateway Protocol
 ```
 
 ## Core Concepts
@@ -91,15 +114,20 @@ Each task follows the `PROJECT-XXX` naming convention and contains:
 - **Transition Modes**: strict, tolerant, or branch execution modes
 
 ### Gate Order (Prescribed Sequence)
-1. **product.discovery** → Validate problem and market need
+1. **product.discovery** → Validate problem and market need (via `research research_type=product-discovery`)
 2. **product.prd** → Capture requirements and acceptance criteria
-3. **agile.planning** → Sequence backlog and allocate capacity
+3. **agile.planning** → Sequence backlog and allocate capacity (via `planning planning_type=agile`)
 4. **code.implement** → Build feature with automated tests
 5. **code.review** → Verify code quality and architecture compliance
 6. **qa.ready** → Prepare test environment and fixtures
 7. **qa.contract** → Validate API/event contracts
 8. **qa.e2e** → Verify end-to-end user journeys
 9. **pm.sync** → Update stakeholders and close story
+
+#### **Supporting Skills Integration**
+- **Planning Templates**: Available throughout workflow for domain-specific planning
+- **Research Templates**: Available throughout workflow for investigation and analysis
+- **Context Management**: `context.snapshot` skill for handoffs and status capture
 
 ## Agent System
 
@@ -117,36 +145,67 @@ Each task follows the `PROJECT-XXX` naming convention and contains:
 #### Architect
 - **Location**: `.spec/agents/architect.agent.md`
 - **Core Focus**: Architecture decisions, non-functional requirements, risk mitigation
-- **Key Skills**: `architect-plan`, `analytics-research`, `research`, `context-compact`
+- **Key Skills**:
+  - `planning planning_type=architect` - Define system architecture and technical approach
+  - `research research_type=technical` - Conduct systematic investigation and analysis
+  - `context.snapshot` - Capture architectural status and manage log organization
 - **Output Location**: Lifecycle Log with transition entries
+- **Quick Commands**: `exec story=<ID> skill=planning planning_type=architect mode=strict`
 
 #### Product Ops
 - **Location**: `.spec/agents/product-ops.agent.md`
 - **Core Focus**: Task file ownership, product lifecycle, stakeholder communication
-- **Key Skills**: `analytics-research`, `product-prd`, `agile-plan`, `pm-sync`, `context-compact`, `research`
+- **Key Skills**:
+  - `research research_type=product-discovery` - Validate problem and market need
+  - `product-prd` - Capture requirements and acceptance criteria
+  - `planning planning_type=agile` - Sequence backlog and allocate capacity
+  - `pm-sync` - Update stakeholders and close story
+  - `research` - Conduct systematic investigation and analysis (specify research_type)
+  - `context.snapshot` - Capture product status and manage log organization
 - **Output Location**: Lifecycle Log with transition entries
+- **Quick Commands**: `exec story=<ID> skill=research research_type=product-discovery mode=strict`
 
 #### Tech Lead
 - **Location**: `.spec/agents/tech-lead.agent.md`
 - **Core Focus**: Engineering execution, code quality, technical coordination
-- **Key Skills**: `architect-plan`, `code-review`, `code-unit`, `qa-contract`, `qa-e2e`, `qa-stress`, `research`, `analytics-research`, `context-compact`
+- **Key Skills**:
+  - `code-implement` - Build feature with automated tests
+  - `code-review` - Verify code quality and architecture compliance
+  - `planning planning_type=implementation` - Coordinate technical implementation
+  - `research research_type=technical` - Conduct systematic investigation and analysis
+  - `qa-contract` - Verify API/event contracts
+  - `context.snapshot` - Capture technical status and manage log organization
 - **Output Location**: Lifecycle Log with transition entries
+- **Quick Commands**: `exec story=<ID> skill=planning planning_type=implementation mode=strict`
 
 #### QA
 - **Location**: `.spec/agents/qa.agent.md`
 - **Core Focus**: Quality assurance, testing strategy, validation
-- **Key Skills**: `code-unit`, `qa-contract`, `qa-e2e`, `qa-stress`, `code-review`, `research`, `context-compact`
+- **Key Skills**:
+  - `qa-ready` - Prepare test environment and fixtures
+  - `qa-contract` - Validate API/event contracts
+  - `qa-e2e` - Verify end-to-end user journeys
+  - `planning planning_type=testing` - Design testing strategy
+  - `research research_type=analytics` - Conduct systematic investigation and analysis
+  - `code-review` - Verify code quality standards
+  - `context.snapshot` - Capture quality status and manage log organization
 - **Output Location**: Lifecycle Log with transition entries
+- **Quick Commands**: `exec story=<ID> skill=planning planning_type=testing mode=strict`
 
 ## Skill System
 
 ### Skill Surface (Routes)
 
+#### **Unified Skills**
+| Skill | Templates | Usage Examples | Output Location |
+|-------|-----------|----------------|-----------------|
+| `planning` | 4 templates (agile, architect, testing, implementation) | `exec story=<ID> skill=planning planning_type=agile` | Lifecycle Log |
+| `research` | 5 templates (product-discovery, analytics, technical, market, competitive) | `exec story=<ID> skill=research research_type=product-discovery` | Lifecycle Log |
+
+#### **Gate Transition Skills** (Specialized)
 | Skill | Gate Transition | Typical Owner | Output Location |
 |-------|----------------|---------------|-----------------|
-| `product-discovery` | Validate problem and market need | Product Ops | Lifecycle Log |
 | `product-prd` | Capture requirements and acceptance criteria | Product Ops | Lifecycle Log |
-| `agile-planning` | Sequence backlog and allocate capacity | Product Ops | Lifecycle Log |
 | `code-implement` | Build feature with automated tests | Tech Lead | Lifecycle Log |
 | `code-review` | Verify code quality and architecture compliance | Tech Lead | Lifecycle Log |
 | `qa-ready` | Prepare test environment and fixtures | QA | Lifecycle Log |
@@ -154,21 +213,43 @@ Each task follows the `PROJECT-XXX` naming convention and contains:
 | `qa-e2e` | Verify end-to-end user journeys | QA | Lifecycle Log |
 | `pm-sync` | Update stakeholders and close story | Product Ops | Lifecycle Log |
 | `context-snapshot` | Capture status before/after handoffs | Any agent | Lifecycle Log |
-| `context-compact` | Manage Lifecycle Log size | Any agent | Lifecycle Log/Archive |
 
-### Additional Skills
-| Skill | Trigger Scenario | Typical Owner | Output Location |
-|-------|------------------|---------------|-----------------|
-| `analytics-research` | Validate metrics, hypotheses, or data gaps | Product Ops / Analytics | Lifecycle Log |
-| `architect-plan` | Architecture options, decisions, risks | Architect | Lifecycle Log |
-| `research` | Market, competitive, or feasibility investigation | Any agent | Lifecycle Log |
+#### **Template Selection Examples**
+```bash
+# Planning Templates
+exec story=<ID> skill=planning planning_type=agile        # Product Ops: backlog sequencing
+exec story=<ID> skill=planning planning_type=architect     # Architect: system architecture
+exec story=<ID> skill=planning planning_type=testing       # QA: test strategy
+exec story=<ID> skill=planning planning_type=implementation # Tech Lead: implementation coordination
+
+# Research Templates
+exec story=<ID> skill=research research_type=product-discovery # Product Ops: problem validation
+exec story=<ID> skill=research research_type=analytics         # Any agent: quantitative analysis
+exec story=<ID> skill=research research_type=technical         # Architect/Tech Lead: feasibility studies
+exec story=<ID> skill=research research_type=market            # Product Ops: market analysis
+exec story=<ID> skill=research research_type=competitive       # Product Ops/Architect: competitive analysis
+
+# Intent Interpretation (automatic template selection)
+exec story=<ID> skill=planning  # System determines template based on agent and context
+exec story=<ID> skill=research  # System determines template based on questions and inputs
+```
 
 ### Skill Execution Pattern
 1. **Load Context**: Understand task state and requirements
-2. **Execute SOP**: Follow standardized procedure defined in skill file
-3. **Embed Evidence**: Include all results, metrics, and decisions in task file
-4. **Update Status**: Modify Rolling Summary and add Activity Log entry
-5. **Handoff**: Flag next actions and responsible agents
+2. **Template Selection**: System interprets intent or uses specified parameters
+3. **Execute SOP**: Follow standardized procedure from selected template
+4. **Embed Evidence**: Include all results, metrics, and decisions in task file
+5. **Update Status**: Modify Rolling Summary and add Activity Log entry
+6. **Handoff**: Flag next actions and responsible agents
+
+#### **Template Selection Process**
+1. **Parameter Specification**: Direct template selection with `planning_type` or `research_type`
+2. **Intent Interpretation**: System analyzes:
+   - Agent role and current state
+   - Available inputs and keywords
+   - Question context and domain clues
+3. **Template Loading**: System loads appropriate template with variable substitution
+4. **Context Validation**: Verify prerequisites and template applicability
 
 ## Workflow Patterns
 
@@ -412,4 +493,4 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 
 ---
 
-*This guide is a living document, continuously updated based on experience and feedback. Last updated: 2025-10-18T19:00:00+03:00*
+*This guide is a living document, continuously updated based on experience and feedback. Last updated: 2025-10-24T19:00:00+03:00*

@@ -27,15 +27,32 @@ authorised_skills:
 qa-ready - REVIEWED ➜ READY : Prepare test environment and fixtures
 qa-contract - READY ➜ CONTRACT_VALIDATED : Validate API/event contracts
 qa-e2e - CONTRACT_VALIDATED ➜ E2E_COMPLETE : Verify end-to-end user journeys
+planning - REVIEWED ➜ READY : Design testing strategy (use planning_type=testing)
 code-review - ANY ➜ SAME : Verify code quality standards
+research - ANY ➜ SAME : Conduct systematic investigation and analysis (specify research_type)
 context.snapshot - ANY ➜ SAME : Capture quality status and manage log organization
 
 OPERATING PRINCIPLES
 Align outputs with Orient → Scope → Execute → Gate; never skip lifecycle logging.
-Keep artifacts concise (≤120 chars per line) and submit them under the story ## Lifecycle Log using the skill tag.
+
+### Default Task Execution Workflow (Applied to all task work):
+1. LOAD TASK CONTEXT - Open task file, identify current status, review Rolling Summary and Activity Log
+2. EXECUTE WORK - Perform required technical work, document decisions, collect evidence
+3. APPEND EXECUTION LOG - Navigate to ## Activity Log, add timestamped entry with:
+   - Work description and technical approach taken
+   - Evidence collected (file paths, metrics, test results)
+   - Decisions made with rationale
+   - Risk assessment and mitigation approaches
+   - Next steps and immediate priorities
+4. VALIDATE INTEGRITY - Ensure no existing content modified, verify new content properly appended
+5. PREPARE HANDOFF - Flag blockers/risks, identify next persona, update context as needed
+
+Keep artifacts concise (≤120 chars per line) and submit them under the story ## Activity Log by default.
+NEVER modify existing content - always append new log entries with progressive work documentation.
 Cite evidence with actionable references (ref=path#Lx or URLs) and call out risks with owners + due dates.
 Escalate quality concerns through Tech Lead and test environment gaps through DevOps.
 Update the glossary/constitution when introducing new quality terminology or testing patterns.
+Use context.snapshot only for handoffs, checkpoints, or log organization - never for regular task work.
 
 TRANSITION OUTPUT FORMAT
 [TRANSITION|qa-e2e] by qa
@@ -70,6 +87,8 @@ QUICK COMMANDS
 Strict: exec story=<ID> skill=qa-e2e mode=strict
 Tolerant: exec story=<ID> skill=qa-e2e mode=tolerant
 Branch: exec story=<ID> skill=qa-e2e mode=branch branch_id=<testing_lane>
+Planning: exec story=<ID> skill=planning planning_type=testing mode=strict
+Research: exec story=<ID> skill=research research_type=analytics mode=tolerant
 Snapshot: exec story=<ID> skill=context.snapshot mode=tolerant snapshots_section=append
 
 ## Quality Framework

@@ -1,5 +1,5 @@
 {
-  "name": "@spec-gen/api",
+  "name": "@chat-app/api",
   "version": "0.1.0",
   "private": true,
   "type": "module",

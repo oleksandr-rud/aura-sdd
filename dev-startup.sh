@@ -66,18 +66,18 @@ install_dependencies() {
     fi
 
     # Install API dependencies
-    if [ ! -d "apps/api/node_modules" ] || [ "apps/api/package.json" -nt "apps/api/node_modules" ]; then
+    if [ ! -d "apps/chat-api/node_modules" ] || [ "apps/chat-api/package.json" -nt "apps/chat-api/node_modules" ]; then
         print_status "Installing API dependencies..."
-        cd apps/api
+        cd apps/chat-api
         npm install
         cd ../..
         print_success "API dependencies installed"
     fi
 
     # Install client dependencies
-    if [ ! -d "apps/crm-client/node_modules" ] || [ "apps/crm-client/package.json" -nt "apps/crm-client/node_modules" ]; then
+    if [ ! -d "apps/chat-app/node_modules" ] || [ "apps/chat-app/package.json" -nt "apps/chat-app/node_modules" ]; then
         print_status "Installing client dependencies..."
-        cd apps/crm-client
+        cd apps/chat-app
         npm install
         cd ../..
         print_success "Client dependencies installed"
@@ -89,16 +89,16 @@ setup_environment() {
     print_status "Setting up environment files..."
 
     # API environment file
-    if [ ! -f "apps/api/.env" ]; then
+    if [ ! -f "apps/chat-api/.env" ]; then
         print_status "Creating API environment file..."
-        cp apps/api/.env.example apps/api/.env
+        cp apps/chat-api/.env.example apps/chat-api/.env
         print_success "API environment file created from template"
     fi
 
     # Client environment file
-    if [ ! -f "apps/crm-client/.env" ]; then
+    if [ ! -f "apps/chat-app/.env" ]; then
         print_status "Creating client environment file..."
-        cp apps/crm-client/.env.example apps/crm-client/.env
+        cp apps/chat-app/.env.example apps/chat-app/.env
         print_success "Client environment file created from template"
     fi
 
@@ -152,7 +152,7 @@ start_services() {
 
     # Start API server
     print_status "Starting API server..."
-    cd apps/api
+    cd apps/chat-api
     node src/simple-demo.js &
     API_PID=$!
     cd ../..
@@ -173,7 +173,7 @@ start_services() {
 
     # Start client development server
     print_status "Starting client server..."
-    cd apps/crm-client
+    cd apps/chat-app
     npm run dev &
     CLIENT_PID=$!
     cd ../..

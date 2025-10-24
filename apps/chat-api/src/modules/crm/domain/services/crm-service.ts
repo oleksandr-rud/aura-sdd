@@ -191,7 +191,7 @@ export class CRMService {
 
     // Score based on contact activity (multiple factors)
     contacts.forEach(contact => {
-      const currentScore = contactScores.get(contact.id) || 0
+      let currentScore = contactScores.get(contact.id) || 0
 
       // Boost score for contacts with emails and phones
       if (contact.email) currentScore += 5

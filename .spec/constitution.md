@@ -1,8 +1,8 @@
 # Spec Gen Constitution
 
 ## Metadata
-- **Version:** 3.0
-- **Last Updated:** 2025-10-23
+- **Version:** 3.1
+- **Last Updated:** 2025-10-24
 - **Owners:** Product Ops, Architect, Tech Lead, QA personas
 
 ## Purpose
@@ -25,16 +25,117 @@
   2. Product Brief (Problem, Goals, Success Metrics, Constraints, Context)
   3. Lifecycle Log (transition entries with structured format)
 
+## State Machine Gateway Protocol
+
 ### Gate Order (Prescribed Sequence)
+The workflow follows a strict 9-gate sequence that ensures comprehensive validation and delivery:
+
 1. **product.discovery** → Validate problem and market need
+   - **State Transition**: DRAFT ➜ PRD_READY
+   - **Owner**: product-ops
+   - **Implementation**: Research skill with `research_type=product-discovery`
+   - **Purpose**: Problem validation with customer evidence and market research
+   - **Evidence Requirements**: Customer interviews, market analysis, competitive landscape
+   - **Success Criteria**: Problem statement validated with quantitative evidence
+
 2. **product.prd** → Capture requirements and acceptance criteria
+   - **State Transition**: PRD_READY ➜ PRD_READY (refinement)
+   - **Owner**: product-ops
+   - **Purpose**: Requirements capture with measurable acceptance criteria
+   - **Evidence Requirements**: Stakeholder inputs, success metrics, user stories
+   - **Success Criteria**: SMART requirements with clear acceptance criteria
+
 3. **agile.planning** → Sequence backlog and allocate capacity
+   - **State Transition**: PRD_READY ➜ PLANNED
+   - **Owner**: product-ops
+   - **Purpose**: Backlog sequencing and resource allocation
+   - **Evidence Requirements**: Team capacity assessment, dependency analysis, timeline estimates
+   - **Success Criteria**: Realistic timeline with proper resource allocation
+
 4. **code.implement** → Build feature with automated tests
+   - **State Transition**: PLANNED ➜ BUILT
+   - **Owner**: tech-lead
+   - **Purpose**: Feature implementation with automated testing
+   - **Evidence Requirements**: Architecture compliance, test coverage, code quality metrics
+   - **Success Criteria**: Functional implementation with defined test coverage
+
 5. **code.review** → Verify code quality and architecture compliance
+   - **State Transition**: BUILT ➜ REVIEWED
+   - **Owner**: tech-lead
+   - **Purpose**: Code quality validation and architecture compliance
+   - **Evidence Requirements**: Code review results, quality gate validation, security scans
+   - **Success Criteria**: All quality gates passed with architecture compliance
+
 6. **qa.ready** → Prepare test environment and fixtures
+   - **State Transition**: REVIEWED ➜ READY
+   - **Owner**: qa
+   - **Purpose**: Test environment preparation and fixture setup
+   - **Evidence Requirements**: Environment validation, test fixtures, tool configuration
+   - **Success Criteria**: Test environment ready with comprehensive fixtures
+
 7. **qa.contract** → Validate API/event contracts
+   - **State Transition**: READY ➜ CONTRACT_VALIDATED
+   - **Owner**: qa
+   - **Purpose**: API contract validation and integration testing
+   - **Evidence Requirements**: Contract test results, schema validation, compatibility checks
+   - **Success Criteria**: All contracts validated with compatibility confirmed
+
 8. **qa.e2e** → Verify end-to-end user journeys
+   - **State Transition**: CONTRACT_VALIDATED ➜ E2E_COMPLETE
+   - **Owner**: qa
+   - **Purpose**: End-to-end user journey validation
+   - **Evidence Requirements**: E2E test results, performance validation, user experience testing
+   - **Success Criteria**: Critical user journeys validated with performance within SLA
+
 9. **pm.sync** → Update stakeholders and close story
+   - **State Transition**: E2E_COMPLETE ➜ SYNCED
+   - **Owner**: product-ops
+   - **Purpose**: Stakeholder communication and story closure
+   - **Evidence Requirements**: Delivery metrics, KPI validation, stakeholder communication
+   - **Success Criteria**: Stakeholders updated with delivery completed and documented
+
+### State Machine Flow Properties
+
+#### State Progression Rules
+- **Linear Progression**: Gates must be completed in prescribed order
+- **State Persistence**: Current state is maintained in task file header
+- **Rollback Capability**: States can be rolled back when blockers are identified
+- **Branch Execution**: Complex features can create parallel work streams
+
+#### Transition Validation
+- **Prerequisites**: Each gate requires specific inputs and evidence
+- **Quality Gates**: Validation criteria must be met before progression
+- **Risk Assessment**: Risks must be documented with mitigation strategies
+- **Evidence Requirements**: All decisions must be supported by evidence
+
+#### Agent Authorization Matrix
+| Gate | Primary Owner | Supporting Agents | Authority Level |
+|------|---------------|-------------------|-----------------|
+| product.discovery | product-ops | architect | Product validation (via research skill) |
+| product.prd | product-ops | architect, tech-lead | Requirements authority |
+| agile.planning | product-ops | tech-lead, architect | Planning authority |
+| code.implement | tech-lead | architect | Implementation authority |
+| code.review | tech-lead | architect | Quality authority |
+| qa.ready | qa | tech-lead | Test environment authority |
+| qa.contract | qa | tech-lead | Contract validation authority |
+| qa.e2e | qa | product-ops | Quality validation authority |
+| pm.sync | product-ops | all agents | Closure authority |
+
+### Universal Supporting Skills
+
+#### Generic Planning Skills
+Planning skills follow a universal template that can be specialized by context:
+- **Purpose**: Structured planning across different domains (agile, architecture, testing)
+- **Template Variables**: Planning scope, stakeholders, deliverables, success criteria
+- **Execution Pattern**: Context analysis → option evaluation → plan creation → risk assessment
+- **Evidence Requirements**: Stakeholder inputs, resource analysis, timeline validation
+
+#### Generic Research Skills
+Research skills support systematic investigation across multiple domains:
+- **Purpose**: Evidence-based decision making through structured investigation
+- **Research Modes**: analytics, technical, market, competitive
+- **Methodology Framework**: Question definition → evidence collection → analysis → recommendations
+- **Quality Standards**: Reproducible methodology, clear citations, limitation acknowledgment
 
 ## Monorepo Infrastructure
 

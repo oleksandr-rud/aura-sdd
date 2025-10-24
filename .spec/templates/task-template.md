@@ -45,8 +45,22 @@ Attached Context
 <link or doc> — <description>
 ```
 
-### Lifecycle Log
-Append new entries below this line using the skill templates. Follow gate order: product.discovery → product.prd → agile.planning → code.implement → code.review → qa.ready → qa.contract → qa.e2e → pm.sync. Insert context.snapshot when handoffs or stalls occur.
+### Activity Log
+**DEFAULT WORKFLOW**: All agents use progressive task execution by default:
+1. Load task context → 2. Execute work → 3. Append timestamped log entry → 4. Validate integrity → 5. Prepare handoff
+**PRINCIPLE**: NEVER modify existing content - always append new log entries to preserve complete work history
+
+#### Standard Log Entry Format:
+```
+YYYY-MM-DDTHH:MM:SS+TZ:TZ - persona-name - Detailed description of work completed, including:
+- Work performed and technical approach taken
+- Evidence collected (file paths, metrics, test results)
+- Decisions made with rationale
+- Risk assessment and mitigation approaches
+- Next steps and immediate priorities
+```
+
+**Special Skills**: Use specific skill templates for structured transitions (product.discovery, qa.e2e, etc.) and context.snapshot for handoffs/checkpoints/log organization.
 
 Example Flow (replace with real entries)
 [TRANSITION|product.discovery] 2025-01-10 by product

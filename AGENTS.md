@@ -30,9 +30,14 @@ The Spec Gen system uses a persona-based agent architecture with four core roles
 - Technical feasibility assessment for implementation
 
 **Authorised Skills**:
-- `architect-plan`: Define system architecture and technical approach
-- `research`: Conduct systematic investigation and analysis
+- `planning planning_type=architect`: Define system architecture and technical approach
+- `research research_type=technical`: Conduct systematic investigation and analysis
 - `context.snapshot`: Capture architectural status and manage log organization
+
+**Quick Commands**:
+- `exec story=<ID> skill=planning planning_type=architect mode=strict`
+- `exec story=<ID> skill=research research_type=technical mode=tolerant`
+- `exec story=<ID> skill=context.snapshot mode=tolerant snapshots_section=append`
 
 **Interacts With States**: DRAFT, PRD_READY, PLANNED, BUILT, REVIEWED
 
@@ -53,12 +58,18 @@ The Spec Gen system uses a persona-based agent architecture with four core roles
 - KPI alignment and delivery coordination
 
 **Authorised Skills**:
-- `product-discovery`: Validate problem and market need
+- `research research_type=product-discovery`: Validate problem and market need
 - `product-prd`: Capture requirements and acceptance criteria
-- `agile-planning`: Sequence backlog and allocate capacity
-- `research`: Conduct systematic investigation and analysis
+- `planning planning_type=agile`: Sequence backlog and allocate capacity
+- `research`: Conduct systematic investigation and analysis (specify research_type)
 - `pm-sync`: Update stakeholders and close story
 - `context.snapshot`: Capture product status and manage log organization
+
+**Quick Commands**:
+- `exec story=<ID> skill=research research_type=product-discovery mode=strict`
+- `exec story=<ID> skill=research research_type=market mode=tolerant`
+- `exec story=<ID> skill=planning planning_type=agile mode=strict`
+- `exec story=<ID> skill=context.snapshot mode=tolerant snapshots_section=append`
 
 **Interacts With States**: DRAFT, PRD_READY, PLANNED, BUILT, REVIEWED, READY, CONTRACT_VALIDATED, E2E_COMPLETE, SYNCED
 
@@ -81,10 +92,17 @@ The Spec Gen system uses a persona-based agent architecture with four core roles
 **Authorised Skills**:
 - `code-implement`: Build feature with automated tests
 - `code-review`: Verify code quality and architecture compliance
-- `architect-plan`: Validate implementation feasibility
-- `research`: Conduct systematic investigation and analysis
+- `planning planning_type=implementation`: Coordinate technical implementation
+- `research research_type=technical`: Conduct systematic investigation and analysis
 - `qa-contract`: Verify API/event contracts
 - `context.snapshot`: Capture technical status and manage log organization
+
+**Quick Commands**:
+- `exec story=<ID> skill=code-implement mode=strict`
+- `exec story=<ID> skill=code-review mode=strict`
+- `exec story=<ID> skill=planning planning_type=implementation mode=strict`
+- `exec story=<ID> skill=research research_type=technical mode=tolerant`
+- `exec story=<ID> skill=context.snapshot mode=tolerant snapshots_section=append`
 
 **Interacts With States**: PLANNED, BUILT, REVIEWED, READY, CONTRACT_VALIDATED
 
@@ -108,8 +126,16 @@ The Spec Gen system uses a persona-based agent architecture with four core roles
 - `qa-ready`: Prepare test environment and fixtures
 - `qa-contract`: Validate API/event contracts
 - `qa-e2e`: Verify end-to-end user journeys
+- `planning planning_type=testing`: Design testing strategy
+- `research research_type=analytics`: Conduct systematic investigation and analysis
 - `code-review`: Verify code quality standards
 - `context.snapshot`: Capture quality status and manage log organization
+
+**Quick Commands**:
+- `exec story=<ID> skill=qa-e2e mode=strict`
+- `exec story=<ID> skill=planning planning_type=testing mode=strict`
+- `exec story=<ID> skill=research research_type=analytics mode=tolerant`
+- `exec story=<ID> skill=context.snapshot mode=tolerant snapshots_section=append`
 
 **Interacts With States**: REVIEWED, READY, CONTRACT_VALIDATED, E2E_COMPLETE, SYNCED
 
@@ -206,13 +232,51 @@ When prerequisites are missing, agents must use:
 BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, step2])
 ```
 
+## Unified Skills System
+
+### Overview
+The agent system has been reorganized to use unified skills with multiple templates, reducing complexity while increasing flexibility.
+
+### Unified Skills
+
+#### **Planning Skill** (`.spec/skills/planning.skill.md`)
+- **Templates**: 4 integrated planning templates
+- **Selection**: `planning_type` parameter (agile, architect, testing, implementation)
+- **Intent Interpretation**: System determines template based on agent role and context
+
+#### **Research Skill** (`.spec/skills/research.skill.md`)
+- **Templates**: 5 integrated research templates
+- **Selection**: `research_type` parameter (product-discovery, analytics, technical, market, competitive)
+- **Special Case**: Product discovery includes state transition (DRAFT → PRD_READY)
+
+### Template Selection Examples
+```bash
+# Planning Templates
+exec story=<ID> skill=planning planning_type=agile        # Product Ops: backlog sequencing
+exec story=<ID> skill=planning planning_type=architect     # Architect: system architecture
+exec story=<ID> skill=planning planning_type=testing       # QA: test strategy
+exec story=<ID> skill=planning planning_type=implementation # Tech Lead: implementation coordination
+
+# Research Templates
+exec story=<ID> skill=research research_type=product-discovery # Product Ops: problem validation
+exec story=<ID> skill=research research_type=analytics         # Any agent: quantitative analysis
+exec story=<ID> skill=research research_type=technical         # Architect/Tech Lead: feasibility studies
+exec story=<ID> skill=research research_type=market            # Product Ops: market analysis
+exec story=<ID> skill=research research_type=competitive       # Product Ops/Architect: competitive analysis
+
+# Automatic Template Selection
+exec story=<ID> skill=planning  # System determines template based on agent and context
+exec story=<ID> skill=research  # System determines template based on questions and inputs
+```
+
 ## Agent Development Guidelines
 
 ### Creating New Agents
 1. **Agent Template**: Use `.spec/templates/agent.template.md`
 2. **Mandate Definition**: Clear scope, responsibilities, and bounds
 3. **Skill Authorization**: Map to appropriate skills in register.json
-4. **Integration Testing**: Validate handoffs and transitions
+4. **Template Integration**: Define which planning/research templates agent uses
+5. **Integration Testing**: Validate handoffs and transitions
 
 ### Agent Maintenance
 - **Regular Updates**: Keep agent specifications current with system changes
@@ -255,9 +319,10 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 - **Templates**: `.spec/templates/`
 
 ### Version Information
-- **Agent System Version**: 3.0
+- **Agent System Version**: 3.1
 - **Last Updated**: 2025-10-24
-- **Compatible With**: Spec Gen Workflow System v3.0
+- **Compatible With**: Spec Gen Workflow System v3.1
+- **Key Changes**: Unified Skills System with template-based execution
 
 ---
 

@@ -1,5 +1,5 @@
 {
-  "name": "@spec-gen/client",
+  "name": "@chat-app/app",
   "version": "0.1.0",
   "private": true,
   "type": "module",

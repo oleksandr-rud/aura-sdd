@@ -1,6 +1,6 @@
 {
-  "version": "3.0",
-  "last_updated": "2025-10-23",
+  "version": "3.1",
+  "last_updated": "2025-10-24",
   "description": "Workflow Transition System registry with structured phase workflow and persona coordination",
   "state_machine": {
     "workflow_name": "Orient → Scope → Execute → Gate",
@@ -131,21 +131,7 @@
   },
   "skills": {
     "gate_transitions": {
-      "product-discovery": {
-        "id": "product-discovery",
-        "title": "Product Discovery",
-        "path": ".spec/skills/product-discovery.skill.md",
-        "target_agent": "product-ops",
-        "purpose": "Validate problem and market need with customer evidence and market analysis",
-        "from_state": "DRAFT",
-        "to_state": "PRD_READY",
-        "tag": "product.discovery",
-        "trigger_scenarios": ["New initiative requires problem validation", "Market gap needs confirmation", "Customer pain points need quantification"],
-        "required_inputs": ["story_id", "customer_interviews", "market_analysis"],
-        "mcp_tooling": ["WebSearch", "WebFetch"],
-        "accepts_from": []
-      },
-      "product-prd": {
+            "product-prd": {
         "id": "product-prd",
         "title": "Product PRD",
         "path": ".spec/skills/product-prd.skill.md",
@@ -159,19 +145,49 @@
         "mcp_tooling": ["Read", "Write"],
         "accepts_from": ["product-discovery"]
       },
-      "agile-planning": {
-        "id": "agile-planning",
-        "title": "Agile Planning",
-        "path": ".spec/skills/agile-planning.skill.md",
-        "target_agent": "product-ops",
-        "purpose": "Sequence backlog and allocate capacity with timeline and resource planning",
-        "from_state": "PRD_READY",
-        "to_state": "PLANNED",
-        "tag": "agile.planning",
-        "trigger_scenarios": ["Backlog requires sequencing", "Capacity needs allocation", "Timeline must be established"],
-        "required_inputs": ["story_id", "requirements", "team_capacity", "dependencies"],
-        "mcp_tooling": ["Read", "Write"],
-        "accepts_from": ["product-prd"]
+      "planning": {
+        "id": "planning",
+        "title": "Planning",
+        "path": ".spec/skills/planning.skill.md",
+        "target_agent": ["product-ops", "architect", "tech-lead", "qa"],
+        "purpose": "Unified planning skill supporting multiple planning domains with template-driven execution",
+        "from_state": "varies_by_template",
+        "to_state": "varies_by_template",
+        "tag": "planning",
+        "trigger_scenarios": ["Planning required for any domain", "Resource allocation needed", "Timeline establishment required", "Architecture decisions needed", "Test strategy required"],
+        "required_inputs": ["story_id", "planning_context", "planning_resources"],
+        "mcp_tooling": ["Read", "Write", "WebSearch", "Bash"],
+        "accepts_from": "varies_by_template",
+        "templates": {
+          "agile": {
+            "target_agent": "product-ops",
+            "from_state": "PRD_READY",
+            "to_state": "PLANNED",
+            "accepts_from": ["product-prd"],
+            "required_inputs": ["requirements", "team_capacity", "dependencies"]
+          },
+          "architect": {
+            "target_agent": "architect",
+            "from_state": "ANY",
+            "to_state": "PLANNED",
+            "accepts_from": [],
+            "required_inputs": ["requirements", "constraints", "quality_targets"]
+          },
+          "testing": {
+            "target_agent": "qa",
+            "from_state": "REVIEWED",
+            "to_state": "READY",
+            "accepts_from": ["code-review"],
+            "required_inputs": ["test_requirements", "environment_specifications", "reviewed_code"]
+          },
+          "implementation": {
+            "target_agent": "tech-lead",
+            "from_state": "PLANNED",
+            "to_state": "BUILT",
+            "accepts_from": ["agile-planning", "architect-plan"],
+            "required_inputs": ["architecture_plan", "development_resources", "implementation_requirements"]
+          }
+        }
       },
       "code-implement": {
         "id": "code-implement",
@@ -259,31 +275,55 @@
       }
     },
     "supporting_skills": {
-      "architect-plan": {
-        "id": "architect-plan",
-        "title": "Architect Plan",
-        "path": ".spec/skills/architect-plan.skill.md",
-        "target_agent": "architect",
-        "purpose": "Define system architecture and technical approach with measurable NFRs",
-        "from_state": "ANY",
-        "to_state": "SAME",
-        "tag": "architect-plan",
-        "trigger_scenarios": ["Architecture gaps identified", "System design needed", "Technical decisions required"],
-        "required_inputs": ["story_id", "requirements", "constraints"],
-        "mcp_tooling": ["Read", "Write", "WebSearch"]
-      },
-            "research": {
+      "research": {
         "id": "research",
         "title": "Research",
         "path": ".spec/skills/research.skill.md",
         "target_agent": ["product-ops", "architect", "tech-lead", "qa"],
-        "purpose": "Conduct systematic investigation and analysis",
+        "purpose": "Unified research skill supporting multiple research methodologies with intent interpretation",
         "from_state": "ANY",
         "to_state": "SAME",
         "tag": "research",
         "trigger_scenarios": ["Research investigations needed", "Hypotheses need validation", "Technical patterns require analysis", "Market research needed"],
-        "required_inputs": ["story_id", "research_type", "research_questions", "research_context"],
-        "mcp_tooling": ["WebSearch", "WebFetch", "Read"]
+        "required_inputs": ["story_id", "research_questions", "research_context"],
+        "mcp_tooling": ["WebSearch", "WebFetch", "Read"],
+        "templates": {
+          "analytics": {
+            "purpose": "Validate hypotheses and metrics with quantitative data",
+            "additional_inputs": ["data_sources", "analysis_requirements"],
+            "evidence_type": "data_analysis with statistical validation",
+            "output_focus": "Quantitative insights, metrics validation, hypothesis testing"
+          },
+          "technical": {
+            "purpose": "Investigate patterns and technical constraints",
+            "additional_inputs": ["research_topics", "technical_constraints"],
+            "evidence_type": "findings with technical documentation",
+            "output_focus": "Technical patterns, constraints, feasibility assessment"
+          },
+          "market": {
+            "purpose": "Analyze market trends and opportunities",
+            "additional_inputs": ["market_scope", "competitive_landscape"],
+            "evidence_type": "market_analysis with trend identification",
+            "output_focus": "Market insights, opportunity sizing, trend analysis"
+          },
+          "competitive": {
+            "purpose": "Analyze competitive landscape and positioning",
+            "additional_inputs": ["competitor_list", "analysis_criteria"],
+            "evidence_type": "competitive_analysis with feature comparison",
+            "output_focus": "Competitive insights, positioning, differentiation opportunities"
+          },
+          "product-discovery": {
+            "purpose": "Validate problem and market need with customer evidence",
+            "additional_inputs": ["customer_interviews", "market_analysis", "stakeholder_requirements"],
+            "evidence_type": "validation_survey with quantitative evidence",
+            "output_focus": "Problem validation findings, market need confirmation, customer pain quantification",
+            "state_transition": {
+              "from_state": "DRAFT",
+              "to_state": "PRD_READY",
+              "tag": "product.discovery"
+            }
+          }
+        }
       },
       "context.snapshot": {
         "id": "context.snapshot",
@@ -304,7 +344,10 @@
     "transitions": [
       {
         "from": "DRAFT",
-        "skill": "product-discovery",
+        "skill": "research",
+        "skill_parameters": {
+          "research_type": "product-discovery"
+        },
         "to": "PRD_READY",
         "owner": "product-ops"
       },
@@ -316,7 +359,10 @@
       },
       {
         "from": "PRD_READY",
-        "skill": "agile-planning",
+        "skill": "planning",
+        "skill_parameters": {
+          "planning_type": "agile"
+        },
         "to": "PLANNED",
         "owner": "product-ops"
       },
