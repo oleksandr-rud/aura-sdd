@@ -7,7 +7,7 @@ This guide serves as the comprehensive manual for understanding and working with
 ## Agent System Overview
 
 ### Agent Architecture
-The Spec Gen system uses a persona-based agent architecture with four core roles, each with specific responsibilities, skills, and authority within the workflow system.
+The Spec Gen system uses a persona-based agent architecture with four core roles, each with specific responsibilities, skills, and authority within the Spec Workflow system.
 
 ### Agent Types
 1. **Architect** (`architect`) - Technical guidance and system design
@@ -183,7 +183,7 @@ As qa, execute comprehensive testing strategy with Go/No-Go decisions.
 ### Operating Principles
 All agents follow these core principles:
 
-1. **Workflow Compliance**: Align outputs with Orient → Scope → Execute → Gate sequence
+1. **Spec Workflow Compliance**: Align outputs with Orient → Scope → Execute → Gate sequence
 2. **Lifecycle Logging**: Never skip lifecycle logging with proper tag formatting
 3. **Evidence Citation**: Use actionable references (ref=path#Lx or URLs)
 4. **Risk Management**: Document risks with owners and due dates
@@ -222,8 +222,12 @@ FOLLOW-UP:
 - **Transition Logging**: All skill execution must be logged in Lifecycle Log
 
 ### Skill Categories
-1. **Gate Transition Skills** (9): Core workflow skills for phase transitions
-2. **Supporting Skills** (3): Investigation, architecture, and context management skills
+1. **Unified Skills** (2): Skills with multiple templates for flexible execution
+   - **Planning Skill**: 4 templates (agile, architect, testing, implementation)
+   - **Research Skill**: 5 templates (product-discovery, analytics, technical, market, competitive)
+2. **Specialized Skills** (7): Single-purpose skills for specific gate transitions
+   - **Gate Transition Skills**: product-prd, code-implement, code-review, qa-ready, qa-contract, qa-e2e, pm-sync
+   - **Context Management Skills**: context.snapshot for handoffs and log organization
 
 ### BLOCKED Protocol
 When prerequisites are missing, agents must use:

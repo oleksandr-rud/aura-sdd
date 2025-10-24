@@ -31,13 +31,23 @@
 
 ## Persona and Skill Terms
 
-- **Persona**: Agent role with specific responsibilities, skills, and authority within the State Machine workflow (e.g., product-ops, tech-lead, architect, qa).
-- **Skill**: Standardized procedure that agents execute to perform specific transitions between states (e.g., product-discovery, code-review, qa-e2e).
+- **Persona**: Agent role with specific responsibilities, skills, and authority within the Spec Workflow system (e.g., product-ops, tech-lead, architect, qa).
+- **Skill**: Standardized procedure that agents execute to perform specific transitions between states. Skills are either **Unified Skills** with multiple templates or **Specialized Skills** for specific gate transitions.
+- **Unified Skills**: Skills that contain multiple templates for flexible execution:
+  - **Planning Skill**: 4 templates (agile, architect, testing, implementation) for domain-specific planning
+  - **Research Skill**: 5 templates (product-discovery, analytics, technical, market, competitive) for systematic investigation
+- **Template Selection**: Method of choosing appropriate template within unified skills via:
+  - **Parameter Specification**: Direct selection using `planning_type` or `research_type` parameters
+  - **Intent Interpretation**: Automatic selection based on agent role, context, and available inputs
+- **Specialized Skills**: Single-purpose skills for specific gate transitions (e.g., product-prd, code-implement, qa-e2e)
 - **Orientation Checks**: Required alignment procedures that personas must perform before executing transitions (constitution review, glossary lookup, registry inspection).
 - **MCP Tools**: Model Context Protocol tools that skills require for execution (file operations, web access, development tools).
 - **Artifact Output**: Standardized format for transition results: `=== <GATE_NAME> === summary: inputs: evidence: risks: next_steps: === END <GATE_NAME> ===`
-- **Research Modes**: Operation types within Research skill including analytics (quantitative data analysis), technical (pattern investigation), market (trend analysis), and competitive (landscape analysis).
-- **Research Operation Types**: Different research approaches within the unified Research skill that accommodate various investigation needs while maintaining consistent methodology.
+- **Template Types**: Specific variants within unified skills:
+  - **Planning Templates**: agile, architect, testing, implementation
+  - **Research Templates**: product-discovery, analytics, technical, market, competitive
+- **Cross-Agent Skills**: Ability for any agent to use any unified skill template with appropriate parameters
+- **Multi-Mode Execution**: Combined template execution for complex investigations (e.g., `research_type="market+competitive"`)
 
 ## Quality and Compliance Terms
 

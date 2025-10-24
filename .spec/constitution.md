@@ -6,7 +6,7 @@
 - **Owners:** Product Ops, Architect, Tech Lead, QA personas
 
 ## Purpose
-- Establish the Workflow Transition System as the controlling workflow for all persona deliverables.
+- Establish the Spec Workflow System as the authoritative framework for all persona deliverables.
 - Capture architecture, coding principles, delivery philosophy, and quality guardrails for Orient → Scope → Execute → Gate sequence.
 - Ensure every transition leaves auditable metadata in Lifecycle Logs with proper tag formatting.
 
@@ -25,7 +25,7 @@
   2. Product Brief (Problem, Goals, Success Metrics, Constraints, Context)
   3. Lifecycle Log (transition entries with structured format)
 
-## State Machine Gateway Protocol
+## Spec Workflow Gateway Protocol
 
 ### Gate Order (Prescribed Sequence)
 The workflow follows a strict 9-gate sequence that ensures comprehensive validation and delivery:
@@ -94,7 +94,7 @@ The workflow follows a strict 9-gate sequence that ensures comprehensive validat
    - **Evidence Requirements**: Delivery metrics, KPI validation, stakeholder communication
    - **Success Criteria**: Stakeholders updated with delivery completed and documented
 
-### State Machine Flow Properties
+### Workflow Flow Properties
 
 #### State Progression Rules
 - **Linear Progression**: Gates must be completed in prescribed order
@@ -123,19 +123,31 @@ The workflow follows a strict 9-gate sequence that ensures comprehensive validat
 
 ### Universal Supporting Skills
 
-#### Generic Planning Skills
-Planning skills follow a universal template that can be specialized by context:
-- **Purpose**: Structured planning across different domains (agile, architecture, testing)
-- **Template Variables**: Planning scope, stakeholders, deliverables, success criteria
-- **Execution Pattern**: Context analysis → option evaluation → plan creation → risk assessment
+#### Unified Planning Skills
+The planning skill provides structured planning across multiple domains with template-driven execution:
+- **Purpose**: Structured planning across different domains (agile, architecture, testing, implementation)
+- **Templates**: 4 integrated planning templates with automatic intent interpretation
+  - **Agile Planning**: Backlog sequencing and capacity allocation (product-ops)
+  - **Architect Planning**: System architecture and technical decisions (architect)
+  - **Testing Planning**: Test strategy and environment planning (qa)
+  - **Implementation Planning**: Technical implementation coordination (tech-lead)
+- **Selection Method**: Parameter specification (`planning_type`) or intent interpretation based on agent role
+- **Execution Pattern**: Context analysis → template selection → plan creation → risk assessment
 - **Evidence Requirements**: Stakeholder inputs, resource analysis, timeline validation
 
-#### Generic Research Skills
-Research skills support systematic investigation across multiple domains:
+#### Unified Research Skills
+The research skill supports systematic investigation across multiple domains with flexible methodology:
 - **Purpose**: Evidence-based decision making through structured investigation
-- **Research Modes**: analytics, technical, market, competitive
+- **Templates**: 5 integrated research templates with automatic intent interpretation
+  - **Product Discovery**: Problem validation and market need confirmation (product-ops)
+  - **Analytics Research**: Quantitative analysis and hypothesis validation (any agent)
+  - **Technical Research**: Feasibility studies and best practices (architect/tech-lead)
+  - **Market Research**: Market analysis and opportunity sizing (product-ops)
+  - **Competitive Research**: Competitive analysis and positioning (product-ops/architect)
+- **Selection Method**: Parameter specification (`research_type`) or intent interpretation based on questions and context
 - **Methodology Framework**: Question definition → evidence collection → analysis → recommendations
 - **Quality Standards**: Reproducible methodology, clear citations, limitation acknowledgment
+- **Special Features**: Multi-mode research support, cross-agent flexibility, automatic template selection
 
 ## Monorepo Infrastructure
 
@@ -300,4 +312,4 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 
 ---
 
-*This constitution establishes the State Machine Transition Mechanism as the authoritative workflow for all persona deliverables, ensuring consistent quality, auditability, and coordination across the development lifecycle.*
+*This constitution establishes the Spec Workflow System as the authoritative framework for all persona deliverables, ensuring consistent quality, auditability, and coordination across the development lifecycle.*

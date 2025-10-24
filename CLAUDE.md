@@ -78,9 +78,6 @@ The skill system has been reorganized into unified skills with multiple template
 ├── skills/          # Unified skills with multiple templates
 │   ├── planning.skill.md      # 4 planning templates (agile, architect, testing, implementation)
 │   ├── research.skill.md      # 5 research templates (product-discovery, analytics, technical, market, competitive)
-│   ├── product-discovery.skill.md  # REMOVED - now part of research.skill.md
-│   ├── agile-planning.skill.md     # REMOVED - now part of planning.skill.md
-│   ├── architect-plan.skill.md     # REMOVED - now part of planning.skill.md
 │   └── [other specialized skills...]
 ├── tasks/           # Single-file task packages (PROJECT-XXX.md)
 ├── templates/       # Consolidated templates (5 main files)
@@ -91,12 +88,12 @@ The skill system has been reorganized into unified skills with multiple template
 │   └── task-template.md
 ├── glossary.md      # Domain vocabulary and terminology
 ├── register.json    # Skill and concept registry
-└── constitution.md   # State Machine Gateway Protocol
+└── constitution.md   # Spec Workflow Gateway Protocol
 ```
 
 ## Core Concepts
 
-### State Machine Transition Mechanism
+### Spec Workflow Transition Mechanism
 - **Principle**: Orient → Scope → Execute → Gate sequence governs all persona deliverables
 - **Benefit**: Consistent workflow, auditability, and structured handoffs
 - **Implementation**: Use prescribed gate order with structured transition logging
