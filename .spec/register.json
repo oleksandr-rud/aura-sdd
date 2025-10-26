@@ -1,7 +1,7 @@
 {
   "version": "3.1",
   "last_updated": "2025-10-24",
-  "description": "Spec Gen Workflow System registry - Complete agent coordination and task management framework",
+  "description": "AURA - Agent Unified Response Architecture registry - Complete agent coordination and task management framework",
   "state_machine": {
     "workflow_name": "Orient → Scope → Execute → Gate",
     "gate_order": [

@@ -1,7 +1,7 @@
 # Glossary Template
 
 ## Overview
-This template provides comprehensive terminology definitions for the Spec Gen monorepo workflow system.
+This template provides comprehensive terminology definitions for the AURA workflow system.
 
 ---
 
@@ -16,7 +16,7 @@ This template provides comprehensive terminology definitions for the Spec Gen mo
 - **Purpose**: {{PURPOSE_STATEMENT}}
 
 ## About This Glossary
-This glossary defines core terminology, concepts, and specialized vocabulary used throughout the Spec Gen monorepo's State Machine workflow system. It serves as the authoritative reference for agents, developers, and stakeholders working within this ecosystem.
+This glossary defines core terminology, concepts, and specialized vocabulary used throughout the AURA State Machine workflow system. It serves as the authoritative reference for agents, developers, and stakeholders working within this ecosystem.
 ```
 
 ---
@@ -480,4 +480,4 @@ This glossary defines core terminology, concepts, and specialized vocabulary use
 
 ---
 
-*This glossary template provides comprehensive terminology definitions for the Spec Gen State Machine system, ensuring consistent communication and understanding across all agents and stakeholders.*
+*This glossary template provides comprehensive terminology definitions for the AURA State Machine system, ensuring consistent communication and understanding across all agents and stakeholders.*

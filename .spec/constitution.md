@@ -1,4 +1,4 @@
-# Spec Gen Constitution
+# AURA Constitution
 
 ## Metadata
 - **Version:** 3.1
@@ -6,7 +6,7 @@
 - **Owners:** Product Ops, Architect, Tech Lead, QA personas
 
 ## Purpose
-- Establish the Spec Workflow System as the authoritative framework for all persona deliverables.
+- Establish AURA (Agent Unified Response Architecture) as the authoritative framework for all persona deliverables.
 - Capture architecture, coding principles, delivery philosophy, and quality guardrails for Orient → Scope → Execute → Gate sequence.
 - Ensure every transition leaves auditable metadata in Lifecycle Logs with proper tag formatting.
 

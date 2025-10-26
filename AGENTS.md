@@ -1,13 +1,13 @@
-# Agent Guide for Spec Gen
+# Agent Guide for AURA
 
 ## Overview
 
-This guide serves as the comprehensive manual for understanding and working with agent personas within the Spec Gen monorepo environment. It provides detailed specifications, activation patterns, and coordination guidelines for all agent roles.
+This guide serves as the comprehensive manual for understanding and working with agent personas within the AURA system. It provides detailed specifications, activation patterns, and coordination guidelines for all agent roles.
 
 ## Agent System Overview
 
 ### Agent Architecture
-The Spec Gen system uses a persona-based agent architecture with four core roles, each with specific responsibilities, skills, and authority within the Spec Workflow system.
+AURA uses a persona-based agent architecture with four core roles, each with specific responsibilities, skills, and authority within the AURA Workflow system.
 
 ### Agent Types
 1. **Architect** (`architect`) - Technical guidance and system design
@@ -325,9 +325,9 @@ exec story=<ID> skill=research  # System determines template based on questions 
 ### Version Information
 - **Agent System Version**: 3.1
 - **Last Updated**: 2025-10-24
-- **Compatible With**: Spec Gen Workflow System v3.1
+- **Compatible With**: AURA Workflow System V0.1
 - **Key Changes**: Unified Skills System with template-based execution
 
 ---
 
-*This agent guide provides comprehensive documentation for understanding, activating, and coordinating agent personas within the Spec Gen monorepo environment.*
+*This agent guide provides comprehensive documentation for understanding, activating, and coordinating agent personas within the AURA system.*

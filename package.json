@@ -1,7 +1,7 @@
 {
-  "name": "spec-gen-workflow",
+  "name": "aura-workflow",
   "version": "3.1.0",
-  "description": "Spec Gen Workflow System - Complete agent coordination and task management framework",
+  "description": "AURA - Agent Unified Response Architecture: Intelligent workflow orchestration for AI agents",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,20 +10,25 @@
     "version:check": "node scripts/check-version.js"
   },
   "keywords": [
-    "spec",
+    "aura",
+    "agent",
+    "unified",
+    "response",
+    "architecture",
     "workflow",
-    "agents",
-    "task-management",
+    "orchestration",
+    "ai-agents",
     "coordination",
-    "claude-ai"
+    "claude-ai",
+    "task-management"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/spec-gen-workflow"
+    "url": "https://github.com/your-org/aura-workflow"
   },
   "engines": {
     "node": ">=20.10.0"
   },
-  "author": "Spec Gen Team",
+  "author": "AURA Contributors",
   "license": "MIT"
 }

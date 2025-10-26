@@ -1,23 +1,23 @@
-# Claude AI Assistant Guide for Spec Gen
+# Claude AI Assistant Guide for AURA
 
 ## Overview
 
-This guide serves as the comprehensive manual for Claude AI assistants working with the Spec Gen Workflow System. It provides the necessary context, workflows, and guidelines to effectively assist with development, architecture, product management, and quality assurance tasks.
+This guide serves as the comprehensive manual for Claude AI assistants working with AURA - Agent Unified Response Architecture. It provides the necessary context, workflows, and guidelines to effectively assist with development, architecture, product management, and quality assurance tasks through intelligent agent orchestration.
 
 ## Quick Start
 
 ### For Claude AI Assistants
 1. **Load Context**: From the project root, familiarize yourself with the `.spec/` directory structure
 2. **Agent Activation**: Use activation phrases to assume specific agent roles:
-   - `As architect orchestrator, scope task SPEC-001`
-   - `As product ops orchestrator, run product cycle for SPEC-002`
-   - `As tech lead orchestrator, execute implementation for SPEC-003`
-   - `As qa orchestrator, validate quality for SPEC-004`
+   - `As architect orchestrator, scope task AURA-001`
+   - `As product ops orchestrator, run product cycle for AURA-002`
+   - `As tech lead orchestrator, execute implementation for AURA-003`
+   - `As qa orchestrator, validate quality for AURA-004`
 3. **Task Management**: Record task IDs and maintain Rolling Summaries
 4. **Context Reset**: Archive conclusions in Activity Log when switching tasks
 
 ### 🆕 **Unified Skills System**
-The skill system has been reorganized into unified skills with multiple templates:
+AURA's skill system has been reorganized into unified skills with multiple templates:
 
 #### **Unified Planning Skill**
 - **File**: `.spec/skills/planning.skill.md`
@@ -61,7 +61,7 @@ The skill system has been reorganized into unified skills with multiple template
 │   └── task-template.md
 ├── glossary.md      # Domain vocabulary and terminology
 ├── register.json    # Skill and concept registry
-└── constitution.md   # Spec Workflow Gateway Protocol
+└── constitution.md   # AURA Workflow Gateway Protocol
 ```
 
 
@@ -72,7 +72,7 @@ The skill system has been reorganized into unified skills with multiple template
 
 ## Core Concepts
 
-### Spec Workflow Transition Mechanism
+### AURA Workflow Transition Mechanism
 - **Principle**: Orient → Scope → Execute → Gate sequence governs all persona deliverables
 - **Benefit**: Consistent workflow, auditability, and structured handoffs
 - **Implementation**: Use prescribed gate order with structured transition logging

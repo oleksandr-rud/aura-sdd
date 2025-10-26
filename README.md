@@ -1,23 +1,23 @@
-# Spec Gen Workflow System
+# AURA - Agent Unified Response Architecture
 
-A comprehensive agent coordination and task management framework designed for structured development workflows. This system provides standardized templates, skills, and coordination protocols for managing complex software projects from conception to delivery.
+A comprehensive agent coordination and task management framework designed for structured development workflows. AURA provides standardized templates, skills, and coordination protocols for managing complex software projects from conception to delivery through intelligent AI agent orchestration.
 
 ## 🎯 Quick Start
 
 ### For Claude AI Assistants
 1. **Load Context**: Familiarize yourself with the `.spec/` directory structure
 2. **Agent Activation**: Use activation phrases to assume specific agent roles:
-   - `As architect orchestrator, scope task SPEC-001`
-   - `As product ops orchestrator, run product cycle for SPEC-002`
-   - `As tech lead orchestrator, execute implementation for SPEC-003`
-   - `As qa orchestrator, validate quality for SPEC-004`
+   - `As architect orchestrator, scope task AURA-001`
+   - `As product ops orchestrator, run product cycle for AURA-002`
+   - `As tech lead orchestrator, execute implementation for AURA-003`
+   - `As qa orchestrator, validate quality for AURA-004`
 3. **Task Management**: Record task IDs and maintain Rolling Summaries
 4. **Context Reset**: Archive conclusions in Activity Log when switching tasks
 
 ## 📁 Project Structure
 
 ```
-.spec/                          # Spec Workflow System
+.spec/                          # AURA Workflow System
 ├── agents/                     # Agent specifications and workflows
 │   ├── architect.agent.md      # Technical guidance and system design
 │   ├── product-ops.agent.md    # Product lifecycle and requirements
@@ -34,18 +34,18 @@ A comprehensive agent coordination and task management framework designed for st
 │   ├── glossary.template.md
 │   └── task-template.md
 ├── glossary.md                 # Domain vocabulary and terminology
-├── register.json               # Skill and concept registry (v3.1)
-└── constitution.md              # Spec Workflow Gateway Protocol (v3.1)
+├── register.json               # Skill and concept registry (V0.1)
+└── constitution.md              # AURA Workflow Gateway Protocol (V0.1)
 
 CLAUDE.md                      # Claude AI Assistant Guide
 AGENTS.md                      # Agent coordination and activation guide
 README.md                      # This file
 ```
 
-## 🔄 Spec Workflow System
+## 🔄 AURA Workflow System
 
 ### Unified Skills System
-The spec system uses **unified skills with multiple templates** for flexible execution:
+AURA uses **unified skills with multiple templates** for flexible execution:
 
 #### Planning Skill (`.spec/skills/planning.skill.md`)
 ```bash
@@ -88,14 +88,14 @@ As qa, execute comprehensive testing strategy with Go/No-Go decisions.
 
 ## 📚 Documentation
 
-### Core Documentation (v3.1)
+### Core Documentation (V0.1)
 - **[CLAUDE.md](./CLAUDE.md)** - Claude AI Assistant Guide with unified skills system
 - **[AGENTS.md](./AGENTS.md)** - Agent coordination and activation guide
-- **[Constitution](./.spec/constitution.md)** - Spec Workflow Gateway Protocol
+- **[Constitution](./.spec/constitution.md)** - AURA Workflow Gateway Protocol
 - **[Glossary](./.spec/glossary.md)** - Domain vocabulary and terminology
 
-### Specification System
-- **[Register](./.spec/register.json)** - Skill and concept registry (v3.1)
+### AURA System Components
+- **[Register](./.spec/register.json)** - Skill and concept registry (V0.1)
 - **[Templates](./.spec/templates/)** - Standardized templates for agents, skills, and tasks
 
 ### Development Guides
@@ -106,8 +106,8 @@ As qa, execute comprehensive testing strategy with Go/No-Go decisions.
 ## 🔧 System Integration
 
 ### Version Information
-- **Spec Gen System**: v3.1 (2025-10-24)
-- **Constitution**: Spec Workflow Gateway Protocol
+- **AURA System**: V0.1 (2025-10-24)
+- **Constitution**: AURA Workflow Gateway Protocol
 - **Registry**: Unified Skills and Agent coordination
 - **Templates**: Template-driven execution system
 
@@ -115,12 +115,12 @@ As qa, execute comprehensive testing strategy with Go/No-Go decisions.
 - **Template Selection**: Automatic intent interpretation or direct parameter specification
 - **Cross-Agent Skills**: Any agent can use any template with appropriate parameters
 - **Multi-Mode Research**: Combined research types for complex investigations
-- **Spec Workflow Gateway**: Prescribed 9-gate workflow with evidence-based progression
+- **AURA Workflow Gateway**: Prescribed 9-gate workflow with evidence-based progression
 
 ## 🤝 Contributing
 
-### Spec Development
-1. **Read Constitution**: Understand the Spec Workflow Gateway Protocol
+### AURA Development
+1. **Read Constitution**: Understand the AURA Workflow Gateway Protocol
 2. **Agent Activation**: Use proper activation phrases for coordination
 3. **Template Usage**: Follow unified skill templates with appropriate parameters
 4. **Lifecycle Logging**: Maintain proper transition logs in task files
@@ -133,4 +133,4 @@ As qa, execute comprehensive testing strategy with Go/No-Go decisions.
 
 ---
 
-*Spec Gen Workflow System v3.1 - Complete agent coordination and task management framework*
+*AURA - Agent Unified Response Architecture V0.1 - Complete agent coordination and task management framework*
