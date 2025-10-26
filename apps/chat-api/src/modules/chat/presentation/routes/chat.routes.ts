@@ -3,30 +3,30 @@
  * Fastify route definitions for chat endpoints
  */
 
-import { FastifyInstance, FastifyPluginOptions } from 'fastify'
-import { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { ChatController } from '../controllers/chat.controller'
-import { chatDTOs } from '../dto/chat.dto'
+import type { FastifyInstance, FastifyPluginOptions } from "fastify"
+import type { ZodTypeProvider } from "fastify-type-provider-zod"
+import { ChatController } from "../controllers/chat.controller"
+import { chatDTOs } from "../dto/chat.dto"
 
 // Simple auth middleware - in a real app, this would be more sophisticated
 const authenticate = async (request: any, reply: any) => {
   const authHeader = request.headers.authorization
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader?.startsWith("Bearer ")) {
     return reply.status(401).send({
       success: false,
       error: {
-        code: 'UNAUTHORIZED',
-        message: 'Authentication required'
-      }
+        code: "UNAUTHORIZED",
+        message: "Authentication required",
+      },
     })
   }
 
   // For now, just set a mock user
   // In a real implementation, you'd validate the JWT token
   request.user = {
-    id: 'mock-user-id',
-    email: 'user@example.com',
-    name: 'Mock User'
+    id: "mock-user-id",
+    email: "user@example.com",
+    name: "Mock User",
   }
 }
 
@@ -46,82 +46,82 @@ export async function chatRoutes(
    * GET /chat/sessions
    */
   app.get(
-    '/sessions',
+    "/sessions",
     {
       preHandler: authenticate,
       schema: {
-        description: 'List user\'s chat sessions',
-        tags: ['Chat'],
+        description: "List user's chat sessions",
+        tags: ["Chat"],
         querystring: chatDTOs.pagination.extend({
-          activeOnly: { type: 'boolean', default: false }
+          activeOnly: { type: "boolean", default: false },
         }),
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               data: {
-                type: 'object',
+                type: "object",
                 properties: {
                   sessions: {
-                    type: 'array',
+                    type: "array",
                     items: {
-                      type: 'object',
+                      type: "object",
                       properties: {
-                        id: { type: 'string' },
-                        userId: { type: 'string' },
-                        title: { type: 'string' },
-                        context: { type: 'string' },
-                        aiProvider: { enum: ['openai', 'claude'] },
-                        aiModel: { type: 'string' },
-                        isActive: { type: 'boolean' },
-                        createdAt: { type: 'string' },
-                        updatedAt: { type: 'string' }
-                      }
-                    }
+                        id: { type: "string" },
+                        userId: { type: "string" },
+                        title: { type: "string" },
+                        context: { type: "string" },
+                        aiProvider: { enum: ["openai", "claude"] },
+                        aiModel: { type: "string" },
+                        isActive: { type: "boolean" },
+                        createdAt: { type: "string" },
+                        updatedAt: { type: "string" },
+                      },
+                    },
                   },
                   pagination: {
-                    type: 'object',
+                    type: "object",
                     properties: {
-                      page: { type: 'number' },
-                      limit: { type: 'number' },
-                      total: { type: 'number' },
-                      totalPages: { type: 'number' }
-                    }
-                  }
-                }
+                      page: { type: "number" },
+                      limit: { type: "number" },
+                      total: { type: "number" },
+                      totalPages: { type: "number" },
+                    },
+                  },
+                },
               },
-              message: { type: 'string' }
-            }
+              message: { type: "string" },
+            },
           },
           401: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           500: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     chatController.listSessions
   )
@@ -131,81 +131,81 @@ export async function chatRoutes(
    * POST /chat/sessions
    */
   app.post(
-    '/sessions',
+    "/sessions",
     {
       preHandler: authenticate,
       schema: {
-        description: 'Create a new chat session',
-        tags: ['Chat'],
+        description: "Create a new chat session",
+        tags: ["Chat"],
         body: chatDTOs.createSession,
         response: {
           201: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               data: {
-                type: 'object',
+                type: "object",
                 properties: {
                   session: {
-                    type: 'object',
+                    type: "object",
                     properties: {
-                      id: { type: 'string' },
-                      userId: { type: 'string' },
-                      title: { type: 'string' },
-                      context: { type: 'string' },
-                      aiProvider: { enum: ['openai', 'claude'] },
-                      aiModel: { type: 'string' },
-                      isActive: { type: 'boolean' },
-                      createdAt: { type: 'string' },
-                      updatedAt: { type: 'string' }
-                    }
-                  }
-                }
+                      id: { type: "string" },
+                      userId: { type: "string" },
+                      title: { type: "string" },
+                      context: { type: "string" },
+                      aiProvider: { enum: ["openai", "claude"] },
+                      aiModel: { type: "string" },
+                      isActive: { type: "boolean" },
+                      createdAt: { type: "string" },
+                      updatedAt: { type: "string" },
+                    },
+                  },
+                },
               },
-              message: { type: 'string' }
-            }
+              message: { type: "string" },
+            },
           },
           400: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           401: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           500: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     chatController.createSession
   )
@@ -215,132 +215,132 @@ export async function chatRoutes(
    * GET /chat/sessions/:sessionId
    */
   app.get(
-    '/sessions/:sessionId',
+    "/sessions/:sessionId",
     {
       preHandler: authenticate,
       schema: {
-        description: 'Get a specific chat session',
-        tags: ['Chat'],
+        description: "Get a specific chat session",
+        tags: ["Chat"],
         params: {
-          type: 'object',
+          type: "object",
           properties: {
-            sessionId: { type: 'string', format: 'uuid' }
+            sessionId: { type: "string", format: "uuid" },
           },
-          required: ['sessionId']
+          required: ["sessionId"],
         },
         querystring: {
-          type: 'object',
+          type: "object",
           properties: {
-            includeMessages: { type: 'boolean', default: false },
-            page: { type: 'number', minimum: 1, default: 1 },
-            limit: { type: 'number', minimum: 1, maximum: 100, default: 20 }
-          }
+            includeMessages: { type: "boolean", default: false },
+            page: { type: "number", minimum: 1, default: 1 },
+            limit: { type: "number", minimum: 1, maximum: 100, default: 20 },
+          },
         },
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               data: {
-                type: 'object',
+                type: "object",
                 properties: {
                   session: {
-                    type: 'object',
+                    type: "object",
                     properties: {
-                      id: { type: 'string' },
-                      userId: { type: 'string' },
-                      title: { type: 'string' },
-                      context: { type: 'string' },
-                      aiProvider: { enum: ['openai', 'claude'] },
-                      aiModel: { type: 'string' },
-                      isActive: { type: 'boolean' },
-                      createdAt: { type: 'string' },
-                      updatedAt: { type: 'string' }
-                    }
+                      id: { type: "string" },
+                      userId: { type: "string" },
+                      title: { type: "string" },
+                      context: { type: "string" },
+                      aiProvider: { enum: ["openai", "claude"] },
+                      aiModel: { type: "string" },
+                      isActive: { type: "boolean" },
+                      createdAt: { type: "string" },
+                      updatedAt: { type: "string" },
+                    },
                   },
                   messages: {
-                    type: 'array',
+                    type: "array",
                     items: {
-                      type: 'object',
+                      type: "object",
                       properties: {
-                        id: { type: 'string' },
-                        sessionId: { type: 'string' },
-                        role: { enum: ['user', 'assistant', 'system'] },
-                        content: { type: 'string' },
-                        tokens: { type: 'number' },
-                        model: { type: 'string' },
-                        createdAt: { type: 'string' }
-                      }
-                    }
+                        id: { type: "string" },
+                        sessionId: { type: "string" },
+                        role: { enum: ["user", "assistant", "system"] },
+                        content: { type: "string" },
+                        tokens: { type: "number" },
+                        model: { type: "string" },
+                        createdAt: { type: "string" },
+                      },
+                    },
                   },
                   pagination: {
-                    type: 'object',
+                    type: "object",
                     properties: {
-                      page: { type: 'number' },
-                      limit: { type: 'number' },
-                      total: { type: 'number' },
-                      totalPages: { type: 'number' }
-                    }
-                  }
-                }
+                      page: { type: "number" },
+                      limit: { type: "number" },
+                      total: { type: "number" },
+                      totalPages: { type: "number" },
+                    },
+                  },
+                },
               },
-              message: { type: 'string' }
-            }
+              message: { type: "string" },
+            },
           },
           401: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           403: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           404: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           500: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     chatController.getSession
   )
@@ -350,122 +350,122 @@ export async function chatRoutes(
    * POST /chat/sessions/:sessionId/messages
    */
   app.post(
-    '/sessions/:sessionId/messages',
+    "/sessions/:sessionId/messages",
     {
       preHandler: authenticate,
       schema: {
-        description: 'Send a message in a chat session',
-        tags: ['Chat'],
+        description: "Send a message in a chat session",
+        tags: ["Chat"],
         params: {
-          type: 'object',
+          type: "object",
           properties: {
-            sessionId: { type: 'string', format: 'uuid' }
+            sessionId: { type: "string", format: "uuid" },
           },
-          required: ['sessionId']
+          required: ["sessionId"],
         },
         body: chatDTOs.sendMessage,
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               data: {
-                type: 'object',
+                type: "object",
                 properties: {
                   userMessage: {
-                    type: 'object',
+                    type: "object",
                     properties: {
-                      id: { type: 'string' },
-                      sessionId: { type: 'string' },
-                      role: { enum: ['user', 'system'] },
-                      content: { type: 'string' },
-                      createdAt: { type: 'string' }
-                    }
+                      id: { type: "string" },
+                      sessionId: { type: "string" },
+                      role: { enum: ["user", "system"] },
+                      content: { type: "string" },
+                      createdAt: { type: "string" },
+                    },
                   },
                   aiMessage: {
-                    type: 'object',
+                    type: "object",
                     properties: {
-                      id: { type: 'string' },
-                      sessionId: { type: 'string' },
-                      role: { enum: ['assistant'] },
-                      content: { type: 'string' },
-                      model: { type: 'string' },
-                      tokens: { type: 'number' },
-                      createdAt: { type: 'string' }
-                    }
-                  }
-                }
+                      id: { type: "string" },
+                      sessionId: { type: "string" },
+                      role: { enum: ["assistant"] },
+                      content: { type: "string" },
+                      model: { type: "string" },
+                      tokens: { type: "number" },
+                      createdAt: { type: "string" },
+                    },
+                  },
+                },
               },
-              message: { type: 'string' }
-            }
+              message: { type: "string" },
+            },
           },
           400: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           401: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           403: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           404: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           500: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     chatController.sendMessage
   )
@@ -475,88 +475,88 @@ export async function chatRoutes(
    * DELETE /chat/sessions/:sessionId
    */
   app.delete(
-    '/sessions/:sessionId',
+    "/sessions/:sessionId",
     {
       preHandler: authenticate,
       schema: {
-        description: 'Delete a chat session',
-        tags: ['Chat'],
+        description: "Delete a chat session",
+        tags: ["Chat"],
         params: {
-          type: 'object',
+          type: "object",
           properties: {
-            sessionId: { type: 'string', format: 'uuid' }
+            sessionId: { type: "string", format: "uuid" },
           },
-          required: ['sessionId']
+          required: ["sessionId"],
         },
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               data: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  success: { type: 'boolean' },
-                  message: { type: 'string' }
-                }
+                  success: { type: "boolean" },
+                  message: { type: "string" },
+                },
               },
-              message: { type: 'string' }
-            }
+              message: { type: "string" },
+            },
           },
           401: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           403: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           404: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           500: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     chatController.deleteSession
   )
@@ -566,114 +566,114 @@ export async function chatRoutes(
    * PATCH /chat/sessions/:sessionId
    */
   app.patch(
-    '/sessions/:sessionId',
+    "/sessions/:sessionId",
     {
       preHandler: authenticate,
       schema: {
-        description: 'Update a chat session',
-        tags: ['Chat'],
+        description: "Update a chat session",
+        tags: ["Chat"],
         params: {
-          type: 'object',
+          type: "object",
           properties: {
-            sessionId: { type: 'string', format: 'uuid' }
+            sessionId: { type: "string", format: "uuid" },
           },
-          required: ['sessionId']
+          required: ["sessionId"],
         },
         body: chatDTOs.updateSession,
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               data: {
-                type: 'object',
+                type: "object",
                 properties: {
                   session: {
-                    type: 'object',
+                    type: "object",
                     properties: {
-                      id: { type: 'string' },
-                      userId: { type: 'string' },
-                      title: { type: 'string' },
-                      context: { type: 'string' },
-                      aiProvider: { enum: ['openai', 'claude'] },
-                      aiModel: { type: 'string' },
-                      isActive: { type: 'boolean' },
-                      createdAt: { type: 'string' },
-                      updatedAt: { type: 'string' }
-                    }
-                  }
-                }
+                      id: { type: "string" },
+                      userId: { type: "string" },
+                      title: { type: "string" },
+                      context: { type: "string" },
+                      aiProvider: { enum: ["openai", "claude"] },
+                      aiModel: { type: "string" },
+                      isActive: { type: "boolean" },
+                      createdAt: { type: "string" },
+                      updatedAt: { type: "string" },
+                    },
+                  },
+                },
               },
-              message: { type: 'string' }
-            }
+              message: { type: "string" },
+            },
           },
           400: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           401: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           403: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           404: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           500: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     chatController.updateSession
   )
@@ -683,90 +683,90 @@ export async function chatRoutes(
    * GET /chat/sessions/:sessionId/stats
    */
   app.get(
-    '/sessions/:sessionId/stats',
+    "/sessions/:sessionId/stats",
     {
       preHandler: authenticate,
       schema: {
-        description: 'Get chat session statistics',
-        tags: ['Chat'],
+        description: "Get chat session statistics",
+        tags: ["Chat"],
         params: {
-          type: 'object',
+          type: "object",
           properties: {
-            sessionId: { type: 'string', format: 'uuid' }
+            sessionId: { type: "string", format: "uuid" },
           },
-          required: ['sessionId']
+          required: ["sessionId"],
         },
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               data: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  messageCount: { type: 'number' },
-                  totalTokens: { type: 'number' },
-                  firstMessageAt: { type: 'string' },
-                  lastMessageAt: { type: 'string' }
-                }
+                  messageCount: { type: "number" },
+                  totalTokens: { type: "number" },
+                  firstMessageAt: { type: "string" },
+                  lastMessageAt: { type: "string" },
+                },
               },
-              message: { type: 'string' }
-            }
+              message: { type: "string" },
+            },
           },
           401: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           403: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           404: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
           },
           500: {
-            type: 'object',
+            type: "object",
             properties: {
-              success: { type: 'boolean' },
+              success: { type: "boolean" },
               error: {
-                type: 'object',
+                type: "object",
                 properties: {
-                  code: { type: 'string' },
-                  message: { type: 'string' }
-                }
-              }
-            }
-          }
-        }
-      }
+                  code: { type: "string" },
+                  message: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     chatController.getSessionStats
   )
@@ -776,28 +776,28 @@ export async function chatRoutes(
    * GET /chat/health
    */
   app.get(
-    '/health',
+    "/health",
     {
       schema: {
-        description: 'Health check for chat service',
-        tags: ['Chat', 'Health'],
+        description: "Health check for chat service",
+        tags: ["Chat", "Health"],
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              status: { type: 'string' },
-              timestamp: { type: 'string' },
-              service: { type: 'string' }
-            }
-          }
-        }
-      }
+              status: { type: "string" },
+              timestamp: { type: "string" },
+              service: { type: "string" },
+            },
+          },
+        },
+      },
     },
-    async (request, reply) => {
+    async (_request, _reply) => {
       return {
-        status: 'healthy',
+        status: "healthy",
         timestamp: new Date().toISOString(),
-        service: 'chat'
+        service: "chat",
       }
     }
   )
@@ -806,12 +806,9 @@ export async function chatRoutes(
 }
 
 // Route registration helper
-export const registerChatRoutes = (
-  fastify: FastifyInstance,
-  chatApplicationService: any
-) => {
+export const registerChatRoutes = (fastify: FastifyInstance, chatApplicationService: any) => {
   fastify.register(chatRoutes, {
-    prefix: '/chat',
-    chatApplicationService
+    prefix: "/chat",
+    chatApplicationService,
   })
 }

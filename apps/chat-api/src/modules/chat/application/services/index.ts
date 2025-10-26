@@ -2,4 +2,4 @@
  * Chat Application Services
  */
 
-export { ChatApplicationService } from './chat-application-service'
+export { ChatApplicationService } from "./chat-application-service"

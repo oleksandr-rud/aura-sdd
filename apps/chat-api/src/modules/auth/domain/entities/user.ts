@@ -3,8 +3,8 @@
  * Domain layer - pure business logic, no external dependencies
  */
 
-import { BaseEntity } from '@/shared/base-entity'
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
+import { BaseEntity } from "@/shared/base-entity"
 
 export interface UserProps {
   email: string
@@ -28,11 +28,7 @@ export class User extends BaseEntity {
     createdAt?: Date,
     updatedAt?: Date
   ) {
-    super(
-      id ?? BaseEntity.generateId(),
-      createdAt ?? new Date(),
-      updatedAt ?? new Date()
-    )
+    super(id ?? BaseEntity.generateId(), createdAt ?? new Date(), updatedAt ?? new Date())
   }
 
   get email(): string {
@@ -54,14 +50,14 @@ export class User extends BaseEntity {
   // Domain behaviors
   verifyEmail(): Result<User, Error> {
     if (this.props.isEmailVerified) {
-      return Result.err(new Error('Email already verified'))
+      return Result.err(new Error("Email already verified"))
     }
 
     const updatedUser = new User(
       {
         ...this.props,
         isEmailVerified: true,
-        emailVerificationToken: undefined
+        emailVerificationToken: undefined,
       },
       this.id,
       this.createdAt,
@@ -73,7 +69,7 @@ export class User extends BaseEntity {
 
   generateEmailVerificationToken(): Result<User, Error> {
     if (this.props.isEmailVerified) {
-      return Result.err(new Error('Email already verified'))
+      return Result.err(new Error("Email already verified"))
     }
 
     const token = crypto.randomUUID()
@@ -81,7 +77,7 @@ export class User extends BaseEntity {
     const updatedUser = new User(
       {
         ...this.props,
-        emailVerificationToken: token
+        emailVerificationToken: token,
       },
       this.id,
       this.createdAt,
@@ -99,7 +95,7 @@ export class User extends BaseEntity {
       {
         ...this.props,
         passwordResetToken: token,
-        passwordResetExpires: expires
+        passwordResetExpires: expires,
       },
       this.id,
       this.createdAt,
@@ -111,11 +107,11 @@ export class User extends BaseEntity {
 
   resetPassword(newPasswordHash: string, token: string): Result<User, Error> {
     if (!this.props.passwordResetToken || this.props.passwordResetToken !== token) {
-      return Result.err(new Error('Invalid or expired reset token'))
+      return Result.err(new Error("Invalid or expired reset token"))
     }
 
     if (!this.props.passwordResetExpires || this.props.passwordResetExpires < new Date()) {
-      return Result.err(new Error('Reset token expired'))
+      return Result.err(new Error("Reset token expired"))
     }
 
     const updatedUser = new User(
@@ -123,7 +119,7 @@ export class User extends BaseEntity {
         ...this.props,
         passwordHash: newPasswordHash,
         passwordResetToken: undefined,
-        passwordResetExpires: undefined
+        passwordResetExpires: undefined,
       },
       this.id,
       this.createdAt,
@@ -133,11 +129,13 @@ export class User extends BaseEntity {
     return Result.ok(updatedUser)
   }
 
-  updateProfile(data: Partial<Pick<UserProps, 'name' | 'avatar' | 'phone' | 'timezone'>>): Result<User, Error> {
+  updateProfile(
+    data: Partial<Pick<UserProps, "name" | "avatar" | "phone" | "timezone">>
+  ): Result<User, Error> {
     const updatedUser = new User(
       {
         ...this.props,
-        ...data
+        ...data,
       },
       this.id,
       this.createdAt,
@@ -151,7 +149,7 @@ export class User extends BaseEntity {
     return new User(
       {
         ...this.props,
-        lastLoginAt: new Date()
+        lastLoginAt: new Date(),
       },
       this.id,
       this.createdAt,
@@ -163,7 +161,7 @@ export class User extends BaseEntity {
     return new User(
       {
         ...this.props,
-        isActive: false
+        isActive: false,
       },
       this.id,
       this.createdAt,
@@ -175,7 +173,7 @@ export class User extends BaseEntity {
     return new User(
       {
         ...this.props,
-        isActive: true
+        isActive: true,
       },
       this.id,
       this.createdAt,
@@ -184,11 +182,11 @@ export class User extends BaseEntity {
   }
 
   // Factory method
-  static create(props: Omit<UserProps, 'isActive' | 'isEmailVerified'>): User {
+  static create(props: Omit<UserProps, "isActive" | "isEmailVerified">): User {
     return new User({
       ...props,
       isActive: true,
-      isEmailVerified: false
+      isEmailVerified: false,
     })
   }
 }

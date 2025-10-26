@@ -1,127 +1,127 @@
+import { Exclude } from "class-transformer"
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Index,
   BeforeInsert,
   BeforeUpdate,
-} from 'typeorm';
-import { Exclude } from 'class-transformer';
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm"
 
-@Entity('users')
-@Index(['email'], { unique: true })
+@Entity("users")
+@Index(["email"], { unique: true })
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn("uuid")
+  id: string
 
   @Column({ length: 255 })
   @Index()
-  email: string;
+  email: string
 
   @Column({ length: 255 })
   @Exclude()
-  passwordHash: string;
+  passwordHash: string
 
   @Column({ length: 255 })
-  name: string;
+  name: string
 
   @Column({ length: 500, nullable: true })
-  avatar?: string;
+  avatar?: string
 
   @Column({ length: 20, nullable: true })
-  phone?: string;
+  phone?: string
 
-  @Column({ length: 50, default: 'UTC' })
-  timezone: string;
+  @Column({ length: 50, default: "UTC" })
+  timezone: string
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive: boolean
 
   @Column({ default: false })
-  isEmailVerified: boolean;
+  isEmailVerified: boolean
 
   @Column({ length: 255, nullable: true })
   @Exclude()
-  emailVerificationToken?: string;
+  emailVerificationToken?: string
 
   @Column({ length: 255, nullable: true })
   @Exclude()
-  passwordResetToken?: string;
+  passwordResetToken?: string
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: "timestamp", nullable: true })
   @Exclude()
-  passwordResetExpires?: Date;
+  passwordResetExpires?: Date
 
-  @Column({ type: 'timestamp', nullable: true })
-  lastLoginAt?: Date;
+  @Column({ type: "timestamp", nullable: true })
+  lastLoginAt?: Date
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 
   // Domain behaviors
   verifyEmail(): void {
     if (this.isEmailVerified) {
-      throw new Error('Email already verified');
+      throw new Error("Email already verified")
     }
-    this.isEmailVerified = true;
-    this.emailVerificationToken = undefined;
+    this.isEmailVerified = true
+    this.emailVerificationToken = undefined
   }
 
   generateEmailVerificationToken(): string {
     if (this.isEmailVerified) {
-      throw new Error('Email already verified');
+      throw new Error("Email already verified")
     }
-    this.emailVerificationToken = crypto.randomUUID();
-    return this.emailVerificationToken;
+    this.emailVerificationToken = crypto.randomUUID()
+    return this.emailVerificationToken
   }
 
   generatePasswordResetToken(): string {
-    this.passwordResetToken = crypto.randomUUID();
-    this.passwordResetExpires = new Date(Date.now() + 3600 * 1000); // 1 hour
-    return this.passwordResetToken;
+    this.passwordResetToken = crypto.randomUUID()
+    this.passwordResetExpires = new Date(Date.now() + 3600 * 1000) // 1 hour
+    return this.passwordResetToken
   }
 
   resetPassword(newPasswordHash: string, token: string): void {
     if (!this.passwordResetToken || this.passwordResetToken !== token) {
-      throw new Error('Invalid or expired reset token');
+      throw new Error("Invalid or expired reset token")
     }
 
     if (!this.passwordResetExpires || this.passwordResetExpires < new Date()) {
-      throw new Error('Reset token expired');
+      throw new Error("Reset token expired")
     }
 
-    this.passwordHash = newPasswordHash;
-    this.passwordResetToken = undefined;
-    this.passwordResetExpires = undefined;
+    this.passwordHash = newPasswordHash
+    this.passwordResetToken = undefined
+    this.passwordResetExpires = undefined
   }
 
-  updateProfile(data: Partial<Pick<User, 'name' | 'avatar' | 'phone' | 'timezone'>>): void {
-    Object.assign(this, data);
+  updateProfile(data: Partial<Pick<User, "name" | "avatar" | "phone" | "timezone">>): void {
+    Object.assign(this, data)
   }
 
   recordLogin(): void {
-    this.lastLoginAt = new Date();
+    this.lastLoginAt = new Date()
   }
 
   deactivate(): void {
-    this.isActive = false;
+    this.isActive = false
   }
 
   activate(): void {
-    this.isActive = true;
+    this.isActive = true
   }
 
   // TypeORM lifecycle hooks
   @BeforeInsert()
   @BeforeUpdate()
   validateEmail() {
-    if (!this.email || !this.email.includes('@')) {
-      throw new Error('Invalid email format');
+    if (!this.email?.includes("@")) {
+      throw new Error("Invalid email format")
     }
   }
 }

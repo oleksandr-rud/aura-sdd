@@ -3,8 +3,8 @@
  * Infrastructure layer - adapter for external email service
  */
 
-import { EmailService } from '@/libs/email'
-import { Result } from '@/libs/utils'
+import { EmailService } from "@/libs/email"
+import { Result } from "@/libs/utils"
 
 export interface EmailProviderPort {
   sendWelcomeEmail(email: string, name?: string): Promise<Result<void, Error>>
@@ -39,7 +39,10 @@ export class EmailProviderService implements EmailProviderPort {
     }
   }
 
-  async sendVerificationEmail(email: string, verificationToken: string): Promise<Result<void, Error>> {
+  async sendVerificationEmail(
+    email: string,
+    verificationToken: string
+  ): Promise<Result<void, Error>> {
     try {
       return await this.emailService.sendVerificationEmail(email, verificationToken)
     } catch (error) {
@@ -51,13 +54,17 @@ export class EmailProviderService implements EmailProviderPort {
    * Send custom email for auth-related notifications
    * This can be extended for future auth email needs
    */
-  async sendAuthNotification(email: string, subject: string, content: string): Promise<Result<void, Error>> {
+  async sendAuthNotification(
+    email: string,
+    subject: string,
+    content: string
+  ): Promise<Result<void, Error>> {
     try {
       return await this.emailService.sendCustomEmail({
         to: email,
         subject: `[Auth] ${subject}`,
         html: content,
-        text: content.replace(/<[^>]*>/g, '') // Strip HTML for text version
+        text: content.replace(/<[^>]*>/g, ""), // Strip HTML for text version
       })
     } catch (error) {
       return Result.err(error as Error)

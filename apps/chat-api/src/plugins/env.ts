@@ -1,24 +1,24 @@
-import fp from "fastify-plugin";
-import dotenv from "dotenv";
-import type { FastifyInstance } from "fastify";
-import { envSchema, type EnvConfig } from "../config/env";
+import dotenv from "dotenv"
+import type { FastifyInstance } from "fastify"
+import fp from "fastify-plugin"
+import { type EnvConfig, envSchema } from "../config/env"
 
 declare module "fastify" {
   interface FastifyInstance {
-    config: EnvConfig;
+    config: EnvConfig
   }
 }
 
 function loadEnvironment(): EnvConfig {
-  dotenv.config();
-  return envSchema.parse(process.env);
+  dotenv.config()
+  return envSchema.parse(process.env)
 }
 
 async function envPlugin(app: FastifyInstance) {
-  const config = loadEnvironment();
-  app.decorate("config", config);
+  const config = loadEnvironment()
+  app.decorate("config", config)
 }
 
 export default fp(envPlugin, {
-  name: "env"
-});
+  name: "env",
+})

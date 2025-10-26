@@ -2,4 +2,4 @@
  * Chat DTOs
  */
 
-export * from './chat.dto'
+export * from "./chat.dto"

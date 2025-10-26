@@ -1,112 +1,112 @@
-import { IsEmail, IsString, MinLength, IsOptional, IsBoolean } from 'class-validator';
+import { IsBoolean, IsEmail, IsOptional, IsString, MinLength } from "class-validator"
 
 export class RegisterDto {
   @IsEmail()
-  email: string;
+  email: string
 
   @IsString()
   @MinLength(6)
-  password: string;
+  password: string
 
   @IsString()
   @MinLength(2)
-  name: string;
+  name: string
 
   @IsString()
   @IsOptional()
-  phone?: string;
+  phone?: string
 
   @IsString()
   @IsOptional()
-  timezone?: string;
+  timezone?: string
 }
 
 export class LoginDto {
   @IsEmail()
-  email: string;
+  email: string
 
   @IsString()
-  password: string;
+  password: string
 }
 
 export class RefreshTokenDto {
   @IsString()
-  refreshToken: string;
+  refreshToken: string
 }
 
 export class ForgotPasswordDto {
   @IsEmail()
-  email: string;
+  email: string
 }
 
 export class ResetPasswordDto {
   @IsString()
-  resetToken: string;
+  resetToken: string
 
   @IsString()
   @MinLength(6)
-  newPassword: string;
+  newPassword: string
 }
 
 export class ChangePasswordDto {
   @IsString()
-  currentPassword: string;
+  currentPassword: string
 
   @IsString()
   @MinLength(6)
-  newPassword: string;
+  newPassword: string
 }
 
 export class VerifyEmailDto {
   @IsString()
-  verificationToken: string;
+  verificationToken: string
 }
 
 export class UpdateProfileDto {
   @IsString()
   @IsOptional()
-  name?: string;
+  name?: string
 
   @IsString()
   @IsOptional()
-  avatar?: string;
+  avatar?: string
 
   @IsString()
   @IsOptional()
-  phone?: string;
+  phone?: string
 
   @IsString()
   @IsOptional()
-  timezone?: string;
+  timezone?: string
 }
 
 export class AuthResponseDto {
   user: {
-    id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-    phone?: string;
-    timezone: string;
-    isActive: boolean;
-    isEmailVerified: boolean;
-    lastLoginAt?: Date;
-  };
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
+    id: string
+    email: string
+    name: string
+    avatar?: string
+    phone?: string
+    timezone: string
+    isActive: boolean
+    isEmailVerified: boolean
+    lastLoginAt?: Date
+  }
+  accessToken: string
+  refreshToken: string
+  expiresIn: number
 }
 
 export class UserProfileDto {
-  id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-  phone?: string;
-  timezone: string;
-  isActive: boolean;
-  isEmailVerified: boolean;
-  lastLoginAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  email: string
+  name: string
+  avatar?: string
+  phone?: string
+  timezone: string
+  isActive: boolean
+  isEmailVerified: boolean
+  lastLoginAt?: Date
+  createdAt: Date
+  updatedAt: Date
 }

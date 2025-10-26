@@ -3,10 +3,10 @@
  * Handles user logout and token invalidation
  */
 
-import { UseCaseWithValidation } from '@/shared/use-case'
-import { Result } from '@/libs/utils'
-import { commonSchemas, validateAndExtract } from '@/libs/validation'
-import { CacheService } from '@/libs/cache'
+import type { CacheService } from "@/libs/cache"
+import { Result } from "@/libs/utils"
+import { commonSchemas, validateAndExtract } from "@/libs/validation"
+import { UseCaseWithValidation } from "@/shared/use-case"
 
 export interface LogoutRequest {
   userId: string
@@ -18,15 +18,13 @@ export interface LogoutResponse {
 }
 
 export class LogoutUseCase extends UseCaseWithValidation<LogoutRequest, LogoutResponse> {
-  constructor(
-    private cacheService: CacheService
-  ) {
+  constructor(private cacheService: CacheService) {
     super()
   }
 
   validate(input: LogoutRequest): Result<LogoutRequest, Error> {
     const schema = commonSchemas.uuid.extend({
-      sessionId: commonSchemas.uuid.optional()
+      sessionId: commonSchemas.uuid.optional(),
     })
 
     const validation = validateAndExtract(schema, input)
@@ -34,8 +32,8 @@ export class LogoutUseCase extends UseCaseWithValidation<LogoutRequest, LogoutRe
     if (validation.isErr()) {
       const errors = validation.unwrapErr()
       const errorMessage = Object.entries(errors)
-        .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-        .join('; ')
+        .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+        .join("; ")
       return Result.err(new Error(errorMessage))
     }
 
@@ -47,14 +45,19 @@ export class LogoutUseCase extends UseCaseWithValidation<LogoutRequest, LogoutRe
       // Remove user session from cache
       const sessionDeleteResult = await this.cacheService.delete(`session:${input.userId}`)
       if (sessionDeleteResult.isErr()) {
-        console.error('Failed to delete user session:', sessionDeleteResult.unwrapErr())
+        console.error("Failed to delete user session:", sessionDeleteResult.unwrapErr())
       }
 
       // If specific session ID provided, also remove it
       if (input.sessionId) {
-        const specificSessionDeleteResult = await this.cacheService.delete(`session:${input.sessionId}`)
+        const specificSessionDeleteResult = await this.cacheService.delete(
+          `session:${input.sessionId}`
+        )
         if (specificSessionDeleteResult.isErr()) {
-          console.error('Failed to delete specific session:', specificSessionDeleteResult.unwrapErr())
+          console.error(
+            "Failed to delete specific session:",
+            specificSessionDeleteResult.unwrapErr()
+          )
         }
       }
 
@@ -64,7 +67,7 @@ export class LogoutUseCase extends UseCaseWithValidation<LogoutRequest, LogoutRe
       // 3. Log the logout event for security auditing
 
       return Result.ok({
-        message: 'Logout successful'
+        message: "Logout successful",
       })
     } catch (error) {
       return Result.err(error as Error)

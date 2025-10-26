@@ -3,19 +3,17 @@
  * Complete hexagonal architecture implementation for AI chat functionality
  */
 
-export * from './domain'
-export * from './application'
-export * from './infrastructure'
-export * from './presentation'
+export * from "./domain"
+export * from "./application"
+export * from "./infrastructure"
+export * from "./presentation"
 
 // Module factory function for dependency injection
-import { ChatApplicationService } from './application'
-import { ChatSessionRepositoryImpl, MessageRepositoryImpl } from './infrastructure/repositories'
-import { ChatServiceImpl, AIServiceRegistry } from './infrastructure/services'
+import { ChatApplicationService } from "./application"
+import { ChatSessionRepositoryImpl, MessageRepositoryImpl } from "./infrastructure/repositories"
+import { AIServiceRegistry, ChatServiceImpl } from "./infrastructure/services"
 
-export interface ChatModuleDependencies {
-  // Can be extended for additional dependencies
-}
+export type ChatModuleDependencies = {}
 
 export interface ChatModuleExports {
   chatApplicationService: ChatApplicationService
@@ -25,7 +23,7 @@ export interface ChatModuleExports {
   aiServiceRegistry: AIServiceRegistry
 }
 
-export function createChatModule(dependencies?: ChatModuleDependencies): ChatModuleExports {
+export function createChatModule(_dependencies?: ChatModuleDependencies): ChatModuleExports {
   // Initialize repositories
   const chatSessionRepository = new ChatSessionRepositoryImpl()
   const messageRepository = new MessageRepositoryImpl()
@@ -44,7 +42,7 @@ export function createChatModule(dependencies?: ChatModuleDependencies): ChatMod
   const chatApplicationService = new ChatApplicationService(
     chatSessionRepository,
     messageRepository,
-    chatService,
+    chatService
     // Note: AI service will be resolved per request through the registry
   )
 
@@ -53,7 +51,7 @@ export function createChatModule(dependencies?: ChatModuleDependencies): ChatMod
     chatSessionRepository,
     messageRepository,
     chatService,
-    aiServiceRegistry
+    aiServiceRegistry,
   }
 }
 

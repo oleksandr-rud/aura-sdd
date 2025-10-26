@@ -3,8 +3,8 @@
  * KISS principle: simple JWT authentication middleware
  */
 
-import { FastifyRequest, FastifyReply } from 'fastify'
-import { jwtVerify } from 'jose'
+import type { FastifyReply, FastifyRequest } from "fastify"
+import { jwtVerify } from "jose"
 
 export interface AuthenticatedRequest extends FastifyRequest {
   user?: {
@@ -18,18 +18,18 @@ export const authenticate = async (request: AuthenticatedRequest, reply: Fastify
   try {
     const authHeader = request.headers.authorization
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader?.startsWith("Bearer ")) {
       return reply.status(401).send({
         success: false,
         error: {
-          code: 'UNAUTHORIZED',
-          message: 'Missing or invalid authorization header'
-        }
+          code: "UNAUTHORIZED",
+          message: "Missing or invalid authorization header",
+        },
       })
     }
 
     const token = authHeader.substring(7)
-    const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret')
+    const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET || "fallback-secret")
 
     const { payload } = await jwtVerify(token, jwtSecret)
 
@@ -37,28 +37,30 @@ export const authenticate = async (request: AuthenticatedRequest, reply: Fastify
     request.user = {
       id: (payload as any).userId,
       email: (payload as any).email,
-      name: (payload as any).name
+      name: (payload as any).name,
     }
-
-  } catch (error) {
+  } catch (_error) {
     return reply.status(401).send({
       success: false,
       error: {
-        code: 'UNAUTHORIZED',
-        message: 'Invalid or expired token'
-      }
+        code: "UNAUTHORIZED",
+        message: "Invalid or expired token",
+      },
     })
   }
 }
 
-export const requireEmailVerification = async (request: AuthenticatedRequest, reply: FastifyReply) => {
+export const requireEmailVerification = async (
+  request: AuthenticatedRequest,
+  reply: FastifyReply
+) => {
   if (!request.user) {
     return reply.status(401).send({
       success: false,
       error: {
-        code: 'UNAUTHORIZED',
-        message: 'Authentication required'
-      }
+        code: "UNAUTHORIZED",
+        message: "Authentication required",
+      },
     })
   }
 

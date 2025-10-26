@@ -1,13 +1,13 @@
-import "./index.css";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { selectSidebarExpanded, selectTheme } from "./features/ui/uiSelectors";
-import { toggleSidebar, toggleTheme } from "./features/ui/uiSlice";
-import { config } from "./config";
+import "./index.css"
+import { useAppDispatch, useAppSelector } from "./app/hooks"
+import { config } from "./config"
+import { selectSidebarExpanded, selectTheme } from "./features/ui/uiSelectors"
+import { toggleSidebar, toggleTheme } from "./features/ui/uiSlice"
 
 export function App() {
-  const dispatch = useAppDispatch();
-  const theme = useAppSelector(selectTheme);
-  const sidebarExpanded = useAppSelector(selectSidebarExpanded);
+  const dispatch = useAppDispatch()
+  const theme = useAppSelector(selectTheme)
+  const sidebarExpanded = useAppSelector(selectSidebarExpanded)
 
   return (
     <div className={`app-shell ${theme}`}>
@@ -26,9 +26,8 @@ export function App() {
         <section>
           <h2>Rapid spec-driven delivery</h2>
           <p>
-            This React + Vite shell is wired with Redux Toolkit so product
-            squads can plug features into a consistent state layer without
-            retooling the monorepo.
+            This React + Vite shell is wired with Redux Toolkit so product squads can plug features
+            into a consistent state layer without retooling the monorepo.
           </p>
           <p className="hint">
             API base URL: <code>{config.apiBaseUrl}</code>
@@ -36,7 +35,7 @@ export function App() {
         </section>
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

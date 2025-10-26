@@ -3,43 +3,39 @@
  * Shows how to integrate the auth presentation layer with a Fastify server
  */
 
-import Fastify from 'fastify'
-import { ZodTypeProvider } from 'fastify-type-provider-zod'
-import {
-  setupAuthInfrastructure,
-  AuthApplicationService,
-  registerAuthRoutes
-} from '../..'
+import Fastify from "fastify"
+import type { ZodTypeProvider } from "fastify-type-provider-zod"
+import { AuthApplicationService, registerAuthRoutes, setupAuthInfrastructure } from "../.."
 
 async function createServer() {
   const app = Fastify({
-    logger: true
+    logger: true,
   }).withTypeProvider<ZodTypeProvider>()
 
   try {
     // Setup auth infrastructure (database, email, cache, etc.)
     const authInfrastructure = await setupAuthInfrastructure({
       database: {
-        url: process.env.DATABASE_URL || 'sqlite:memory:'
+        url: process.env.DATABASE_URL || "sqlite:memory:",
       },
       jwt: {
-        secret: process.env.JWT_SECRET || 'your-secret-key',
-        expiresIn: '1h',
-        refreshExpiresIn: '7d'
+        secret: process.env.JWT_SECRET || "your-secret-key",
+        expiresIn: "1h",
+        refreshExpiresIn: "7d",
       },
       email: {
-        provider: 'smtp',
+        provider: "smtp",
         config: {
           host: process.env.SMTP_HOST,
-          port: parseInt(process.env.SMTP_PORT || '587'),
+          port: Number.parseInt(process.env.SMTP_PORT || "587"),
           user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS
-        }
+          pass: process.env.SMTP_PASS,
+        },
       },
       cache: {
-        provider: 'memory',
-        ttl: 3600 // 1 hour
-      }
+        provider: "memory",
+        ttl: 3600, // 1 hour
+      },
     })
 
     // Create auth application service
@@ -54,26 +50,25 @@ async function createServer() {
     registerAuthRoutes(app, authApplicationService)
 
     // Register other routes...
-    app.get('/', async (request, reply) => {
-      return { message: 'API Server Running' }
+    app.get("/", async (_request, _reply) => {
+      return { message: "API Server Running" }
     })
 
     // Health check endpoint
-    app.get('/health', async (request, reply) => {
+    app.get("/health", async (_request, _reply) => {
       return {
-        status: 'healthy',
+        status: "healthy",
         timestamp: new Date().toISOString(),
         services: {
-          auth: 'healthy',
-          database: 'connected'
-        }
+          auth: "healthy",
+          database: "connected",
+        },
       }
     })
 
     return app
-
   } catch (error) {
-    console.error('Failed to create server:', error)
+    console.error("Failed to create server:", error)
     throw error
   }
 }
@@ -83,15 +78,14 @@ async function start() {
   try {
     const app = await createServer()
 
-    const port = parseInt(process.env.PORT || '3000')
-    const host = process.env.HOST || '0.0.0.0'
+    const port = Number.parseInt(process.env.PORT || "3000")
+    const host = process.env.HOST || "0.0.0.0"
 
     await app.listen({ port, host })
     console.log(`🚀 Server running on http://${host}:${port}`)
     console.log(`📚 API Documentation: http://${host}:${port}/docs`)
-
   } catch (error) {
-    console.error('❌ Failed to start server:', error)
+    console.error("❌ Failed to start server:", error)
     process.exit(1)
   }
 }

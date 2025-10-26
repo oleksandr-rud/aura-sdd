@@ -3,7 +3,7 @@
  * KISS principle: simple caching interface with memory and Redis backends
  */
 
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
 
 export interface CacheProvider {
   get<T>(key: string): Promise<Option<T>>
@@ -72,7 +72,9 @@ export class MemoryCache implements CacheProvider {
 
   async exists(key: string): Promise<boolean> {
     const item = this.cache.get(key)
-    if (!item) return false
+    if (!item) {
+      return false
+    }
 
     if (item.expires && Date.now() > item.expires) {
       this.cache.delete(key)
@@ -110,7 +112,7 @@ export class RedisCache implements CacheProvider {
   }
 
   async clear(): Promise<Result<void, Error>> {
-    console.log('Redis CLEAR')
+    console.log("Redis CLEAR")
     return Result.ok(undefined)
   }
 
@@ -135,7 +137,7 @@ export class CacheService {
   }
 
   // User session caching
-  async cacheUserSession(userId: string, session: any, ttl: number = 3600): Promise<Result<void, Error>> {
+  async cacheUserSession(userId: string, session: any, ttl = 3600): Promise<Result<void, Error>> {
     return this.provider.set(`session:${userId}`, session, ttl)
   }
 
@@ -144,7 +146,11 @@ export class CacheService {
   }
 
   // AI response caching
-  async cacheAIResponse(promptHash: string, response: any, ttl: number = 1800): Promise<Result<void, Error>> {
+  async cacheAIResponse(
+    promptHash: string,
+    response: any,
+    ttl = 1800
+  ): Promise<Result<void, Error>> {
     return this.provider.set(`ai:${promptHash}`, response, ttl)
   }
 

@@ -3,8 +3,8 @@
  * KISS principle: simple email sending with multiple providers
  */
 
-import { Result } from '@/libs/utils'
-import { httpClient } from '@/libs/http-client'
+import { httpClient } from "@/libs/http-client"
+import { Result } from "@/libs/utils"
 
 export interface EmailMessage {
   to: string | string[]
@@ -24,10 +24,10 @@ export interface EmailProvider {
 // Simple console email provider for development
 export class ConsoleEmailProvider implements EmailProvider {
   async send(message: EmailMessage): Promise<Result<void, Error>> {
-    console.log('📧 Email sent:', {
+    console.log("📧 Email sent:", {
       to: message.to,
       subject: message.subject,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     })
     return Result.ok(undefined)
   }
@@ -47,10 +47,10 @@ export class SMTPEmailProvider implements EmailProvider {
 
   async send(message: EmailMessage): Promise<Result<void, Error>> {
     // In real implementation, use nodemailer or similar
-    console.log('📧 SMTP Email:', {
+    console.log("📧 SMTP Email:", {
       to: message.to,
       subject: message.subject,
-      via: `${this.config.host}:${this.config.port}`
+      via: `${this.config.host}:${this.config.port}`,
     })
     return Result.ok(undefined)
   }
@@ -61,18 +61,22 @@ export class ResendEmailProvider implements EmailProvider {
   constructor(private apiKey: string) {}
 
   async send(message: EmailMessage): Promise<Result<void, Error>> {
-    const response = await httpClient.post('https://api.resend.com/emails', {
-      from: message.from ?? 'noreply@yourapp.com',
-      to: Array.isArray(message.to) ? message.to : [message.to],
-      cc: message.cc ? (Array.isArray(message.cc) ? message.cc : [message.cc]) : undefined,
-      bcc: message.bcc ? (Array.isArray(message.bcc) ? message.bcc : [message.bcc]) : undefined,
-      subject: message.subject,
-      html: message.html,
-      text: message.text,
-      reply_to: message.replyTo
-    }, {
-      'Authorization': `Bearer ${this.apiKey}`
-    })
+    const response = await httpClient.post(
+      "https://api.resend.com/emails",
+      {
+        from: message.from ?? "noreply@yourapp.com",
+        to: Array.isArray(message.to) ? message.to : [message.to],
+        cc: message.cc ? (Array.isArray(message.cc) ? message.cc : [message.cc]) : undefined,
+        bcc: message.bcc ? (Array.isArray(message.bcc) ? message.bcc : [message.bcc]) : undefined,
+        subject: message.subject,
+        html: message.html,
+        text: message.text,
+        reply_to: message.replyTo,
+      },
+      {
+        Authorization: `Bearer ${this.apiKey}`,
+      }
+    )
 
     return response.map(() => undefined)
   }
@@ -90,10 +94,10 @@ export class EmailService {
     } else if (process.env.SMTP_HOST) {
       this.provider = new SMTPEmailProvider({
         host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT ?? '587'),
-        user: process.env.SMTP_USER ?? '',
-        password: process.env.SMTP_PASSWORD ?? '',
-        from: process.env.SMTP_FROM ?? 'noreply@yourapp.com'
+        port: Number.parseInt(process.env.SMTP_PORT ?? "587"),
+        user: process.env.SMTP_USER ?? "",
+        password: process.env.SMTP_PASSWORD ?? "",
+        from: process.env.SMTP_FROM ?? "noreply@yourapp.com",
       })
     } else {
       this.provider = new ConsoleEmailProvider()
@@ -103,15 +107,15 @@ export class EmailService {
   async sendWelcomeEmail(email: string, name?: string): Promise<Result<void, Error>> {
     const message: EmailMessage = {
       to: email,
-      subject: 'Welcome to AI Workspace!',
+      subject: "Welcome to AI Workspace!",
       html: `
-        <h1>Welcome${name ? `, ${name}` : ''}! 🎉</h1>
+        <h1>Welcome${name ? `, ${name}` : ""}! 🎉</h1>
         <p>Your AI workspace is ready to use.</p>
         <p>Start chatting with AI, manage your contacts, and generate amazing content.</p>
         <br>
         <p>Best regards,<br>The AI Workspace Team</p>
       `,
-      text: `Welcome${name ? `, ${name}` : ''}! Your AI workspace is ready to use.`
+      text: `Welcome${name ? `, ${name}` : ""}! Your AI workspace is ready to use.`,
     }
 
     return this.provider.send(message)
@@ -122,7 +126,7 @@ export class EmailService {
 
     const message: EmailMessage = {
       to: email,
-      subject: 'Reset your password',
+      subject: "Reset your password",
       html: `
         <h1>Reset Your Password</h1>
         <p>Click the link below to reset your password:</p>
@@ -130,25 +134,28 @@ export class EmailService {
         <p>This link will expire in 1 hour.</p>
         <p>If you didn't request this, please ignore this email.</p>
       `,
-      text: `Reset your password: ${resetUrl}\nThis link will expire in 1 hour.`
+      text: `Reset your password: ${resetUrl}\nThis link will expire in 1 hour.`,
     }
 
     return this.provider.send(message)
   }
 
-  async sendVerificationEmail(email: string, verificationToken: string): Promise<Result<void, Error>> {
+  async sendVerificationEmail(
+    email: string,
+    verificationToken: string
+  ): Promise<Result<void, Error>> {
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`
 
     const message: EmailMessage = {
       to: email,
-      subject: 'Verify your email address',
+      subject: "Verify your email address",
       html: `
         <h1>Verify Your Email</h1>
         <p>Click the link below to verify your email address:</p>
         <a href="${verifyUrl}" style="background: #28a745; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px;">Verify Email</a>
         <p>This link will expire in 24 hours.</p>
       `,
-      text: `Verify your email: ${verifyUrl}\nThis link will expire in 24 hours.`
+      text: `Verify your email: ${verifyUrl}\nThis link will expire in 24 hours.`,
     }
 
     return this.provider.send(message)

@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../users/domain/entities/user.entity';
-import { AuthController } from './presentation/controllers/auth.controller';
-import { RegisterUseCase } from './application/use-cases/register.use-case';
-import { LoginUseCase } from './application/use-cases/login.use-case';
-import { UserRepositoryImpl } from './infrastructure/repositories/user.repository.impl';
-import { JwtService } from './infrastructure/providers/jwt.service';
-import { PasswordService } from './infrastructure/providers/password.service';
+import { Module } from "@nestjs/common"
+import { TypeOrmModule } from "@nestjs/typeorm"
+import { User } from "../users/domain/entities/user.entity"
+import { LoginUseCase } from "./application/use-cases/login.use-case"
+import { RegisterUseCase } from "./application/use-cases/register.use-case"
+import { JwtService } from "./infrastructure/providers/jwt.service"
+import { PasswordService } from "./infrastructure/providers/password.service"
+import { UserRepositoryImpl } from "./infrastructure/repositories/user.repository.impl"
+import { AuthController } from "./presentation/controllers/auth.controller"
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
@@ -21,12 +21,6 @@ import { PasswordService } from './infrastructure/providers/password.service';
     RegisterUseCase,
     LoginUseCase,
   ],
-  exports: [
-    UserRepositoryImpl,
-    JwtService,
-    PasswordService,
-    RegisterUseCase,
-    LoginUseCase,
-  ],
+  exports: [UserRepositoryImpl, JwtService, PasswordService, RegisterUseCase, LoginUseCase],
 })
 export class AuthModule {}

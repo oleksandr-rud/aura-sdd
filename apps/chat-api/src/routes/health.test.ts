@@ -1,26 +1,26 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { buildServer } from "../app";
+import { afterAll, beforeAll, describe, expect, it } from "vitest"
+import { buildServer } from "../app"
 
 describe("health routes", () => {
-  const app = buildServer();
+  const app = buildServer()
 
   beforeAll(async () => {
-    await app.ready();
-  });
+    await app.ready()
+  })
 
   afterAll(async () => {
-    await app.close();
-  });
+    await app.close()
+  })
 
   it("returns ok status", async () => {
     const response = await app.inject({
       method: "GET",
-      url: "/health"
-    });
+      url: "/health",
+    })
 
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(200)
     expect(response.json()).toMatchObject({
-      status: "ok"
-    });
-  });
-});
+      status: "ok",
+    })
+  })
+})

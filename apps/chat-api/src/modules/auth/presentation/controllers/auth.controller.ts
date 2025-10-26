@@ -1,16 +1,16 @@
 import {
-  Controller,
-  Post,
   Body,
+  Controller,
+  Get,
   HttpCode,
   HttpStatus,
-  Get,
+  Post,
   Req,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { RegisterUseCase } from '../../application/use-cases/register.use-case';
-import { LoginUseCase } from '../../application/use-cases/login.use-case';
-import { RegisterDto, LoginDto, AuthResponseDto } from '../../application/dto/auth.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthResponseDto, type LoginDto, type RegisterDto } from '../../application/dto/auth.dto';
+import type { LoginUseCase } from '../../application/use-cases/login.use-case';
+import type { RegisterUseCase } from '../../application/use-cases/register.use-case';
 
 @ApiTags('Authentication')
 @Controller('auth')

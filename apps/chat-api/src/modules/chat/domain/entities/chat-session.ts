@@ -3,14 +3,14 @@
  * Domain layer - pure business logic, no external dependencies
  */
 
-import { BaseEntity } from '@/shared/base-entity'
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
+import { BaseEntity } from "@/shared/base-entity"
 
 export interface ChatSessionProps {
   userId: string
   title: string
   context?: string
-  aiProvider: 'openai' | 'claude'
+  aiProvider: "openai" | "claude"
   aiModel: string
   metadata?: Record<string, any>
   isActive: boolean
@@ -23,11 +23,7 @@ export class ChatSession extends BaseEntity {
     createdAt?: Date,
     updatedAt?: Date
   ) {
-    super(
-      id ?? BaseEntity.generateId(),
-      createdAt ?? new Date(),
-      updatedAt ?? new Date()
-    )
+    super(id ?? BaseEntity.generateId(), createdAt ?? new Date(), updatedAt ?? new Date())
   }
 
   get userId(): string {
@@ -42,7 +38,7 @@ export class ChatSession extends BaseEntity {
     return this.props.context
   }
 
-  get aiProvider(): 'openai' | 'claude' {
+  get aiProvider(): "openai" | "claude" {
     return this.props.aiProvider
   }
 
@@ -61,13 +57,13 @@ export class ChatSession extends BaseEntity {
   // Domain behaviors
   updateTitle(newTitle: string): Result<ChatSession, Error> {
     if (!newTitle.trim() || newTitle.length > 100) {
-      return Result.err(new Error('Title must be between 1 and 100 characters'))
+      return Result.err(new Error("Title must be between 1 and 100 characters"))
     }
 
     const updatedSession = new ChatSession(
       {
         ...this.props,
-        title: newTitle.trim()
+        title: newTitle.trim(),
       },
       this.id,
       this.createdAt,
@@ -81,7 +77,7 @@ export class ChatSession extends BaseEntity {
     const updatedSession = new ChatSession(
       {
         ...this.props,
-        context: newContext
+        context: newContext,
       },
       this.id,
       this.createdAt,
@@ -91,16 +87,16 @@ export class ChatSession extends BaseEntity {
     return Result.ok(updatedSession)
   }
 
-  updateAIProvider(provider: 'openai' | 'claude', model: string): Result<ChatSession, Error> {
+  updateAIProvider(provider: "openai" | "claude", model: string): Result<ChatSession, Error> {
     if (!model.trim()) {
-      return Result.err(new Error('Model name is required'))
+      return Result.err(new Error("Model name is required"))
     }
 
     const updatedSession = new ChatSession(
       {
         ...this.props,
         aiProvider: provider,
-        aiModel: model.trim()
+        aiModel: model.trim(),
       },
       this.id,
       this.createdAt,
@@ -114,7 +110,7 @@ export class ChatSession extends BaseEntity {
     const updatedSession = new ChatSession(
       {
         ...this.props,
-        metadata: { ...this.props.metadata, ...metadata }
+        metadata: { ...this.props.metadata, ...metadata },
       },
       this.id,
       this.createdAt,
@@ -128,7 +124,7 @@ export class ChatSession extends BaseEntity {
     return new ChatSession(
       {
         ...this.props,
-        isActive: true
+        isActive: true,
       },
       this.id,
       this.createdAt,
@@ -140,7 +136,7 @@ export class ChatSession extends BaseEntity {
     return new ChatSession(
       {
         ...this.props,
-        isActive: false
+        isActive: false,
       },
       this.id,
       this.createdAt,
@@ -149,14 +145,14 @@ export class ChatSession extends BaseEntity {
   }
 
   // Factory method
-  static create(props: Omit<ChatSessionProps, 'isActive'>): ChatSession {
+  static create(props: Omit<ChatSessionProps, "isActive">): ChatSession {
     // Generate default title if not provided
-    const title = props.title || 'New Chat Session'
+    const title = props.title || "New Chat Session"
 
     return new ChatSession({
       ...props,
       title,
-      isActive: true
+      isActive: true,
     })
   }
 }

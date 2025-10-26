@@ -12,10 +12,16 @@
     "dev:status": "./dev-startup.sh status",
     "dev:install": "./dev-startup.sh install",
     "dev:help": "./dev-startup.sh help",
-    "lint": "pnpm -r lint",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format .",
+    "format:write": "biome format --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
     "test": "pnpm -r test"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "concurrently": "^8.2.2"
   },
   "engines": {

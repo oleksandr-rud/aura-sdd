@@ -3,13 +3,19 @@
  * Infrastructure layer - concrete implementation of message persistence
  */
 
-import { Result } from '@/libs/utils'
-import { MemoryPaginatedRepository } from '@/shared/base-repository'
-import { MessageRepository } from '../../domain/repositories/message-repository'
-import { Message } from '../../domain/entities'
+import { Result } from "@/libs/utils"
+import { MemoryPaginatedRepository } from "@/shared/base-repository"
+import type { Message } from "../../domain/entities"
+import type { MessageRepository } from "../../domain/repositories/message-repository"
 
-export class MessageRepositoryImpl extends MemoryPaginatedRepository<Message> implements MessageRepository {
-  async findBySessionId(sessionId: string, options?: { page: number; limit: number }): Promise<Message[]> {
+export class MessageRepositoryImpl
+  extends MemoryPaginatedRepository<Message>
+  implements MessageRepository
+{
+  async findBySessionId(
+    sessionId: string,
+    options?: { page: number; limit: number }
+  ): Promise<Message[]> {
     const page = options?.page ?? 1
     const limit = options?.limit ?? 20
 
@@ -21,7 +27,10 @@ export class MessageRepositoryImpl extends MemoryPaginatedRepository<Message> im
     return result.unwrap().items
   }
 
-  async findBySessionIdOrdered(sessionId: string, options?: { page: number; limit: number }): Promise<Message[]> {
+  async findBySessionIdOrdered(
+    sessionId: string,
+    options?: { page: number; limit: number }
+  ): Promise<Message[]> {
     const messages = await this.findBySessionId(sessionId, options)
 
     // Sort by creation date (oldest first)
@@ -37,9 +46,7 @@ export class MessageRepositoryImpl extends MemoryPaginatedRepository<Message> im
     const allMessages = allMessagesResult.unwrap()
 
     // Sort by creation date (newest first) and take latest
-    return allMessages
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice(0, limit)
+    return allMessages.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()).slice(0, limit)
   }
 
   async countBySessionId(sessionId: string): Promise<number> {

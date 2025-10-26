@@ -3,12 +3,12 @@
  * Infrastructure layer - dependency injection and configuration setup
  */
 
-import { UserRepositoryImpl } from './repositories/user-repository.impl'
-import { PasswordHasherService } from './services/password-hasher.service'
-import { JWTTokenService } from './services/jwt-token.service'
-import { EmailProviderService } from './external/email-provider.service'
-import { CacheProviderService } from './external/cache-provider.service'
-import { AuthenticationService } from '../domain/services/auth-service'
+import { AuthenticationService } from "../domain/services/auth-service"
+import { CacheProviderService } from "./external/cache-provider.service"
+import { EmailProviderService } from "./external/email-provider.service"
+import { UserRepositoryImpl } from "./repositories/user-repository.impl"
+import { JWTTokenService } from "./services/jwt-token.service"
+import { PasswordHasherService } from "./services/password-hasher.service"
 
 /**
  * Container for auth infrastructure dependencies
@@ -36,10 +36,7 @@ export class AuthInfrastructureContainer {
     // Initialize services
     this.passwordHasher = new PasswordHasherService()
     this.tokenService = new JWTTokenService()
-    this.authenticationService = new AuthenticationService(
-      this.passwordHasher,
-      this.tokenService
-    )
+    this.authenticationService = new AuthenticationService(this.passwordHasher, this.tokenService)
 
     // Initialize external service adapters
     this.emailProvider = new EmailProviderService()
@@ -68,7 +65,7 @@ export class AuthInfrastructureContainer {
       userRepository: this.userRepository,
       passwordHasher: this.passwordHasher,
       tokenService: this.tokenService,
-      authenticationService: this.authenticationService
+      authenticationService: this.authenticationService,
     }
   }
 
@@ -78,7 +75,7 @@ export class AuthInfrastructureContainer {
   public getExternalServices() {
     return {
       emailProvider: this.emailProvider,
-      cacheProvider: this.cacheProvider
+      cacheProvider: this.cacheProvider,
     }
   }
 }
@@ -101,7 +98,7 @@ export function createAuthInfrastructure() {
     tokenService,
     authenticationService,
     emailProvider,
-    cacheProvider
+    cacheProvider,
   }
 }
 
@@ -109,29 +106,26 @@ export function createAuthInfrastructure() {
  * Environment validation helper
  */
 export function validateAuthEnvironment(): { isValid: boolean; missing: string[] } {
-  const required = [
-    'JWT_SECRET',
-    'JWT_REFRESH_SECRET'
-  ]
+  const required = ["JWT_SECRET", "JWT_REFRESH_SECRET"]
 
-  const optional = [
-    'JWT_EXPIRES_IN',
-    'JWT_REFRESH_EXPIRES_IN',
-    'FRONTEND_URL',
-    'RESEND_API_KEY',
-    'SMTP_HOST',
-    'SMTP_PORT',
-    'SMTP_USER',
-    'SMTP_PASSWORD',
-    'SMTP_FROM',
-    'REDIS_URL'
+  const _optional = [
+    "JWT_EXPIRES_IN",
+    "JWT_REFRESH_EXPIRES_IN",
+    "FRONTEND_URL",
+    "RESEND_API_KEY",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_USER",
+    "SMTP_PASSWORD",
+    "SMTP_FROM",
+    "REDIS_URL",
   ]
 
   const missing = required.filter(key => !process.env[key])
 
   return {
     isValid: missing.length === 0,
-    missing
+    missing,
   }
 }
 

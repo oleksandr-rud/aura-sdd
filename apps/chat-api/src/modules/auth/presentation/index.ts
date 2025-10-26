@@ -4,13 +4,13 @@
  */
 
 // Controllers
-export { AuthController } from './controllers/auth.controller'
+export { AuthController } from "./controllers/auth.controller"
 
 // Middleware
-export { AuthMiddleware, createRateLimiter, RateLimiters } from './middleware/auth.middleware'
+export { AuthMiddleware, createRateLimiter, RateLimiters } from "./middleware/auth.middleware"
 
 // Routes
-export { authRoutes, registerAuthRoutes } from './routes/auth.routes'
+export { authRoutes, registerAuthRoutes } from "./routes/auth.routes"
 
 // DTOs
 export {
@@ -36,5 +36,5 @@ export {
   type RefreshTokenResponseDTO,
   type SuccessResponse,
   type ErrorResponse,
-  type ApiResponse
-} from './dto/auth.dto'
+  type ApiResponse,
+} from "./dto/auth.dto"

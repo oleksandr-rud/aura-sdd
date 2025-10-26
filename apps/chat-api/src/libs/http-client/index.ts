@@ -3,7 +3,7 @@
  * KISS principle: simple, reliable HTTP client with proper error handling
  */
 
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
 
 export interface HttpClientConfig {
   baseURL?: string
@@ -24,10 +24,10 @@ export class HttpClient {
 
   constructor(config: HttpClientConfig = {}) {
     this.config = {
-      baseURL: config.baseURL ?? '',
+      baseURL: config.baseURL ?? "",
       timeout: config.timeout ?? 10000,
       headers: config.headers ?? {},
-      retries: config.retries ?? 3
+      retries: config.retries ?? 3,
     }
   }
 
@@ -46,8 +46,8 @@ export class HttpClient {
         signal: controller.signal,
         headers: {
           ...this.config.headers,
-          ...options.headers
-        }
+          ...options.headers,
+        },
       })
 
       clearTimeout(timeoutId)
@@ -68,7 +68,7 @@ export class HttpClient {
         data,
         status: response.status,
         statusText: response.statusText,
-        headers
+        headers,
       })
     } catch (error) {
       clearTimeout(timeoutId)
@@ -76,10 +76,13 @@ export class HttpClient {
     }
   }
 
-  async get<T>(url: string, headers?: Record<string, string>): Promise<Result<HttpResponse<T>, Error>> {
+  async get<T>(
+    url: string,
+    headers?: Record<string, string>
+  ): Promise<Result<HttpResponse<T>, Error>> {
     return this.request<T>(url, {
-      method: 'GET',
-      headers
+      method: "GET",
+      headers,
     })
   }
 
@@ -89,12 +92,12 @@ export class HttpClient {
     headers?: Record<string, string>
   ): Promise<Result<HttpResponse<T>, Error>> {
     return this.request<T>(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        ...headers
+        "Content-Type": "application/json",
+        ...headers,
       },
-      body: data ? JSON.stringify(data) : undefined
+      body: data ? JSON.stringify(data) : undefined,
     })
   }
 
@@ -104,12 +107,12 @@ export class HttpClient {
     headers?: Record<string, string>
   ): Promise<Result<HttpResponse<T>, Error>> {
     return this.request<T>(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        ...headers
+        "Content-Type": "application/json",
+        ...headers,
       },
-      body: data ? JSON.stringify(data) : undefined
+      body: data ? JSON.stringify(data) : undefined,
     })
   }
 
@@ -119,19 +122,22 @@ export class HttpClient {
     headers?: Record<string, string>
   ): Promise<Result<HttpResponse<T>, Error>> {
     return this.request<T>(url, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
-        ...headers
+        "Content-Type": "application/json",
+        ...headers,
       },
-      body: data ? JSON.stringify(data) : undefined
+      body: data ? JSON.stringify(data) : undefined,
     })
   }
 
-  async delete<T>(url: string, headers?: Record<string, string>): Promise<Result<HttpResponse<T>, Error>> {
+  async delete<T>(
+    url: string,
+    headers?: Record<string, string>
+  ): Promise<Result<HttpResponse<T>, Error>> {
     return this.request<T>(url, {
-      method: 'DELETE',
-      headers
+      method: "DELETE",
+      headers,
     })
   }
 }
@@ -141,16 +147,16 @@ export const httpClient = new HttpClient()
 
 // AI service clients
 export const openaiClient = new HttpClient({
-  baseURL: 'https://api.openai.com/v1',
+  baseURL: "https://api.openai.com/v1",
   headers: {
-    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-  }
+    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+  },
 })
 
 export const claudeClient = new HttpClient({
-  baseURL: 'https://api.anthropic.com/v1',
+  baseURL: "https://api.anthropic.com/v1",
   headers: {
-    'x-api-key': process.env.CLAUDE_API_KEY ?? '',
-    'anthropic-version': '2023-06-01'
-  }
+    "x-api-key": process.env.CLAUDE_API_KEY ?? "",
+    "anthropic-version": "2023-06-01",
+  },
 })

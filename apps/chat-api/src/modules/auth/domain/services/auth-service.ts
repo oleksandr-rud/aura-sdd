@@ -3,8 +3,8 @@
  * Domain layer - core authentication business logic
  */
 
-import { User } from '../entities/user'
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
+import type { User } from "../entities/user"
 
 export interface PasswordHasher {
   hash(password: string): Promise<string>
@@ -26,22 +26,24 @@ export class AuthenticationService {
 
   async authenticateUser(user: User, password: string): Promise<Result<User, Error>> {
     if (!user.isActive) {
-      return Result.err(new Error('User account is inactive'))
+      return Result.err(new Error("User account is inactive"))
     }
 
     const isValidPassword = await this.passwordHasher.verify(password, user.props.passwordHash)
     if (!isValidPassword) {
-      return Result.err(new Error('Invalid credentials'))
+      return Result.err(new Error("Invalid credentials"))
     }
 
     return Result.ok(user.recordLogin())
   }
 
-  async createTokens(user: User): Promise<Result<{ accessToken: string; refreshToken: string }, Error>> {
+  async createTokens(
+    user: User
+  ): Promise<Result<{ accessToken: string; refreshToken: string }, Error>> {
     try {
       const [accessToken, refreshToken] = await Promise.all([
         this.tokenService.generateAccessToken(user),
-        this.tokenService.generateRefreshToken(user)
+        this.tokenService.generateRefreshToken(user),
       ])
 
       return Result.ok({ accessToken, refreshToken })
@@ -63,7 +65,7 @@ export class AuthenticationService {
     try {
       const payload = await this.tokenService.verifyAccessToken(token)
       if (!payload) {
-        return Result.err(new Error('Invalid token'))
+        return Result.err(new Error("Invalid token"))
       }
       return Result.ok(payload)
     } catch (error) {

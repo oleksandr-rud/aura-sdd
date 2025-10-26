@@ -3,13 +3,12 @@
  * Infrastructure layer - concrete implementation of UserRepository interface
  */
 
-import { MemoryPaginatedRepository } from '@/shared/base-repository'
-import { UserRepository } from '../../../domain/repositories/user-repository'
-import { User } from '../../../domain/entities/user'
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
+import { MemoryPaginatedRepository } from "@/shared/base-repository"
+import type { User } from "../../../domain/entities/user"
+import type { UserRepository } from "../../../domain/repositories/user-repository"
 
 export class UserRepositoryImpl extends MemoryPaginatedRepository<User> implements UserRepository {
-
   async findByEmail(email: string): Promise<User | null> {
     const result = await this.findBy({ props: { email } } as any)
     if (result.isErr()) {
@@ -26,9 +25,7 @@ export class UserRepositoryImpl extends MemoryPaginatedRepository<User> implemen
       return null
     }
 
-    const user = allUsersResult.value.find(u =>
-      u.props.emailVerificationToken === token
-    )
+    const user = allUsersResult.value.find(u => u.props.emailVerificationToken === token)
 
     return user || null
   }
@@ -39,16 +36,17 @@ export class UserRepositoryImpl extends MemoryPaginatedRepository<User> implemen
       return null
     }
 
-    const user = allUsersResult.value.find(u =>
-      u.props.passwordResetToken === token &&
-      u.props.passwordResetExpires &&
-      u.props.passwordResetExpires > new Date()
+    const user = allUsersResult.value.find(
+      u =>
+        u.props.passwordResetToken === token &&
+        u.props.passwordResetExpires &&
+        u.props.passwordResetExpires > new Date()
     )
 
     return user || null
   }
 
-  async findByActiveSession(sessionId: string): Promise<User | null> {
+  async findByActiveSession(_sessionId: string): Promise<User | null> {
     // For in-memory implementation, we'll use a simple approach
     // In a real implementation, this would query a sessions table
     const allUsersResult = await this.findAll()
@@ -58,9 +56,10 @@ export class UserRepositoryImpl extends MemoryPaginatedRepository<User> implemen
 
     // This is a simplified implementation - in production, you'd have
     // a separate sessions table or use the cache service
-    const user = allUsersResult.value.find(u =>
-      u.props.lastLoginAt && // Simple heuristic - could be enhanced
-      u.isActive
+    const user = allUsersResult.value.find(
+      u =>
+        u.props.lastLoginAt && // Simple heuristic - could be enhanced
+        u.isActive
     )
 
     return user || null
@@ -73,7 +72,7 @@ export class UserRepositoryImpl extends MemoryPaginatedRepository<User> implemen
       if (entity.createdAt.getTime() === entity.updatedAt.getTime()) {
         const existingUser = await this.findByEmail(entity.email)
         if (existingUser && existingUser.id !== entity.id) {
-          return Result.err(new Error('Email already exists'))
+          return Result.err(new Error("Email already exists"))
         }
       }
 

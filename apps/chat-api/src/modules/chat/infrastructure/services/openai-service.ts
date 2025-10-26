@@ -3,13 +3,18 @@
  * Infrastructure layer - concrete implementation of OpenAI AI service
  */
 
-import { Result } from '@/libs/utils'
-import { openaiClient } from '@/libs/http-client'
-import { AIService, AIResponse, AIStreamResponse, AIRequestOptions } from '../../domain/services'
-import { Message } from '../../domain/entities'
+import { openaiClient } from "@/libs/http-client"
+import { Result } from "@/libs/utils"
+import type { Message } from "../../domain/entities"
+import type {
+  AIRequestOptions,
+  AIResponse,
+  AIService,
+  AIStreamResponse,
+} from "../../domain/services"
 
 interface OpenAIMessage {
-  role: 'user' | 'assistant' | 'system'
+  role: "user" | "assistant" | "system"
   content: string
 }
 
@@ -46,11 +51,11 @@ interface OpenAIResponse {
 
 export class OpenAIService implements AIService {
   private readonly availableModels = [
-    'gpt-4',
-    'gpt-4-turbo',
-    'gpt-4-turbo-preview',
-    'gpt-3.5-turbo',
-    'gpt-3.5-turbo-16k'
+    "gpt-4",
+    "gpt-4-turbo",
+    "gpt-4-turbo-preview",
+    "gpt-3.5-turbo",
+    "gpt-3.5-turbo-16k",
   ]
 
   async generateResponse(
@@ -60,7 +65,7 @@ export class OpenAIService implements AIService {
   ): Promise<Result<AIResponse, Error>> {
     try {
       const openAIMessages = this.convertToOpenAIMessages(messages, context)
-      const model = options?.model ?? 'gpt-3.5-turbo'
+      const model = options?.model ?? "gpt-3.5-turbo"
 
       const requestBody: OpenAIRequest = {
         model,
@@ -70,10 +75,10 @@ export class OpenAIService implements AIService {
         top_p: options?.topP,
         frequency_penalty: options?.frequencyPenalty,
         presence_penalty: options?.presencePenalty,
-        stop: options?.stopSequences
+        stop: options?.stopSequences,
       }
 
-      const response = await openaiClient.post<OpenAIResponse>('/chat/completions', requestBody)
+      const response = await openaiClient.post<OpenAIResponse>("/chat/completions", requestBody)
 
       if (response.isErr()) {
         return Result.err(response.unwrapErr())
@@ -82,7 +87,7 @@ export class OpenAIService implements AIService {
       const data = response.unwrap().data
 
       if (!data.choices || data.choices.length === 0 || !data.choices[0].message) {
-        return Result.err(new Error('Invalid response from OpenAI'))
+        return Result.err(new Error("Invalid response from OpenAI"))
       }
 
       const choice = data.choices[0]
@@ -91,11 +96,13 @@ export class OpenAIService implements AIService {
       return Result.ok({
         content,
         model: data.model,
-        tokens: data.usage ? {
-          prompt: data.usage.prompt_tokens,
-          completion: data.usage.completion_tokens,
-          total: data.usage.total_tokens
-        } : undefined
+        tokens: data.usage
+          ? {
+              prompt: data.usage.prompt_tokens,
+              completion: data.usage.completion_tokens,
+              total: data.usage.total_tokens,
+            }
+          : undefined,
       })
     } catch (error) {
       return Result.err(error as Error)
@@ -109,7 +116,7 @@ export class OpenAIService implements AIService {
   ): AsyncGenerator<Result<AIStreamResponse, Error>> {
     try {
       const openAIMessages = this.convertToOpenAIMessages(messages, context)
-      const model = options?.model ?? 'gpt-3.5-turbo'
+      const model = options?.model ?? "gpt-3.5-turbo"
 
       const requestBody: OpenAIRequest = {
         model,
@@ -120,19 +127,19 @@ export class OpenAIService implements AIService {
         frequency_penalty: options?.frequencyPenalty,
         presence_penalty: options?.presencePenalty,
         stop: options?.stopSequences,
-        stream: true
+        stream: true,
       }
 
       // Note: This is a simplified implementation
       // In a real implementation, you'd need to handle Server-Sent Events properly
       const response = await fetch(`${openaiClient.config.baseURL}/chat/completions`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          ...openaiClient.config.headers
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          ...openaiClient.config.headers,
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       })
 
       if (!response.ok) {
@@ -142,44 +149,48 @@ export class OpenAIService implements AIService {
 
       const reader = response.body?.getReader()
       if (!reader) {
-        yield Result.err(new Error('No response body'))
+        yield Result.err(new Error("No response body"))
         return
       }
 
       const decoder = new TextDecoder()
-      let buffer = ''
+      let buffer = ""
 
       while (true) {
         const { done, value } = await reader.read()
-        if (done) break
+        if (done) {
+          break
+        }
 
         buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop() ?? ''
+        const lines = buffer.split("\n")
+        buffer = lines.pop() ?? ""
 
         for (const line of lines) {
-          if (line.trim() === '') continue
-          if (line.startsWith('data: ')) {
+          if (line.trim() === "") {
+            continue
+          }
+          if (line.startsWith("data: ")) {
             const data = line.slice(6)
-            if (data === '[DONE]') {
+            if (data === "[DONE]") {
               yield Result.ok({
-                content: '',
+                content: "",
                 model,
-                done: true
+                done: true,
               })
               return
             }
 
             try {
               const parsed = JSON.parse(data)
-              if (parsed.choices && parsed.choices[0]?.delta?.content) {
+              if (parsed.choices?.[0]?.delta?.content) {
                 yield Result.ok({
                   content: parsed.choices[0].delta.content,
                   model: parsed.model || model,
-                  done: false
+                  done: false,
                 })
               }
-            } catch (e) {
+            } catch (_e) {
               // Skip invalid JSON
             }
           }
@@ -209,8 +220,8 @@ export class OpenAIService implements AIService {
     // Add system context if provided
     if (context) {
       openAIMessages.push({
-        role: 'system',
-        content: context
+        role: "system",
+        content: context,
       })
     }
 
@@ -218,7 +229,7 @@ export class OpenAIService implements AIService {
     for (const message of messages) {
       openAIMessages.push({
         role: message.role,
-        content: message.content
+        content: message.content,
       })
     }
 

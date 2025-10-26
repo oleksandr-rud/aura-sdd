@@ -3,17 +3,25 @@
  * Infrastructure layer - adapter for external cache service in auth module
  */
 
-import { CacheService } from '@/libs/cache'
-import { Result } from '@/libs/utils'
+import { CacheService } from "@/libs/cache"
+import { Result } from "@/libs/utils"
 
 export interface AuthCachePort {
   // Session management
-  cacheUserSession(userId: string, sessionData: UserSessionData, ttl?: number): Promise<Result<void, Error>>
+  cacheUserSession(
+    userId: string,
+    sessionData: UserSessionData,
+    ttl?: number
+  ): Promise<Result<void, Error>>
   getUserSession(userId: string): Promise<UserSessionData | null>
   deleteUserSession(userId: string): Promise<Result<void, Error>>
 
   // Token management
-  cacheRefreshToken(userId: string, refreshToken: string, ttl?: number): Promise<Result<void, Error>>
+  cacheRefreshToken(
+    userId: string,
+    refreshToken: string,
+    ttl?: number
+  ): Promise<Result<void, Error>>
   getRefreshToken(userId: string): Promise<string | null>
   revokeRefreshToken(userId: string): Promise<Result<void, Error>>
 
@@ -23,7 +31,11 @@ export interface AuthCachePort {
   checkEmailVerificationRateLimit(email: string): Promise<boolean>
 
   // Email verification caching
-  cacheEmailVerificationToken(token: string, email: string, ttl?: number): Promise<Result<void, Error>>
+  cacheEmailVerificationToken(
+    token: string,
+    email: string,
+    ttl?: number
+  ): Promise<Result<void, Error>>
   getEmailByVerificationToken(token: string): Promise<string | null>
   deleteEmailVerificationToken(token: string): Promise<Result<void, Error>>
 }
@@ -49,7 +61,11 @@ export class CacheProviderService implements AuthCachePort {
   }
 
   // Session management
-  async cacheUserSession(userId: string, sessionData: UserSessionData, ttl: number = 3600): Promise<Result<void, Error>> {
+  async cacheUserSession(
+    userId: string,
+    sessionData: UserSessionData,
+    ttl = 3600
+  ): Promise<Result<void, Error>> {
     const key = `auth:session:${userId}`
     return this.cacheService.set(key, sessionData, ttl)
   }
@@ -66,7 +82,11 @@ export class CacheProviderService implements AuthCachePort {
   }
 
   // Token management
-  async cacheRefreshToken(userId: string, refreshToken: string, ttl: number = 604800): Promise<Result<void, Error>> {
+  async cacheRefreshToken(
+    userId: string,
+    refreshToken: string,
+    ttl = 604800
+  ): Promise<Result<void, Error>> {
     // 7 days default TTL for refresh tokens
     const key = `auth:refresh:${userId}`
     return this.cacheService.set(key, refreshToken, ttl)
@@ -100,7 +120,11 @@ export class CacheProviderService implements AuthCachePort {
   }
 
   // Email verification caching
-  async cacheEmailVerificationToken(token: string, email: string, ttl: number = 86400): Promise<Result<void, Error>> {
+  async cacheEmailVerificationToken(
+    token: string,
+    email: string,
+    ttl = 86400
+  ): Promise<Result<void, Error>> {
     // 24 hours default TTL for verification tokens
     const key = `auth:verify:${token}`
     return this.cacheService.set(key, email, ttl)
@@ -122,7 +146,11 @@ export class CacheProviderService implements AuthCachePort {
   /**
    * Cache password reset tokens
    */
-  async cachePasswordResetToken(token: string, email: string, ttl: number = 3600): Promise<Result<void, Error>> {
+  async cachePasswordResetToken(
+    token: string,
+    email: string,
+    ttl = 3600
+  ): Promise<Result<void, Error>> {
     // 1 hour default TTL for password reset tokens
     const key = `auth:reset:${token}`
     return this.cacheService.set(key, email, ttl)
@@ -166,16 +194,15 @@ export class CacheProviderService implements AuthCachePort {
    * Clear all user-related cache entries
    */
   async clearUserCache(userId: string): Promise<Result<void, Error>> {
-    const promises = [
-      this.deleteUserSession(userId),
-      this.revokeRefreshToken(userId)
-    ]
+    const promises = [this.deleteUserSession(userId), this.revokeRefreshToken(userId)]
 
     const results = await Promise.allSettled(promises)
-    const errors = results.filter(result => result.status === 'rejected').map(result => result.reason)
+    const errors = results
+      .filter(result => result.status === "rejected")
+      .map(result => result.reason)
 
     if (errors.length > 0) {
-      return Result.err(new Error(`Failed to clear user cache: ${errors.join(', ')}`))
+      return Result.err(new Error(`Failed to clear user cache: ${errors.join(", ")}`))
     }
 
     return Result.ok(undefined)

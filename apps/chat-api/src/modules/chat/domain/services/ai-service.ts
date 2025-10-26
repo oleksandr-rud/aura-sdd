@@ -3,8 +3,8 @@
  * Domain layer - defines contract for AI interactions
  */
 
-import { Result } from '@/libs/utils'
-import { Message } from '../entities/message'
+import type { Result } from "@/libs/utils"
+import type { Message } from "../entities/message"
 
 export interface AIResponse {
   content: string

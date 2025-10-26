@@ -3,8 +3,8 @@
  * KISS principle: simple repository interface for all modules
  */
 
-import { BaseEntity } from './base-entity'
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
+import type { BaseEntity } from "./base-entity"
 
 export interface Repository<T extends BaseEntity> {
   findById(id: string): Promise<Result<T | null, Error>>
@@ -30,7 +30,10 @@ export interface PaginatedResult<T> {
 
 export interface PaginatedRepository<T extends BaseEntity> extends Repository<T> {
   findMany(options: PaginationOptions): Promise<Result<PaginatedResult<T>, Error>>
-  findManyBy(filter: Partial<T>, options: PaginationOptions): Promise<Result<PaginatedResult<T>, Error>>
+  findManyBy(
+    filter: Partial<T>,
+    options: PaginationOptions
+  ): Promise<Result<PaginatedResult<T>, Error>>
 }
 
 // Simple in-memory implementation for development
@@ -71,13 +74,19 @@ export class MemoryRepository<T extends BaseEntity> implements Repository<T> {
   }
 }
 
-export class MemoryPaginatedRepository<T extends BaseEntity> extends MemoryRepository<T> implements PaginatedRepository<T> {
+export class MemoryPaginatedRepository<T extends BaseEntity>
+  extends MemoryRepository<T>
+  implements PaginatedRepository<T>
+{
   async findMany(options: PaginationOptions): Promise<Result<PaginatedResult<T>, Error>> {
     const allItems = Array.from(this.items.values())
     return this.paginate(allItems, options)
   }
 
-  async findManyBy(filter: Partial<T>, options: PaginationOptions): Promise<Result<PaginatedResult<T>, Error>> {
+  async findManyBy(
+    filter: Partial<T>,
+    options: PaginationOptions
+  ): Promise<Result<PaginatedResult<T>, Error>> {
     const filteredItems = Array.from(this.items.values()).filter(item => {
       return Object.entries(filter).every(([key, value]) => {
         return (item as any)[key] === value
@@ -98,7 +107,7 @@ export class MemoryPaginatedRepository<T extends BaseEntity> extends MemoryRepos
       total: items.length,
       page,
       limit,
-      totalPages: Math.ceil(items.length / limit)
+      totalPages: Math.ceil(items.length / limit),
     })
   }
 }

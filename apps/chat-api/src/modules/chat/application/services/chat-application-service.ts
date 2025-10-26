@@ -3,28 +3,28 @@
  * Application layer - orchestrates use cases and provides high-level chat operations
  */
 
-import { Result } from '@/libs/utils'
-import { ChatSessionRepository, MessageRepository } from '../../domain/repositories'
-import { ChatService, AIService } from '../../domain/services'
+import { Result } from "@/libs/utils"
+import type { ChatSessionRepository, MessageRepository } from "../../domain/repositories"
+import type { AIService, ChatService } from "../../domain/services"
 import {
   CreateSessionUseCase,
-  SendMessageUseCase,
-  GetSessionUseCase,
   DeleteSessionUseCase,
-  ListSessionsUseCase
-} from '../use-cases'
-import {
+  GetSessionUseCase,
+  ListSessionsUseCase,
+  SendMessageUseCase,
+} from "../use-cases"
+import type {
   CreateSessionRequest,
   CreateSessionResponse,
-  SendMessageRequest,
-  SendMessageResponse,
-  GetSessionRequest,
-  GetSessionResponse,
   DeleteSessionRequest,
   DeleteSessionResponse,
+  GetSessionRequest,
+  GetSessionResponse,
   ListSessionsRequest,
-  ListSessionsResponse
-} from '../use-cases'
+  ListSessionsResponse,
+  SendMessageRequest,
+  SendMessageResponse,
+} from "../use-cases"
 
 export class ChatApplicationService {
   private readonly createSessionUseCase: CreateSessionUseCase
@@ -54,7 +54,9 @@ export class ChatApplicationService {
   /**
    * Create a new chat session
    */
-  async createSession(request: CreateSessionRequest): Promise<Result<CreateSessionResponse, Error>> {
+  async createSession(
+    request: CreateSessionRequest
+  ): Promise<Result<CreateSessionResponse, Error>> {
     return this.createSessionUseCase.execute(request)
   }
 
@@ -75,7 +77,9 @@ export class ChatApplicationService {
   /**
    * Delete a chat session
    */
-  async deleteSession(request: DeleteSessionRequest): Promise<Result<DeleteSessionResponse, Error>> {
+  async deleteSession(
+    request: DeleteSessionRequest
+  ): Promise<Result<DeleteSessionResponse, Error>> {
     return this.deleteSessionUseCase.execute(request)
   }
 
@@ -95,7 +99,7 @@ export class ChatApplicationService {
     options?: {
       title?: string
       context?: string
-      aiProvider?: 'openai' | 'claude'
+      aiProvider?: "openai" | "claude"
       aiModel?: string
     }
   ): Promise<Result<CreateSessionResponse & { messageResponse?: SendMessageResponse }, Error>> {
@@ -105,7 +109,7 @@ export class ChatApplicationService {
       title: options?.title,
       context: options?.context,
       aiProvider: options?.aiProvider,
-      aiModel: options?.aiModel
+      aiModel: options?.aiModel,
     })
 
     if (sessionResult.isErr()) {
@@ -118,7 +122,7 @@ export class ChatApplicationService {
     const messageResult = await this.sendMessage({
       sessionId: sessionResponse.session.id,
       content: message,
-      userId
+      userId,
     })
 
     if (messageResult.isErr()) {
@@ -127,23 +131,31 @@ export class ChatApplicationService {
 
     return Result.ok({
       ...sessionResponse,
-      messageResponse: messageResult.unwrap()
+      messageResponse: messageResult.unwrap(),
     })
   }
 
   /**
    * Get session statistics
    */
-  async getSessionStats(sessionId: string, userId: string): Promise<Result<{
-    messageCount: number
-    totalTokens: number
-    firstMessageAt: Date | null
-    lastMessageAt: Date | null
-  }, Error>> {
+  async getSessionStats(
+    sessionId: string,
+    userId: string
+  ): Promise<
+    Result<
+      {
+        messageCount: number
+        totalTokens: number
+        firstMessageAt: Date | null
+        lastMessageAt: Date | null
+      },
+      Error
+    >
+  > {
     const sessionResult = await this.getSession({
       sessionId,
       userId,
-      includeMessages: true
+      includeMessages: true,
     })
 
     if (sessionResult.isErr()) {
@@ -157,7 +169,7 @@ export class ChatApplicationService {
         messageCount: 0,
         totalTokens: 0,
         firstMessageAt: null,
-        lastMessageAt: null
+        lastMessageAt: null,
       })
     }
 
@@ -170,7 +182,7 @@ export class ChatApplicationService {
       messageCount,
       totalTokens,
       firstMessageAt,
-      lastMessageAt
+      lastMessageAt,
     })
   }
 }

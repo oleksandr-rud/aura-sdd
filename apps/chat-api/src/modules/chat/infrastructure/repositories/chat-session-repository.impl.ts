@@ -3,13 +3,19 @@
  * Infrastructure layer - concrete implementation of chat session persistence
  */
 
-import { Result } from '@/libs/utils'
-import { MemoryPaginatedRepository } from '@/shared/base-repository'
-import { ChatSessionRepository } from '../../domain/repositories/chat-session-repository'
-import { ChatSession } from '../../domain/entities'
+import { Result } from "@/libs/utils"
+import { MemoryPaginatedRepository } from "@/shared/base-repository"
+import type { ChatSession } from "../../domain/entities"
+import type { ChatSessionRepository } from "../../domain/repositories/chat-session-repository"
 
-export class ChatSessionRepositoryImpl extends MemoryPaginatedRepository<ChatSession> implements ChatSessionRepository {
-  async findByUserId(userId: string, options?: { page: number; limit: number }): Promise<ChatSession[]> {
+export class ChatSessionRepositoryImpl
+  extends MemoryPaginatedRepository<ChatSession>
+  implements ChatSessionRepository
+{
+  async findByUserId(
+    userId: string,
+    options?: { page: number; limit: number }
+  ): Promise<ChatSession[]> {
     const page = options?.page ?? 1
     const limit = options?.limit ?? 20
 

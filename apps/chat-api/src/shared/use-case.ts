@@ -3,7 +3,7 @@
  * KISS principle: simple use case pattern for application services
  */
 
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
 
 export abstract class UseCase<TInput, TOutput> {
   abstract execute(input: TInput): Promise<Result<TOutput, Error>>

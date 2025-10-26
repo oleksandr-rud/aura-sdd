@@ -3,10 +3,10 @@
  * Domain layer - pure business logic, no external dependencies
  */
 
-import { BaseEntity } from '@/shared/base-entity'
-import { Result } from '@/libs/utils'
+import { Result } from "@/libs/utils"
+import { BaseEntity } from "@/shared/base-entity"
 
-export type MessageRole = 'user' | 'assistant' | 'system'
+export type MessageRole = "user" | "assistant" | "system"
 
 export interface MessageProps {
   sessionId: string
@@ -24,11 +24,7 @@ export class Message extends BaseEntity {
     createdAt?: Date,
     updatedAt?: Date
   ) {
-    super(
-      id ?? BaseEntity.generateId(),
-      createdAt ?? new Date(),
-      updatedAt ?? new Date()
-    )
+    super(id ?? BaseEntity.generateId(), createdAt ?? new Date(), updatedAt ?? new Date())
   }
 
   get sessionId(): string {
@@ -58,17 +54,17 @@ export class Message extends BaseEntity {
   // Domain behaviors
   updateContent(newContent: string): Result<Message, Error> {
     if (!newContent.trim()) {
-      return Result.err(new Error('Content cannot be empty'))
+      return Result.err(new Error("Content cannot be empty"))
     }
 
     if (newContent.length > 10000) {
-      return Result.err(new Error('Content exceeds maximum length of 10,000 characters'))
+      return Result.err(new Error("Content exceeds maximum length of 10,000 characters"))
     }
 
     const updatedMessage = new Message(
       {
         ...this.props,
-        content: newContent.trim()
+        content: newContent.trim(),
       },
       this.id,
       this.createdAt,
@@ -82,7 +78,7 @@ export class Message extends BaseEntity {
     const updatedMessage = new Message(
       {
         ...this.props,
-        metadata: { ...this.props.metadata, ...metadata }
+        metadata: { ...this.props.metadata, ...metadata },
       },
       this.id,
       this.createdAt,
@@ -94,13 +90,13 @@ export class Message extends BaseEntity {
 
   setTokenCount(tokens: number): Result<Message, Error> {
     if (tokens < 0) {
-      return Result.err(new Error('Token count cannot be negative'))
+      return Result.err(new Error("Token count cannot be negative"))
     }
 
     const updatedMessage = new Message(
       {
         ...this.props,
-        tokens
+        tokens,
       },
       this.id,
       this.createdAt,
@@ -112,13 +108,13 @@ export class Message extends BaseEntity {
 
   setModel(model: string): Result<Message, Error> {
     if (!model.trim()) {
-      return Result.err(new Error('Model name cannot be empty'))
+      return Result.err(new Error("Model name cannot be empty"))
     }
 
     const updatedMessage = new Message(
       {
         ...this.props,
-        model: model.trim()
+        model: model.trim(),
       },
       this.id,
       this.createdAt,
@@ -132,8 +128,8 @@ export class Message extends BaseEntity {
   static createUserMessage(sessionId: string, content: string): Message {
     return new Message({
       sessionId,
-      role: 'user',
-      content: content.trim()
+      role: "user",
+      content: content.trim(),
     })
   }
 
@@ -145,18 +141,18 @@ export class Message extends BaseEntity {
   ): Message {
     return new Message({
       sessionId,
-      role: 'assistant',
+      role: "assistant",
       content: content.trim(),
       model: model?.trim(),
-      tokens
+      tokens,
     })
   }
 
   static createSystemMessage(sessionId: string, content: string): Message {
     return new Message({
       sessionId,
-      role: 'system',
-      content: content.trim()
+      role: "system",
+      content: content.trim(),
     })
   }
 }

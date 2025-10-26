@@ -3,13 +3,18 @@
  * Infrastructure layer - concrete implementation of Claude AI service
  */
 
-import { Result } from '@/libs/utils'
-import { claudeClient } from '@/libs/http-client'
-import { AIService, AIResponse, AIStreamResponse, AIRequestOptions } from '../../domain/services'
-import { Message } from '../../domain/entities'
+import { claudeClient } from "@/libs/http-client"
+import { Result } from "@/libs/utils"
+import type { Message } from "../../domain/entities"
+import type {
+  AIRequestOptions,
+  AIResponse,
+  AIService,
+  AIStreamResponse,
+} from "../../domain/services"
 
 interface ClaudeMessage {
-  role: 'user' | 'assistant'
+  role: "user" | "assistant"
   content: string
 }
 
@@ -27,7 +32,7 @@ interface ClaudeRequest {
 
 interface ClaudeResponse {
   content: Array<{
-    type: 'text'
+    type: "text"
     text: string
   }>
   role: string
@@ -41,11 +46,11 @@ interface ClaudeResponse {
 
 export class ClaudeService implements AIService {
   private readonly availableModels = [
-    'claude-3-sonnet-20241022',
-    'claude-3-haiku-20240307',
-    'claude-3-opus-20240229',
-    'claude-2.1',
-    'claude-2.0'
+    "claude-3-sonnet-20241022",
+    "claude-3-haiku-20240307",
+    "claude-3-opus-20240229",
+    "claude-2.1",
+    "claude-2.0",
   ]
 
   async generateResponse(
@@ -55,7 +60,7 @@ export class ClaudeService implements AIService {
   ): Promise<Result<AIResponse, Error>> {
     try {
       const claudeMessages = this.convertToClaudeMessages(messages)
-      const model = options?.model ?? 'claude-3-sonnet-20241022'
+      const model = options?.model ?? "claude-3-sonnet-20241022"
 
       const requestBody: ClaudeRequest = {
         model,
@@ -64,11 +69,13 @@ export class ClaudeService implements AIService {
         temperature: options?.temperature,
         max_tokens: options?.maxTokens ?? 1000,
         top_p: options?.topP,
-        top_k: options?.presencePenalty ? Math.floor((1 - options.presencePenalty) * 100) : undefined,
-        stop_sequences: options?.stopSequences
+        top_k: options?.presencePenalty
+          ? Math.floor((1 - options.presencePenalty) * 100)
+          : undefined,
+        stop_sequences: options?.stopSequences,
       }
 
-      const response = await claudeClient.post<ClaudeResponse>('/messages', requestBody)
+      const response = await claudeClient.post<ClaudeResponse>("/messages", requestBody)
 
       if (response.isErr()) {
         return Result.err(response.unwrapErr())
@@ -77,7 +84,7 @@ export class ClaudeService implements AIService {
       const data = response.unwrap().data
 
       if (!data.content || data.content.length === 0) {
-        return Result.err(new Error('Invalid response from Claude'))
+        return Result.err(new Error("Invalid response from Claude"))
       }
 
       const content = data.content[0].text
@@ -85,11 +92,13 @@ export class ClaudeService implements AIService {
       return Result.ok({
         content,
         model: data.model,
-        tokens: data.usage ? {
-          prompt: data.usage.input_tokens,
-          completion: data.usage.output_tokens,
-          total: data.usage.input_tokens + data.usage.output_tokens
-        } : undefined
+        tokens: data.usage
+          ? {
+              prompt: data.usage.input_tokens,
+              completion: data.usage.output_tokens,
+              total: data.usage.input_tokens + data.usage.output_tokens,
+            }
+          : undefined,
       })
     } catch (error) {
       return Result.err(error as Error)
@@ -103,7 +112,7 @@ export class ClaudeService implements AIService {
   ): AsyncGenerator<Result<AIStreamResponse, Error>> {
     try {
       const claudeMessages = this.convertToClaudeMessages(messages)
-      const model = options?.model ?? 'claude-3-sonnet-20241022'
+      const model = options?.model ?? "claude-3-sonnet-20241022"
 
       const requestBody: ClaudeRequest = {
         model,
@@ -112,22 +121,24 @@ export class ClaudeService implements AIService {
         temperature: options?.temperature,
         max_tokens: options?.maxTokens ?? 1000,
         top_p: options?.topP,
-        top_k: options?.presencePenalty ? Math.floor((1 - options.presencePenalty) * 100) : undefined,
+        top_k: options?.presencePenalty
+          ? Math.floor((1 - options.presencePenalty) * 100)
+          : undefined,
         stop_sequences: options?.stopSequences,
-        stream: true
+        stream: true,
       }
 
       // Note: This is a simplified implementation
       // In a real implementation, you'd need to handle Server-Sent Events properly
       const response = await fetch(`${claudeClient.config.baseURL}/messages`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.CLAUDE_API_KEY ?? '',
-          'anthropic-version': '2023-06-01',
-          ...claudeClient.config.headers
+          "Content-Type": "application/json",
+          "x-api-key": process.env.CLAUDE_API_KEY ?? "",
+          "anthropic-version": "2023-06-01",
+          ...claudeClient.config.headers,
         },
-        body: JSON.stringify(requestBody)
+        body: JSON.stringify(requestBody),
       })
 
       if (!response.ok) {
@@ -137,44 +148,48 @@ export class ClaudeService implements AIService {
 
       const reader = response.body?.getReader()
       if (!reader) {
-        yield Result.err(new Error('No response body'))
+        yield Result.err(new Error("No response body"))
         return
       }
 
       const decoder = new TextDecoder()
-      let buffer = ''
+      let buffer = ""
 
       while (true) {
         const { done, value } = await reader.read()
-        if (done) break
+        if (done) {
+          break
+        }
 
         buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n')
-        buffer = lines.pop() ?? ''
+        const lines = buffer.split("\n")
+        buffer = lines.pop() ?? ""
 
         for (const line of lines) {
-          if (line.trim() === '') continue
-          if (line.startsWith('data: ')) {
+          if (line.trim() === "") {
+            continue
+          }
+          if (line.startsWith("data: ")) {
             const data = line.slice(6)
-            if (data === '[DONE]') {
+            if (data === "[DONE]") {
               yield Result.ok({
-                content: '',
+                content: "",
                 model,
-                done: true
+                done: true,
               })
               return
             }
 
             try {
               const parsed = JSON.parse(data)
-              if (parsed.type === 'content_block_delta' && parsed.delta?.text) {
+              if (parsed.type === "content_block_delta" && parsed.delta?.text) {
                 yield Result.ok({
                   content: parsed.delta.text,
                   model: parsed.model || model,
-                  done: false
+                  done: false,
                 })
               }
-            } catch (e) {
+            } catch (_e) {
               // Skip invalid JSON
             }
           }
@@ -202,10 +217,10 @@ export class ClaudeService implements AIService {
   private convertToClaudeMessages(messages: Message[]): ClaudeMessage[] {
     // Filter out system messages and convert the rest
     return messages
-      .filter(msg => msg.role !== 'system')
+      .filter(msg => msg.role !== "system")
       .map(message => ({
-        role: message.role as 'user' | 'assistant',
-        content: message.content
+        role: message.role as "user" | "assistant",
+        content: message.content,
       }))
   }
 }

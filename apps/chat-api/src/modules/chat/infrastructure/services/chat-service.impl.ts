@@ -3,11 +3,11 @@
  * Infrastructure layer - concrete implementation of chat business logic
  */
 
-import { Result } from '@/libs/utils'
-import { ChatService, ChatContext, ChatConversation } from '../../domain/services'
-import { ChatSessionRepository, MessageRepository } from '../../domain/repositories'
-import { AIServiceRegistry } from './ai-service-registry'
-import { ChatSession, Message } from '../../domain/entities'
+import { Result } from "@/libs/utils"
+import { ChatSession, Message } from "../../domain/entities"
+import type { ChatSessionRepository, MessageRepository } from "../../domain/repositories"
+import type { ChatContext, ChatConversation, ChatService } from "../../domain/services"
+import type { AIServiceRegistry } from "./ai-service-registry"
 
 export class ChatServiceImpl implements ChatService {
   constructor(
@@ -19,13 +19,13 @@ export class ChatServiceImpl implements ChatService {
   async createSession(
     userId: string,
     title?: string,
-    aiProvider?: 'openai' | 'claude',
+    aiProvider?: "openai" | "claude",
     aiModel?: string,
     context?: string
   ): Promise<Result<ChatSession, Error>> {
     try {
       // Determine AI provider and model
-      const provider = aiProvider ?? 'openai'
+      const provider = aiProvider ?? "openai"
       const model = aiModel ?? this.getDefaultModel(provider)
 
       // Validate provider is available
@@ -39,7 +39,7 @@ export class ChatServiceImpl implements ChatService {
         title,
         context,
         aiProvider: provider,
-        aiModel: model
+        aiModel: model,
       })
 
       // Save session
@@ -53,7 +53,7 @@ export class ChatServiceImpl implements ChatService {
   async sendMessage(
     sessionId: string,
     content: string,
-    role: 'user' | 'system'
+    role: "user" | "system"
   ): Promise<Result<{ userMessage: Message; aiMessage?: Message }, Error>> {
     try {
       // Get session
@@ -64,13 +64,14 @@ export class ChatServiceImpl implements ChatService {
 
       const session = sessionResult.unwrap()
       if (!session) {
-        return Result.err(new Error('Chat session not found'))
+        return Result.err(new Error("Chat session not found"))
       }
 
       // Create and save user message
-      const userMessage = role === 'user'
-        ? Message.createUserMessage(sessionId, content)
-        : Message.createSystemMessage(sessionId, content)
+      const userMessage =
+        role === "user"
+          ? Message.createUserMessage(sessionId, content)
+          : Message.createSystemMessage(sessionId, content)
 
       const savedUserMessage = await this.messageRepository.save(userMessage)
       if (savedUserMessage.isErr()) {
@@ -81,7 +82,7 @@ export class ChatServiceImpl implements ChatService {
       const aiServiceResult = this.aiServiceRegistry.getService(session.aiProvider)
       if (aiServiceResult.isErr()) {
         return Result.ok({
-          userMessage: savedUserMessage.unwrap()
+          userMessage: savedUserMessage.unwrap(),
         })
       }
 
@@ -91,7 +92,7 @@ export class ChatServiceImpl implements ChatService {
       const contextResult = await this.getConversationContext(sessionId)
       if (contextResult.isErr()) {
         return Result.ok({
-          userMessage: savedUserMessage.unwrap()
+          userMessage: savedUserMessage.unwrap(),
         })
       }
 
@@ -104,7 +105,7 @@ export class ChatServiceImpl implements ChatService {
         {
           model: session.aiModel,
           temperature: 0.7,
-          maxTokens: 2000
+          maxTokens: 2000,
         }
       )
 
@@ -130,7 +131,7 @@ export class ChatServiceImpl implements ChatService {
 
       return Result.ok({
         userMessage: savedUserMessage.unwrap(),
-        aiMessage
+        aiMessage,
       })
     } catch (error) {
       return Result.err(error as Error)
@@ -147,7 +148,7 @@ export class ChatServiceImpl implements ChatService {
 
       const session = sessionResult.unwrap()
       if (!session) {
-        return Result.err(new Error('Chat session not found'))
+        return Result.err(new Error("Chat session not found"))
       }
 
       // Get messages
@@ -169,7 +170,7 @@ export class ChatServiceImpl implements ChatService {
       return Result.ok({
         session,
         messages,
-        context
+        context,
       })
     } catch (error) {
       return Result.err(error as Error)
@@ -181,10 +182,7 @@ export class ChatServiceImpl implements ChatService {
     options?: { page: number; limit: number }
   ): Promise<Result<ChatSession[], Error>> {
     try {
-      const sessions = await this.chatSessionRepository.findByUserId(
-        userId,
-        options
-      )
+      const sessions = await this.chatSessionRepository.findByUserId(userId, options)
       return Result.ok(sessions)
     } catch (error) {
       return Result.err(error as Error)
@@ -209,7 +207,7 @@ export class ChatServiceImpl implements ChatService {
     updates: {
       title?: string
       context?: string
-      aiProvider?: 'openai' | 'claude'
+      aiProvider?: "openai" | "claude"
       aiModel?: string
     }
   ): Promise<Result<ChatSession, Error>> {
@@ -222,7 +220,7 @@ export class ChatServiceImpl implements ChatService {
 
       const session = sessionResult.unwrap()
       if (!session) {
-        return Result.err(new Error('Chat session not found'))
+        return Result.err(new Error("Chat session not found"))
       }
 
       let updatedSession = session
@@ -275,7 +273,7 @@ export class ChatServiceImpl implements ChatService {
 
       const session = sessionResult.unwrap()
       if (!session) {
-        return Result.err(new Error('Chat session not found'))
+        return Result.err(new Error("Chat session not found"))
       }
 
       // Get recent messages
@@ -287,17 +285,14 @@ export class ChatServiceImpl implements ChatService {
       return Result.ok({
         messages,
         systemPrompt: undefined, // Can be added later if needed
-        sessionContext: session.context
+        sessionContext: session.context,
       })
     } catch (error) {
       return Result.err(error as Error)
     }
   }
 
-  manageContextWindow(
-    messages: Message[],
-    maxTokens: number
-  ): Result<Message[], Error> {
+  manageContextWindow(messages: Message[], maxTokens: number): Result<Message[], Error> {
     try {
       // Simple context management: keep recent messages within token limit
       let totalTokens = 0
@@ -322,14 +317,14 @@ export class ChatServiceImpl implements ChatService {
     }
   }
 
-  private getDefaultModel(provider: 'openai' | 'claude'): string {
+  private getDefaultModel(provider: "openai" | "claude"): string {
     switch (provider) {
-      case 'openai':
-        return 'gpt-3.5-turbo'
-      case 'claude':
-        return 'claude-3-sonnet-20241022'
+      case "openai":
+        return "gpt-3.5-turbo"
+      case "claude":
+        return "claude-3-sonnet-20241022"
       default:
-        return 'gpt-3.5-turbo'
+        return "gpt-3.5-turbo"
     }
   }
 

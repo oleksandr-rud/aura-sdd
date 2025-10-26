@@ -3,8 +3,8 @@
  * Domain layer - defines contract for user persistence
  */
 
-import { Repository } from '@/shared/base-repository'
-import { User } from '../entities/user'
+import type { Repository } from "@/shared/base-repository"
+import type { User } from "../entities/user"
 
 export interface UserRepository extends Repository<User> {
   findByEmail(email: string): Promise<User | null>

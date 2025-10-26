@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext ts,tsx --max-warnings 0",
+    "lint": "biome lint src",
+    "lint:fix": "biome lint --write src",
+    "format": "biome format src",
+    "format:write": "biome format --write src",
+    "check": "biome check src",
+    "check:fix": "biome check --write src",
     "test": "vitest"
   },
   "dependencies": {

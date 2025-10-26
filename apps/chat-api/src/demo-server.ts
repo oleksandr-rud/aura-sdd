@@ -3,8 +3,8 @@
  * Shows basic API functionality without full module compilation
  */
 
-import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import Fastify from 'fastify'
 
 const app = Fastify({
   logger: {
@@ -45,14 +45,14 @@ app.get('/', async () => {
 })
 
 // Demo authentication endpoint
-app.post('/demo/auth/register', async (request, reply) => {
+app.post('/demo/auth/register', async (request, _reply) => {
   const { email, password, name } = request.body as any
 
   return {
     success: true,
     data: {
       user: {
-        id: 'demo-user-' + Math.random().toString(36).substr(2, 9),
+        id: `demo-user-${Math.random().toString(36).substr(2, 9)}`,
         email,
         name,
         isEmailVerified: false,
@@ -64,20 +64,20 @@ app.post('/demo/auth/register', async (request, reply) => {
 })
 
 // Demo login endpoint
-app.post('/demo/auth/login', async (request, reply) => {
+app.post('/demo/auth/login', async (request, _reply) => {
   const { email, password } = request.body as any
 
   return {
     success: true,
     data: {
       user: {
-        id: 'demo-user-' + Math.random().toString(36).substr(2, 9),
+        id: `demo-user-${Math.random().toString(36).substr(2, 9)}`,
         email,
         name: 'Demo User'
       },
       tokens: {
-        accessToken: 'demo-access-token-' + Math.random().toString(36).substr(2, 20),
-        refreshToken: 'demo-refresh-token-' + Math.random().toString(36).substr(2, 20)
+        accessToken: `demo-access-token-${Math.random().toString(36).substr(2, 20)}`,
+        refreshToken: `demo-refresh-token-${Math.random().toString(36).substr(2, 20)}`
       },
       message: 'Login successful! This is a demo - tokens are not actually valid.'
     }
@@ -85,13 +85,13 @@ app.post('/demo/auth/login', async (request, reply) => {
 })
 
 // Demo CRM contact creation
-app.post('/demo/crm/contacts', async (request, reply) => {
+app.post('/demo/crm/contacts', async (request, _reply) => {
   const { name, email, company, tags } = request.body as any
 
   return {
     success: true,
     data: {
-      id: 'demo-contact-' + Math.random().toString(36).substr(2, 9),
+      id: `demo-contact-${Math.random().toString(36).substr(2, 9)}`,
       name,
       email,
       company,
@@ -103,7 +103,7 @@ app.post('/demo/crm/contacts', async (request, reply) => {
 })
 
 // Demo content generation
-app.post('/demo/content/generate/presentation', async (request, reply) => {
+app.post('/demo/content/generate/presentation', async (request, _reply) => {
   const { topic, audience, length, style } = request.body as any
 
   // Simulate AI processing time
@@ -112,7 +112,7 @@ app.post('/demo/content/generate/presentation', async (request, reply) => {
   return {
     success: true,
     data: {
-      id: 'demo-content-' + Math.random().toString(36).substr(2, 9),
+      id: `demo-content-${Math.random().toString(36).substr(2, 9)}`,
       type: 'presentation',
       title: topic,
       status: 'completed',
@@ -151,13 +151,13 @@ app.post('/demo/content/generate/presentation', async (request, reply) => {
 })
 
 // Demo chat with AI
-app.post('/demo/chat/sessions', async (request, reply) => {
+app.post('/demo/chat/sessions', async (request, _reply) => {
   const { title, context } = request.body as any
 
   return {
     success: true,
     data: {
-      id: 'demo-session-' + Math.random().toString(36).substr(2, 9),
+      id: `demo-session-${Math.random().toString(36).substr(2, 9)}`,
       title: title || 'New Chat Session',
       context: context || 'General conversation',
       messageCount: 0,
@@ -168,7 +168,7 @@ app.post('/demo/chat/sessions', async (request, reply) => {
 })
 
 // Demo chat message
-app.post('/demo/chat/sessions/:sessionId/messages', async (request, reply) => {
+app.post('/demo/chat/sessions/:sessionId/messages', async (request, _reply) => {
   const { content } = request.body as any
   const { sessionId } = request.params as any
 
@@ -178,7 +178,7 @@ app.post('/demo/chat/sessions/:sessionId/messages', async (request, reply) => {
   return {
     success: true,
     data: {
-      id: 'demo-message-' + Math.random().toString(36).substr(2, 9),
+      id: `demo-message-${Math.random().toString(36).substr(2, 9)}`,
       role: 'assistant',
       content: `This is a demo AI response to: "${content}". In a real implementation, this would be a thoughtful response from GPT-4 or Claude AI, providing helpful information and insights based on the conversation context.`,
       model: 'gpt-4-demo',
@@ -190,7 +190,7 @@ app.post('/demo/chat/sessions/:sessionId/messages', async (request, reply) => {
 })
 
 // Demo data analysis
-app.post('/demo/content/analyze/data', async (request, reply) => {
+app.post('/demo/content/analyze/data', async (request, _reply) => {
   const { dataType, analysisType, filters } = request.body as any
 
   // Simulate analysis time
@@ -199,7 +199,7 @@ app.post('/demo/content/analyze/data', async (request, reply) => {
   return {
     success: true,
     data: {
-      id: 'demo-analysis-' + Math.random().toString(36).substr(2, 9),
+      id: `demo-analysis-${Math.random().toString(36).substr(2, 9)}`,
       type: `${dataType}_${analysisType}`,
       insights: [
         {
@@ -234,7 +234,7 @@ app.post('/demo/content/analyze/data', async (request, reply) => {
 }
 
 // Error handler
-app.setErrorHandler((error, request, reply) => {
+app.setErrorHandler((error, _request, reply) => {
   reply.status(500).send({
     success: false,
     error: {
@@ -248,7 +248,7 @@ app.setErrorHandler((error, request, reply) => {
 // Start server
 const start = async () => {
   try {
-    const port = parseInt(process.env.PORT ?? '4000')
+    const port = Number.parseInt(process.env.PORT ?? '4000')
     const host = process.env.HOST ?? '0.0.0.0'
 
     await app.listen({ port, host })
@@ -257,16 +257,16 @@ const start = async () => {
     console.log(`📍 Server running at: http://${host}:${port}`)
     console.log(`📚 API Documentation: http://${host}:${port}/docs`)
     console.log(`🔍 Health Check: http://${host}:${port}/health`)
-    console.log(`🎯 Demo Endpoints:`)
-    console.log(`   POST /demo/auth/register - Register demo user`)
-    console.log(`   POST /demo/auth/login - Login demo user`)
-    console.log(`   POST /demo/crm/contacts - Create demo contact`)
-    console.log(`   POST /demo/content/generate/presentation - Generate demo presentation`)
-    console.log(`   POST /demo/chat/sessions - Create demo chat session`)
-    console.log(`   POST /demo/chat/sessions/:id/messages - Send demo chat message`)
-    console.log(`   POST /demo/content/analyze/data - Analyze demo data`)
-    console.log(`\n💡 All endpoints return demo data - no actual processing or storage occurs.`)
-    console.log(`\n🛑 Press Ctrl+C to stop the server\n`)
+    console.log("🎯 Demo Endpoints:")
+    console.log("   POST /demo/auth/register - Register demo user")
+    console.log("   POST /demo/auth/login - Login demo user")
+    console.log("   POST /demo/crm/contacts - Create demo contact")
+    console.log("   POST /demo/content/generate/presentation - Generate demo presentation")
+    console.log("   POST /demo/chat/sessions - Create demo chat session")
+    console.log("   POST /demo/chat/sessions/:id/messages - Send demo chat message")
+    console.log("   POST /demo/content/analyze/data - Analyze demo data")
+    console.log("\n💡 All endpoints return demo data - no actual processing or storage occurs.")
+    console.log("\n🛑 Press Ctrl+C to stop the server\n")
 
   } catch (error) {
     console.error('❌ Failed to start server:', error)

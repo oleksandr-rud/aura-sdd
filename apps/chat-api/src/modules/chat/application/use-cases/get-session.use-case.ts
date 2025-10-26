@@ -3,11 +3,11 @@
  * Retrieves a chat session with its messages
  */
 
-import { UseCaseWithValidation } from '@/shared/use-case'
-import { Result } from '@/libs/utils'
-import { commonSchemas, validateAndExtract } from '@/libs/validation'
-import { ChatSessionRepository, MessageRepository } from '../../domain/repositories'
-import { ChatConversation } from '../../domain/services'
+import { Result } from "@/libs/utils"
+import { commonSchemas, validateAndExtract } from "@/libs/validation"
+import { UseCaseWithValidation } from "@/shared/use-case"
+import type { ChatSessionRepository, MessageRepository } from "../../domain/repositories"
+import { ChatConversation } from "../../domain/services"
 
 export interface GetSessionRequest {
   sessionId: string
@@ -23,7 +23,7 @@ export interface GetSessionResponse {
     userId: string
     title: string
     context?: string
-    aiProvider: 'openai' | 'claude'
+    aiProvider: "openai" | "claude"
     aiModel: string
     isActive: boolean
     createdAt: Date
@@ -32,7 +32,7 @@ export interface GetSessionResponse {
   messages?: Array<{
     id: string
     sessionId: string
-    role: 'user' | 'assistant' | 'system'
+    role: "user" | "assistant" | "system"
     content: string
     tokens?: number
     model?: string
@@ -46,7 +46,10 @@ export interface GetSessionResponse {
   }
 }
 
-export class GetSessionUseCase extends UseCaseWithValidation<GetSessionRequest, GetSessionResponse> {
+export class GetSessionUseCase extends UseCaseWithValidation<
+  GetSessionRequest,
+  GetSessionResponse
+> {
   constructor(
     private readonly chatSessionRepository: ChatSessionRepository,
     private readonly messageRepository: MessageRepository
@@ -58,21 +61,21 @@ export class GetSessionUseCase extends UseCaseWithValidation<GetSessionRequest, 
     const validation = validateAndExtract(commonSchemas.uuid, input.sessionId)
 
     if (validation.isErr()) {
-      return Result.err(new Error('Invalid session ID format'))
+      return Result.err(new Error("Invalid session ID format"))
     }
 
     // Validate pagination if provided
     if (input.page !== undefined || input.limit !== undefined) {
       const paginationValidation = validateAndExtract(commonSchemas.pagination, {
         page: input.page ?? 1,
-        limit: input.limit ?? 20
+        limit: input.limit ?? 20,
       })
 
       if (paginationValidation.isErr()) {
         const errors = paginationValidation.unwrapErr()
         const errorMessage = Object.entries(errors)
-          .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-          .join('; ')
+          .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+          .join("; ")
         return Result.err(new Error(errorMessage))
       }
     }
@@ -80,7 +83,9 @@ export class GetSessionUseCase extends UseCaseWithValidation<GetSessionRequest, 
     return Result.ok(input)
   }
 
-  protected async executeValidated(input: GetSessionRequest): Promise<Result<GetSessionResponse, Error>> {
+  protected async executeValidated(
+    input: GetSessionRequest
+  ): Promise<Result<GetSessionResponse, Error>> {
     try {
       // Get session
       const sessionResult = await this.chatSessionRepository.findById(input.sessionId)
@@ -90,12 +95,12 @@ export class GetSessionUseCase extends UseCaseWithValidation<GetSessionRequest, 
 
       const session = sessionResult.unwrap()
       if (!session) {
-        return Result.err(new Error('Chat session not found'))
+        return Result.err(new Error("Chat session not found"))
       }
 
       // Verify user has access
       if (session.userId !== input.userId) {
-        return Result.err(new Error('Access denied: You do not have access to this chat session'))
+        return Result.err(new Error("Access denied: You do not have access to this chat session"))
       }
 
       const response: GetSessionResponse = {
@@ -108,8 +113,8 @@ export class GetSessionUseCase extends UseCaseWithValidation<GetSessionRequest, 
           aiModel: session.aiModel,
           isActive: session.isActive,
           createdAt: session.createdAt,
-          updatedAt: session.updatedAt
-        }
+          updatedAt: session.updatedAt,
+        },
       }
 
       // Get messages if requested
@@ -135,7 +140,7 @@ export class GetSessionUseCase extends UseCaseWithValidation<GetSessionRequest, 
           content: message.content,
           tokens: message.tokens,
           model: message.model,
-          createdAt: message.createdAt
+          createdAt: message.createdAt,
         }))
 
         // Get pagination info
@@ -146,7 +151,7 @@ export class GetSessionUseCase extends UseCaseWithValidation<GetSessionRequest, 
             page,
             limit,
             total,
-            totalPages: Math.ceil(total / limit)
+            totalPages: Math.ceil(total / limit),
           }
         }
       }

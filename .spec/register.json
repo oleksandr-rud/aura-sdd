@@ -33,9 +33,19 @@
       ],
       "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
       "mandate": {
-        "own": ["Architecture decisions", "System design patterns", "NFR target definition", "Technical risk assessment", "Architecture compliance validation"],
+        "own": [
+          "Architecture decisions",
+          "System design patterns",
+          "NFR target definition",
+          "Technical risk assessment",
+          "Architecture compliance validation"
+        ],
         "collaborate": ["Product Ops", "Tech Lead", "QA"],
-        "out_of_scope": ["Code implementation", "Detailed testing plans", "Product requirements definition"]
+        "out_of_scope": [
+          "Code implementation",
+          "Detailed testing plans",
+          "Product requirements definition"
+        ]
       },
       "interacts_with_states": ["DRAFT", "PRD_READY", "PLANNED", "BUILT", "REVIEWED"],
       "authorised_skills": {
@@ -58,11 +68,32 @@
       ],
       "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
       "mandate": {
-        "own": ["Task file lifecycle", "Problem validation", "Requirements capture", "Stakeholder communication", "KPI alignment", "Product framing"],
+        "own": [
+          "Task file lifecycle",
+          "Problem validation",
+          "Requirements capture",
+          "Stakeholder communication",
+          "KPI alignment",
+          "Product framing"
+        ],
         "collaborate": ["Architect", "Tech Lead", "QA"],
-        "out_of_scope": ["Technical architecture decisions", "Code implementation", "Detailed testing execution"]
+        "out_of_scope": [
+          "Technical architecture decisions",
+          "Code implementation",
+          "Detailed testing execution"
+        ]
       },
-      "interacts_with_states": ["DRAFT", "PRD_READY", "PLANNED", "BUILT", "REVIEWED", "READY", "CONTRACT_VALIDATED", "E2E_COMPLETE", "SYNCED"],
+      "interacts_with_states": [
+        "DRAFT",
+        "PRD_READY",
+        "PLANNED",
+        "BUILT",
+        "REVIEWED",
+        "READY",
+        "CONTRACT_VALIDATED",
+        "E2E_COMPLETE",
+        "SYNCED"
+      ],
       "authorised_skills": {
         "product-discovery": "DRAFT ➜ PRD_READY",
         "product-prd": "PRD_READY ➜ PRD_READY",
@@ -86,9 +117,20 @@
       ],
       "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
       "mandate": {
-        "own": ["Engineering execution", "Code quality management", "Technical coordination", "Implementation planning", "Testing strategy", "Code reviews"],
+        "own": [
+          "Engineering execution",
+          "Code quality management",
+          "Technical coordination",
+          "Implementation planning",
+          "Testing strategy",
+          "Code reviews"
+        ],
         "collaborate": ["Architect", "Product Ops", "QA"],
-        "out_of_scope": ["Architecture decisions", "Product requirements definition", "Stakeholder communication"]
+        "out_of_scope": [
+          "Architecture decisions",
+          "Product requirements definition",
+          "Stakeholder communication"
+        ]
       },
       "interacts_with_states": ["PLANNED", "BUILT", "REVIEWED", "READY", "CONTRACT_VALIDATED"],
       "authorised_skills": {
@@ -114,11 +156,27 @@
       ],
       "mcp_tools": ["Read", "Write", "Edit", "Bash", "WebSearch", "WebFetch"],
       "mandate": {
-        "own": ["Quality assurance", "Testing strategy", "Test environment setup", "Validation", "Go/No-Go decisions"],
+        "own": [
+          "Quality assurance",
+          "Testing strategy",
+          "Test environment setup",
+          "Validation",
+          "Go/No-Go decisions"
+        ],
         "collaborate": ["Tech Lead", "Architect", "Product Ops"],
-        "out_of_scope": ["Code implementation", "Architecture decisions", "Product requirements definition"]
+        "out_of_scope": [
+          "Code implementation",
+          "Architecture decisions",
+          "Product requirements definition"
+        ]
       },
-      "interacts_with_states": ["REVIEWED", "READY", "CONTRACT_VALIDATED", "E2E_COMPLETE", "SYNCED"],
+      "interacts_with_states": [
+        "REVIEWED",
+        "READY",
+        "CONTRACT_VALIDATED",
+        "E2E_COMPLETE",
+        "SYNCED"
+      ],
       "authorised_skills": {
         "qa-ready": "REVIEWED ➜ READY",
         "qa-contract": "READY ➜ CONTRACT_VALIDATED",
@@ -131,7 +189,7 @@
   },
   "skills": {
     "gate_transitions": {
-            "product-prd": {
+      "product-prd": {
         "id": "product-prd",
         "title": "Product PRD",
         "path": ".spec/skills/product-prd.skill.md",
@@ -140,7 +198,11 @@
         "from_state": "PRD_READY",
         "to_state": "PRD_READY",
         "tag": "product.prd",
-        "trigger_scenarios": ["Requirements need detailed specification", "Acceptance criteria must be defined", "Success metrics require clarification"],
+        "trigger_scenarios": [
+          "Requirements need detailed specification",
+          "Acceptance criteria must be defined",
+          "Success metrics require clarification"
+        ],
         "required_inputs": ["story_id", "validated_problem", "stakeholder_requirements"],
         "mcp_tooling": ["Read", "Write"],
         "accepts_from": ["product-discovery"]
@@ -154,7 +216,13 @@
         "from_state": "varies_by_template",
         "to_state": "varies_by_template",
         "tag": "planning",
-        "trigger_scenarios": ["Planning required for any domain", "Resource allocation needed", "Timeline establishment required", "Architecture decisions needed", "Test strategy required"],
+        "trigger_scenarios": [
+          "Planning required for any domain",
+          "Resource allocation needed",
+          "Timeline establishment required",
+          "Architecture decisions needed",
+          "Test strategy required"
+        ],
         "required_inputs": ["story_id", "planning_context", "planning_resources"],
         "mcp_tooling": ["Read", "Write", "WebSearch", "Bash"],
         "accepts_from": "varies_by_template",
@@ -185,7 +253,11 @@
             "from_state": "PLANNED",
             "to_state": "BUILT",
             "accepts_from": ["agile-planning", "architect-plan"],
-            "required_inputs": ["architecture_plan", "development_resources", "implementation_requirements"]
+            "required_inputs": [
+              "architecture_plan",
+              "development_resources",
+              "implementation_requirements"
+            ]
           }
         }
       },
@@ -198,7 +270,11 @@
         "from_state": "PLANNED",
         "to_state": "BUILT",
         "tag": "code.implement",
-        "trigger_scenarios": ["Implementation plan approved", "Architecture guidance available", "Development resources allocated"],
+        "trigger_scenarios": [
+          "Implementation plan approved",
+          "Architecture guidance available",
+          "Development resources allocated"
+        ],
         "required_inputs": ["story_id", "architecture_plan", "implementation_requirements"],
         "mcp_tooling": ["Read", "Write", "Edit", "Bash"],
         "accepts_from": ["agile-planning", "architect-plan"]
@@ -212,7 +288,11 @@
         "from_state": "BUILT",
         "to_state": "REVIEWED",
         "tag": "code.review",
-        "trigger_scenarios": ["Code implementation complete", "Quality gates required", "Architecture compliance needed"],
+        "trigger_scenarios": [
+          "Code implementation complete",
+          "Quality gates required",
+          "Architecture compliance needed"
+        ],
         "required_inputs": ["story_id", "implemented_code", "test_results"],
         "mcp_tooling": ["Read", "Write", "Bash"],
         "accepts_from": ["code-implement"]
@@ -226,7 +306,11 @@
         "from_state": "REVIEWED",
         "to_state": "READY",
         "tag": "qa.ready",
-        "trigger_scenarios": ["Code review complete", "Test environment setup required", "Test fixtures needed"],
+        "trigger_scenarios": [
+          "Code review complete",
+          "Test environment setup required",
+          "Test fixtures needed"
+        ],
         "required_inputs": ["story_id", "reviewed_code", "test_requirements"],
         "mcp_tooling": ["Read", "Write", "Bash"],
         "accepts_from": ["code-review"]
@@ -240,7 +324,11 @@
         "from_state": "READY",
         "to_state": "CONTRACT_VALIDATED",
         "tag": "qa.contract",
-        "trigger_scenarios": ["API contracts need validation", "Event schemas require testing", "Integration compatibility needed"],
+        "trigger_scenarios": [
+          "API contracts need validation",
+          "Event schemas require testing",
+          "Integration compatibility needed"
+        ],
         "required_inputs": ["story_id", "api_contracts", "integration_specs"],
         "mcp_tooling": ["Read", "Write", "Bash"],
         "accepts_from": ["qa-ready"]
@@ -254,7 +342,11 @@
         "from_state": "CONTRACT_VALIDATED",
         "to_state": "E2E_COMPLETE",
         "tag": "qa.e2e",
-        "trigger_scenarios": ["Contract validation complete", "User journeys require testing", "Release readiness needed"],
+        "trigger_scenarios": [
+          "Contract validation complete",
+          "User journeys require testing",
+          "Release readiness needed"
+        ],
         "required_inputs": ["story_id", "test_scenarios", "performance_baselines"],
         "mcp_tooling": ["Read", "Write", "Bash"],
         "accepts_from": ["qa-contract"]
@@ -268,7 +360,11 @@
         "from_state": "E2E_COMPLETE",
         "to_state": "SYNCED",
         "tag": "pm.sync",
-        "trigger_scenarios": ["Testing complete", "Stakeholder updates needed", "Story closure required"],
+        "trigger_scenarios": [
+          "Testing complete",
+          "Stakeholder updates needed",
+          "Story closure required"
+        ],
         "required_inputs": ["story_id", "test_results", "delivery_metrics"],
         "mcp_tooling": ["Read", "Write"],
         "accepts_from": ["qa-e2e"]
@@ -284,7 +380,12 @@
         "from_state": "ANY",
         "to_state": "SAME",
         "tag": "research",
-        "trigger_scenarios": ["Research investigations needed", "Hypotheses need validation", "Technical patterns require analysis", "Market research needed"],
+        "trigger_scenarios": [
+          "Research investigations needed",
+          "Hypotheses need validation",
+          "Technical patterns require analysis",
+          "Market research needed"
+        ],
         "required_inputs": ["story_id", "research_questions", "research_context"],
         "mcp_tooling": ["WebSearch", "WebFetch", "Read"],
         "templates": {
@@ -314,7 +415,11 @@
           },
           "product-discovery": {
             "purpose": "Validate problem and market need with customer evidence",
-            "additional_inputs": ["customer_interviews", "market_analysis", "stakeholder_requirements"],
+            "additional_inputs": [
+              "customer_interviews",
+              "market_analysis",
+              "stakeholder_requirements"
+            ],
             "evidence_type": "validation_survey with quantitative evidence",
             "output_focus": "Problem validation findings, market need confirmation, customer pain quantification",
             "state_transition": {
@@ -334,7 +439,13 @@
         "from_state": "ANY",
         "to_state": "SAME",
         "tag": "context.snapshot",
-        "trigger_scenarios": ["Handoff between personas required", "Work stalling", "Status checkpoint needed", "Lifecycle Log exceeds threshold", "Content compaction needed"],
+        "trigger_scenarios": [
+          "Handoff between personas required",
+          "Work stalling",
+          "Status checkpoint needed",
+          "Lifecycle Log exceeds threshold",
+          "Content compaction needed"
+        ],
         "required_inputs": ["story_id", "operation_type"],
         "mcp_tooling": ["Read", "Write"]
       }

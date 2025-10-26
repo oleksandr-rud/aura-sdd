@@ -3,17 +3,17 @@
  * Data Transfer Objects for chat operations
  */
 
-import { z } from 'zod'
+import { z } from "zod"
 
 // Error codes
 export enum ChatErrorCodes {
-  SESSION_NOT_FOUND = 'SESSION_NOT_FOUND',
-  ACCESS_DENIED = 'ACCESS_DENIED',
-  INVALID_SESSION_ID = 'INVALID_SESSION_ID',
-  MESSAGE_TOO_LONG = 'MESSAGE_TOO_LONG',
-  AI_SERVICE_ERROR = 'AI_SERVICE_ERROR',
-  VALIDATION_ERROR = 'VALIDATION_ERROR',
-  INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR'
+  SESSION_NOT_FOUND = "SESSION_NOT_FOUND",
+  ACCESS_DENIED = "ACCESS_DENIED",
+  INVALID_SESSION_ID = "INVALID_SESSION_ID",
+  MESSAGE_TOO_LONG = "MESSAGE_TOO_LONG",
+  AI_SERVICE_ERROR = "AI_SERVICE_ERROR",
+  VALIDATION_ERROR = "VALIDATION_ERROR",
+  INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
 }
 
 // Base response structure
@@ -34,7 +34,7 @@ export interface ChatSessionDTO {
   userId: string
   title: string
   context?: string
-  aiProvider: 'openai' | 'claude'
+  aiProvider: "openai" | "claude"
   aiModel: string
   isActive: boolean
   createdAt: string
@@ -44,7 +44,7 @@ export interface ChatSessionDTO {
 export interface CreateSessionRequestDTO {
   title?: string
   context?: string
-  aiProvider?: 'openai' | 'claude'
+  aiProvider?: "openai" | "claude"
   aiModel?: string
 }
 
@@ -56,7 +56,7 @@ export interface CreateSessionResponseDTO {
 export interface MessageDTO {
   id: string
   sessionId: string
-  role: 'user' | 'assistant' | 'system'
+  role: "user" | "assistant" | "system"
   content: string
   tokens?: number
   model?: string
@@ -65,7 +65,7 @@ export interface MessageDTO {
 
 export interface SendMessageRequestDTO {
   content: string
-  role?: 'user' | 'system'
+  role?: "user" | "system"
 }
 
 export interface SendMessageResponseDTO {
@@ -106,7 +106,7 @@ export interface DeleteSessionResponseDTO {
 export interface UpdateSessionRequestDTO {
   title?: string
   context?: string
-  aiProvider?: 'openai' | 'claude'
+  aiProvider?: "openai" | "claude"
   aiModel?: string
 }
 
@@ -128,7 +128,7 @@ export class ResponseBuilders {
     return {
       success: true,
       data,
-      message
+      message,
     }
   }
 
@@ -138,8 +138,8 @@ export class ResponseBuilders {
       error: {
         code,
         message,
-        details
-      }
+        details,
+      },
     }
   }
 }
@@ -149,24 +149,24 @@ export const chatDTOs = {
   createSession: z.object({
     title: z.string().min(1).max(100).optional(),
     context: z.string().max(2000).optional(),
-    aiProvider: z.enum(['openai', 'claude']).optional(),
-    aiModel: z.string().min(1).max(50).optional()
+    aiProvider: z.enum(["openai", "claude"]).optional(),
+    aiModel: z.string().min(1).max(50).optional(),
   }),
 
   sendMessage: z.object({
     content: z.string().min(1).max(4000),
-    role: z.enum(['user', 'system']).optional()
+    role: z.enum(["user", "system"]).optional(),
   }),
 
   updateSession: z.object({
     title: z.string().min(1).max(100).optional(),
     context: z.string().max(2000).optional(),
-    aiProvider: z.enum(['openai', 'claude']).optional(),
-    aiModel: z.string().min(1).max(50).optional()
+    aiProvider: z.enum(["openai", "claude"]).optional(),
+    aiModel: z.string().min(1).max(50).optional(),
   }),
 
   pagination: z.object({
     page: z.coerce.number().min(1).default(1),
-    limit: z.coerce.number().min(1).max(100).default(20)
-  })
+    limit: z.coerce.number().min(1).max(100).default(20),
+  }),
 }

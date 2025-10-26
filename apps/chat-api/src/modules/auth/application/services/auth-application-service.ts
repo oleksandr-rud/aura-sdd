@@ -3,19 +3,39 @@
  * Main orchestrator for all authentication operations
  */
 
-import { Result } from '@/libs/utils'
-import { UserRepository } from '../../domain/repositories/user-repository'
-import { AuthenticationService } from '../../domain/services/auth-service'
-import { EmailService } from '@/libs/email'
-import { CacheService } from '@/libs/cache'
+import type { CacheService } from "@/libs/cache"
+import type { EmailService } from "@/libs/email"
+import { Result } from "@/libs/utils"
+import type { UserRepository } from "../../domain/repositories/user-repository"
+import type { AuthenticationService } from "../../domain/services/auth-service"
 
+import {
+  type ForgotPasswordRequest,
+  type ForgotPasswordResponse,
+  ForgotPasswordUseCase,
+} from "../use-cases/forgot-password.use-case"
 // Import all use cases
-import { LoginUseCase, LoginRequest, LoginResponse } from '../use-cases/login.use-case'
-import { RegisterUseCase, RegisterRequest, RegisterResponse } from '../use-cases/register.use-case'
-import { LogoutUseCase, LogoutRequest, LogoutResponse } from '../use-cases/logout.use-case'
-import { VerifyEmailUseCase, VerifyEmailRequest, VerifyEmailResponse } from '../use-cases/verify-email.use-case'
-import { ForgotPasswordUseCase, ForgotPasswordRequest, ForgotPasswordResponse } from '../use-cases/forgot-password.use-case'
-import { ResetPasswordUseCase, ResetPasswordRequest, ResetPasswordResponse } from '../use-cases/reset-password.use-case'
+import { type LoginRequest, type LoginResponse, LoginUseCase } from "../use-cases/login.use-case"
+import {
+  type LogoutRequest,
+  type LogoutResponse,
+  LogoutUseCase,
+} from "../use-cases/logout.use-case"
+import {
+  type RegisterRequest,
+  type RegisterResponse,
+  RegisterUseCase,
+} from "../use-cases/register.use-case"
+import {
+  type ResetPasswordRequest,
+  type ResetPasswordResponse,
+  ResetPasswordUseCase,
+} from "../use-cases/reset-password.use-case"
+import {
+  type VerifyEmailRequest,
+  type VerifyEmailResponse,
+  VerifyEmailUseCase,
+} from "../use-cases/verify-email.use-case"
 
 export class AuthApplicationService {
   private loginUseCase: LoginUseCase
@@ -36,8 +56,17 @@ export class AuthApplicationService {
     this.registerUseCase = new RegisterUseCase(userRepository, authService, emailService)
     this.logoutUseCase = new LogoutUseCase(cacheService)
     this.verifyEmailUseCase = new VerifyEmailUseCase(userRepository, emailService)
-    this.forgotPasswordUseCase = new ForgotPasswordUseCase(userRepository, emailService, cacheService)
-    this.resetPasswordUseCase = new ResetPasswordUseCase(userRepository, authService, cacheService, emailService)
+    this.forgotPasswordUseCase = new ForgotPasswordUseCase(
+      userRepository,
+      emailService,
+      cacheService
+    )
+    this.resetPasswordUseCase = new ResetPasswordUseCase(
+      userRepository,
+      authService,
+      cacheService,
+      emailService
+    )
   }
 
   /**
@@ -71,14 +100,18 @@ export class AuthApplicationService {
   /**
    * Request password reset
    */
-  async forgotPassword(request: ForgotPasswordRequest): Promise<Result<ForgotPasswordResponse, Error>> {
+  async forgotPassword(
+    request: ForgotPasswordRequest
+  ): Promise<Result<ForgotPasswordResponse, Error>> {
     return this.forgotPasswordUseCase.execute(request)
   }
 
   /**
    * Reset password with token
    */
-  async resetPassword(request: ResetPasswordRequest): Promise<Result<ResetPasswordResponse, Error>> {
+  async resetPassword(
+    request: ResetPasswordRequest
+  ): Promise<Result<ResetPasswordResponse, Error>> {
     return this.resetPasswordUseCase.execute(request)
   }
 
@@ -92,7 +125,7 @@ export class AuthApplicationService {
   /**
    * Refresh access token with refresh token
    */
-  async refreshToken(refreshToken: string): Promise<Result<{ accessToken: string }, Error>> {
+  async refreshToken(_refreshToken: string): Promise<Result<{ accessToken: string }, Error>> {
     // In a real implementation, you would:
     // 1. Verify the refresh token
     // 2. Get user from token payload
@@ -100,7 +133,7 @@ export class AuthApplicationService {
     // 4. Return new access token
 
     // For now, this is a placeholder implementation
-    return Result.err(new Error('Refresh token functionality not implemented yet'))
+    return Result.err(new Error("Refresh token functionality not implemented yet"))
   }
 
   /**

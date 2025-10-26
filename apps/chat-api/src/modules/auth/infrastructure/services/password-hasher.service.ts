@@ -3,13 +3,13 @@
  * Infrastructure layer - bcrypt implementation of PasswordHasher interface
  */
 
-import bcrypt from 'bcrypt'
-import { PasswordHasher } from '../../../domain/services/auth-service'
+import bcrypt from "bcrypt"
+import type { PasswordHasher } from "../../../domain/services/auth-service"
 
 export class PasswordHasherService implements PasswordHasher {
   private readonly saltRounds: number
 
-  constructor(saltRounds: number = 12) {
+  constructor(saltRounds = 12) {
     this.saltRounds = saltRounds
   }
 
@@ -18,7 +18,9 @@ export class PasswordHasherService implements PasswordHasher {
       const salt = await bcrypt.genSalt(this.saltRounds)
       return await bcrypt.hash(password, salt)
     } catch (error) {
-      throw new Error(`Failed to hash password: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `Failed to hash password: ${error instanceof Error ? error.message : "Unknown error"}`
+      )
     }
   }
 
@@ -26,7 +28,9 @@ export class PasswordHasherService implements PasswordHasher {
     try {
       return await bcrypt.compare(password, hash)
     } catch (error) {
-      throw new Error(`Failed to verify password: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      throw new Error(
+        `Failed to verify password: ${error instanceof Error ? error.message : "Unknown error"}`
+      )
     }
   }
 }

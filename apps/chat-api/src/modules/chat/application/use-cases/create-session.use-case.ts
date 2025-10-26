@@ -3,17 +3,17 @@
  * Creates a new chat session for a user
  */
 
-import { UseCaseWithValidation } from '@/shared/use-case'
-import { Result } from '@/libs/utils'
-import { chatSchemas, validateAndExtract } from '@/libs/validation'
-import { ChatSessionRepository } from '../../domain/repositories/chat-session-repository'
-import { ChatSession } from '../../domain/entities'
+import { Result } from "@/libs/utils"
+import { chatSchemas, validateAndExtract } from "@/libs/validation"
+import { UseCaseWithValidation } from "@/shared/use-case"
+import { ChatSession } from "../../domain/entities"
+import type { ChatSessionRepository } from "../../domain/repositories/chat-session-repository"
 
 export interface CreateSessionRequest {
   userId: string
   title?: string
   context?: string
-  aiProvider?: 'openai' | 'claude'
+  aiProvider?: "openai" | "claude"
   aiModel?: string
 }
 
@@ -23,45 +23,49 @@ export interface CreateSessionResponse {
     userId: string
     title: string
     context?: string
-    aiProvider: 'openai' | 'claude'
+    aiProvider: "openai" | "claude"
     aiModel: string
     isActive: boolean
     createdAt: Date
   }
 }
 
-export class CreateSessionUseCase extends UseCaseWithValidation<CreateSessionRequest, CreateSessionResponse> {
-  constructor(
-    private readonly chatSessionRepository: ChatSessionRepository
-  ) {
+export class CreateSessionUseCase extends UseCaseWithValidation<
+  CreateSessionRequest,
+  CreateSessionResponse
+> {
+  constructor(private readonly chatSessionRepository: ChatSessionRepository) {
     super()
   }
 
   validate(input: CreateSessionRequest): Result<CreateSessionRequest, Error> {
     const validation = validateAndExtract(chatSchemas.createSession, {
       title: input.title,
-      context: input.context
+      context: input.context,
     })
 
     if (validation.isErr()) {
       const errors = validation.unwrapErr()
       const errorMessage = Object.entries(errors)
-        .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-        .join('; ')
+        .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+        .join("; ")
       return Result.err(new Error(errorMessage))
     }
 
     return Result.ok({
       ...input,
-      ...validation.unwrap()
+      ...validation.unwrap(),
     })
   }
 
-  protected async executeValidated(input: CreateSessionRequest): Promise<Result<CreateSessionResponse, Error>> {
+  protected async executeValidated(
+    input: CreateSessionRequest
+  ): Promise<Result<CreateSessionResponse, Error>> {
     try {
       // Set default values
-      const aiProvider = input.aiProvider ?? 'openai'
-      const aiModel = input.aiModel ?? (aiProvider === 'openai' ? 'gpt-3.5-turbo' : 'claude-3-sonnet-20241022')
+      const aiProvider = input.aiProvider ?? "openai"
+      const aiModel =
+        input.aiModel ?? (aiProvider === "openai" ? "gpt-3.5-turbo" : "claude-3-sonnet-20241022")
 
       // Create chat session entity
       const session = ChatSession.create({
@@ -69,7 +73,7 @@ export class CreateSessionUseCase extends UseCaseWithValidation<CreateSessionReq
         title: input.title,
         context: input.context,
         aiProvider,
-        aiModel
+        aiModel,
       })
 
       // Save session
@@ -90,8 +94,8 @@ export class CreateSessionUseCase extends UseCaseWithValidation<CreateSessionReq
           aiProvider: sessionEntity.aiProvider,
           aiModel: sessionEntity.aiModel,
           isActive: sessionEntity.isActive,
-          createdAt: sessionEntity.createdAt
-        }
+          createdAt: sessionEntity.createdAt,
+        },
       })
     } catch (error) {
       return Result.err(error as Error)

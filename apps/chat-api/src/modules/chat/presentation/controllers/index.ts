@@ -2,4 +2,4 @@
  * Chat Controllers
  */
 
-export { ChatController } from './chat.controller'
+export { ChatController } from "./chat.controller"

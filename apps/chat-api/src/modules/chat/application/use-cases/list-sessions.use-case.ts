@@ -3,10 +3,10 @@
  * Retrieves all chat sessions for a user
  */
 
-import { UseCaseWithValidation } from '@/shared/use-case'
-import { Result } from '@/libs/utils'
-import { commonSchemas, validateAndExtract } from '@/libs/validation'
-import { ChatSessionRepository } from '../../domain/repositories'
+import { Result } from "@/libs/utils"
+import { commonSchemas, validateAndExtract } from "@/libs/validation"
+import { UseCaseWithValidation } from "@/shared/use-case"
+import type { ChatSessionRepository } from "../../domain/repositories"
 
 export interface ListSessionsRequest {
   userId: string
@@ -20,7 +20,7 @@ export interface ListSessionsResponse {
     id: string
     userId: string
     title: string
-    aiProvider: 'openai' | 'claude'
+    aiProvider: "openai" | "claude"
     aiModel: string
     isActive: boolean
     createdAt: Date
@@ -35,10 +35,11 @@ export interface ListSessionsResponse {
   }
 }
 
-export class ListSessionsUseCase extends UseCaseWithValidation<ListSessionsRequest, ListSessionsResponse> {
-  constructor(
-    private readonly chatSessionRepository: ChatSessionRepository
-  ) {
+export class ListSessionsUseCase extends UseCaseWithValidation<
+  ListSessionsRequest,
+  ListSessionsResponse
+> {
+  constructor(private readonly chatSessionRepository: ChatSessionRepository) {
     super()
   }
 
@@ -47,14 +48,14 @@ export class ListSessionsUseCase extends UseCaseWithValidation<ListSessionsReque
     if (input.page !== undefined || input.limit !== undefined) {
       const paginationValidation = validateAndExtract(commonSchemas.pagination, {
         page: input.page ?? 1,
-        limit: input.limit ?? 20
+        limit: input.limit ?? 20,
       })
 
       if (paginationValidation.isErr()) {
         const errors = paginationValidation.unwrapErr()
         const errorMessage = Object.entries(errors)
-          .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-          .join('; ')
+          .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+          .join("; ")
         return Result.err(new Error(errorMessage))
       }
     }
@@ -62,7 +63,9 @@ export class ListSessionsUseCase extends UseCaseWithValidation<ListSessionsReque
     return Result.ok(input)
   }
 
-  protected async executeValidated(input: ListSessionsRequest): Promise<Result<ListSessionsResponse, Error>> {
+  protected async executeValidated(
+    input: ListSessionsRequest
+  ): Promise<Result<ListSessionsResponse, Error>> {
     try {
       const page = input.page ?? 1
       const limit = input.limit ?? 20
@@ -98,7 +101,7 @@ export class ListSessionsUseCase extends UseCaseWithValidation<ListSessionsReque
         aiModel: session.aiModel,
         isActive: session.isActive,
         createdAt: session.createdAt,
-        updatedAt: session.updatedAt
+        updatedAt: session.updatedAt,
       }))
 
       return Result.ok({
@@ -107,8 +110,8 @@ export class ListSessionsUseCase extends UseCaseWithValidation<ListSessionsReque
           page,
           limit,
           total,
-          totalPages: Math.ceil(total / limit)
-        }
+          totalPages: Math.ceil(total / limit),
+        },
       })
     } catch (error) {
       return Result.err(error as Error)

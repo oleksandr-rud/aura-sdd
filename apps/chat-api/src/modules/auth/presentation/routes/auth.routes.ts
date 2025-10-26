@@ -3,11 +3,11 @@
  * Fastify route definitions for authentication endpoints
  */
 
-import { FastifyInstance, FastifyPluginOptions } from 'fastify'
-import { ZodTypeProvider } from 'fastify-type-provider-zod'
-import { AuthController } from '../controllers/auth.controller'
-import { AuthMiddleware, RateLimiters } from '../middleware/auth.middleware'
-import { AuthDTOs } from '../dto/auth.dto'
+import type { FastifyInstance, FastifyPluginOptions } from "fastify"
+import type { ZodTypeProvider } from "fastify-type-provider-zod"
+import { AuthController } from "../controllers/auth.controller"
+import { AuthDTOs } from "../dto/auth.dto"
+import { AuthMiddleware, RateLimiters } from "../middleware/auth.middleware"
 
 export async function authRoutes(
   fastify: FastifyInstance,
@@ -26,22 +26,22 @@ export async function authRoutes(
    * POST /auth/register
    */
   app.post(
-    '/register',
+    "/register",
     {
       config: {
-        rateLimit: RateLimiters.register
+        rateLimit: RateLimiters.register,
       },
       schema: {
-        description: 'Register a new user',
-        tags: ['Authentication'],
+        description: "Register a new user",
+        tags: ["Authentication"],
         body: AuthDTOs.RegisterRequest,
         response: {
           201: AuthDTOs.RegisterResponse,
           400: AuthDTOs.ErrorResponse,
           409: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.register
   )
@@ -51,22 +51,22 @@ export async function authRoutes(
    * POST /auth/login
    */
   app.post(
-    '/login',
+    "/login",
     {
       config: {
-        rateLimit: RateLimiters.login
+        rateLimit: RateLimiters.login,
       },
       schema: {
-        description: 'Authenticate user and get tokens',
-        tags: ['Authentication'],
+        description: "Authenticate user and get tokens",
+        tags: ["Authentication"],
         body: AuthDTOs.LoginRequest,
         response: {
           200: AuthDTOs.LoginResponse,
           401: AuthDTOs.ErrorResponse,
           403: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.login
   )
@@ -76,26 +76,26 @@ export async function authRoutes(
    * POST /auth/logout
    */
   app.post(
-    '/logout',
+    "/logout",
     {
       preHandler: authMiddleware.authenticate,
       schema: {
-        description: 'Logout user and invalidate tokens',
-        tags: ['Authentication'],
+        description: "Logout user and invalidate tokens",
+        tags: ["Authentication"],
         body: AuthDTOs.LogoutRequest,
         headers: {
-          type: 'object',
+          type: "object",
           properties: {
-            Authorization: { type: 'string', description: 'Bearer token' }
+            Authorization: { type: "string", description: "Bearer token" },
           },
-          required: ['Authorization']
+          required: ["Authorization"],
         },
         response: {
           200: AuthDTOs.LogoutResponse,
           401: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.logout
   )
@@ -105,22 +105,22 @@ export async function authRoutes(
    * POST /auth/verify-email
    */
   app.post(
-    '/verify-email',
+    "/verify-email",
     {
       config: {
-        rateLimit: RateLimiters.verifyEmail
+        rateLimit: RateLimiters.verifyEmail,
       },
       schema: {
-        description: 'Verify user email with token',
-        tags: ['Authentication'],
+        description: "Verify user email with token",
+        tags: ["Authentication"],
         body: AuthDTOs.VerifyEmailRequest,
         response: {
           200: AuthDTOs.VerifyEmailResponse,
           400: AuthDTOs.ErrorResponse,
           404: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.verifyEmail
   )
@@ -130,20 +130,20 @@ export async function authRoutes(
    * POST /auth/forgot-password
    */
   app.post(
-    '/forgot-password',
+    "/forgot-password",
     {
       config: {
-        rateLimit: RateLimiters.forgotPassword
+        rateLimit: RateLimiters.forgotPassword,
       },
       schema: {
-        description: 'Request password reset email',
-        tags: ['Authentication'],
+        description: "Request password reset email",
+        tags: ["Authentication"],
         body: AuthDTOs.ForgotPasswordRequest,
         response: {
           200: AuthDTOs.ForgotPasswordResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.forgotPassword
   )
@@ -153,22 +153,22 @@ export async function authRoutes(
    * POST /auth/reset-password
    */
   app.post(
-    '/reset-password',
+    "/reset-password",
     {
       config: {
-        rateLimit: RateLimiters.resetPassword
+        rateLimit: RateLimiters.resetPassword,
       },
       schema: {
-        description: 'Reset password with token',
-        tags: ['Authentication'],
+        description: "Reset password with token",
+        tags: ["Authentication"],
         body: AuthDTOs.ResetPasswordRequest,
         response: {
           200: AuthDTOs.ResetPasswordResponse,
           400: AuthDTOs.ErrorResponse,
           404: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.resetPassword
   )
@@ -178,26 +178,26 @@ export async function authRoutes(
    * GET /auth/me
    */
   app.get(
-    '/me',
+    "/me",
     {
       preHandler: authMiddleware.authenticate,
       schema: {
-        description: 'Get current user profile',
-        tags: ['Authentication', 'User'],
+        description: "Get current user profile",
+        tags: ["Authentication", "User"],
         headers: {
-          type: 'object',
+          type: "object",
           properties: {
-            Authorization: { type: 'string', description: 'Bearer token' }
+            Authorization: { type: "string", description: "Bearer token" },
           },
-          required: ['Authorization']
+          required: ["Authorization"],
         },
         response: {
           200: AuthDTOs.GetUserResponse,
           401: AuthDTOs.ErrorResponse,
           404: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.getMe
   )
@@ -207,27 +207,27 @@ export async function authRoutes(
    * PUT /auth/profile
    */
   app.put(
-    '/profile',
+    "/profile",
     {
       preHandler: authMiddleware.authenticate,
       schema: {
-        description: 'Update user profile',
-        tags: ['Authentication', 'User'],
+        description: "Update user profile",
+        tags: ["Authentication", "User"],
         body: AuthDTOs.UpdateProfileRequest,
         headers: {
-          type: 'object',
+          type: "object",
           properties: {
-            Authorization: { type: 'string', description: 'Bearer token' }
+            Authorization: { type: "string", description: "Bearer token" },
           },
-          required: ['Authorization']
+          required: ["Authorization"],
         },
         response: {
           200: AuthDTOs.UpdateProfileResponse,
           401: AuthDTOs.ErrorResponse,
           404: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.updateProfile
   )
@@ -237,18 +237,18 @@ export async function authRoutes(
    * POST /auth/refresh
    */
   app.post(
-    '/refresh',
+    "/refresh",
     {
       schema: {
-        description: 'Refresh access token with refresh token',
-        tags: ['Authentication'],
+        description: "Refresh access token with refresh token",
+        tags: ["Authentication"],
         body: AuthDTOs.RefreshTokenRequest,
         response: {
           200: AuthDTOs.RefreshTokenResponse,
           401: AuthDTOs.ErrorResponse,
-          500: AuthDTOs.ErrorResponse
-        }
-      }
+          500: AuthDTOs.ErrorResponse,
+        },
+      },
     },
     authController.refreshToken
   )
@@ -258,28 +258,28 @@ export async function authRoutes(
    * GET /auth/health
    */
   app.get(
-    '/health',
+    "/health",
     {
       schema: {
-        description: 'Health check for auth service',
-        tags: ['Authentication', 'Health'],
+        description: "Health check for auth service",
+        tags: ["Authentication", "Health"],
         response: {
           200: {
-            type: 'object',
+            type: "object",
             properties: {
-              status: { type: 'string' },
-              timestamp: { type: 'string' },
-              service: { type: 'string' }
-            }
-          }
-        }
-      }
+              status: { type: "string" },
+              timestamp: { type: "string" },
+              service: { type: "string" },
+            },
+          },
+        },
+      },
     },
-    async (request, reply) => {
+    async (_request, _reply) => {
       return {
-        status: 'healthy',
+        status: "healthy",
         timestamp: new Date().toISOString(),
-        service: 'auth'
+        service: "auth",
       }
     }
   )
@@ -288,12 +288,9 @@ export async function authRoutes(
 }
 
 // Route registration helper
-export const registerAuthRoutes = (
-  fastify: FastifyInstance,
-  authApplicationService: any
-) => {
+export const registerAuthRoutes = (fastify: FastifyInstance, authApplicationService: any) => {
   fastify.register(authRoutes, {
-    prefix: '/auth',
-    authApplicationService
+    prefix: "/auth",
+    authApplicationService,
   })
 }

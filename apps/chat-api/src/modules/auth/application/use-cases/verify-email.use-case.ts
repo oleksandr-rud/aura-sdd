@@ -3,11 +3,11 @@
  * Handles email verification with token
  */
 
-import { UseCaseWithValidation } from '@/shared/use-case'
-import { Result } from '@/libs/utils'
-import { authSchemas, validateAndExtract } from '@/libs/validation'
-import { UserRepository } from '../../domain/repositories/user-repository'
-import { EmailService } from '@/libs/email'
+import type { EmailService } from "@/libs/email"
+import { Result } from "@/libs/utils"
+import { authSchemas, validateAndExtract } from "@/libs/validation"
+import { UseCaseWithValidation } from "@/shared/use-case"
+import type { UserRepository } from "../../domain/repositories/user-repository"
 
 export interface VerifyEmailRequest {
   token: string
@@ -18,7 +18,10 @@ export interface VerifyEmailResponse {
   isEmailVerified: boolean
 }
 
-export class VerifyEmailUseCase extends UseCaseWithValidation<VerifyEmailRequest, VerifyEmailResponse> {
+export class VerifyEmailUseCase extends UseCaseWithValidation<
+  VerifyEmailRequest,
+  VerifyEmailResponse
+> {
   constructor(
     private userRepository: UserRepository,
     private emailService: EmailService
@@ -32,20 +35,22 @@ export class VerifyEmailUseCase extends UseCaseWithValidation<VerifyEmailRequest
     if (validation.isErr()) {
       const errors = validation.unwrapErr()
       const errorMessage = Object.entries(errors)
-        .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-        .join('; ')
+        .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+        .join("; ")
       return Result.err(new Error(errorMessage))
     }
 
     return Result.ok(validation.unwrap())
   }
 
-  protected async executeValidated(input: VerifyEmailRequest): Promise<Result<VerifyEmailResponse, Error>> {
+  protected async executeValidated(
+    input: VerifyEmailRequest
+  ): Promise<Result<VerifyEmailResponse, Error>> {
     try {
       // Find user by email verification token
       const user = await this.userRepository.findByEmailVerificationToken(input.token)
       if (!user) {
-        return Result.err(new Error('Invalid or expired verification token'))
+        return Result.err(new Error("Invalid or expired verification token"))
       }
 
       // Verify email using domain behavior
@@ -66,12 +71,12 @@ export class VerifyEmailUseCase extends UseCaseWithValidation<VerifyEmailRequest
       )
 
       if (welcomeEmailResult.isErr()) {
-        console.error('Failed to send welcome email:', welcomeEmailResult.unwrapErr())
+        console.error("Failed to send welcome email:", welcomeEmailResult.unwrapErr())
       }
 
       return Result.ok({
-        message: 'Email verified successfully',
-        isEmailVerified: verifiedUser.isEmailVerified
+        message: "Email verified successfully",
+        isEmailVerified: verifiedUser.isEmailVerified,
       })
     } catch (error) {
       return Result.err(error as Error)

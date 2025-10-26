@@ -3,13 +3,13 @@
  * Handles password reset confirmation
  */
 
-import { UseCaseWithValidation } from '@/shared/use-case'
-import { Result } from '@/libs/utils'
-import { authSchemas, validateAndExtract } from '@/libs/validation'
-import { UserRepository } from '../../domain/repositories/user-repository'
-import { AuthenticationService } from '../../domain/services/auth-service'
-import { CacheService } from '@/libs/cache'
-import { EmailService } from '@/libs/email'
+import type { CacheService } from "@/libs/cache"
+import type { EmailService } from "@/libs/email"
+import { Result } from "@/libs/utils"
+import { authSchemas, validateAndExtract } from "@/libs/validation"
+import { UseCaseWithValidation } from "@/shared/use-case"
+import type { UserRepository } from "../../domain/repositories/user-repository"
+import type { AuthenticationService } from "../../domain/services/auth-service"
 
 export interface ResetPasswordRequest {
   token: string
@@ -20,7 +20,10 @@ export interface ResetPasswordResponse {
   message: string
 }
 
-export class ResetPasswordUseCase extends UseCaseWithValidation<ResetPasswordRequest, ResetPasswordResponse> {
+export class ResetPasswordUseCase extends UseCaseWithValidation<
+  ResetPasswordRequest,
+  ResetPasswordResponse
+> {
   constructor(
     private userRepository: UserRepository,
     private authService: AuthenticationService,
@@ -36,20 +39,22 @@ export class ResetPasswordUseCase extends UseCaseWithValidation<ResetPasswordReq
     if (validation.isErr()) {
       const errors = validation.unwrapErr()
       const errorMessage = Object.entries(errors)
-        .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-        .join('; ')
+        .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+        .join("; ")
       return Result.err(new Error(errorMessage))
     }
 
     return Result.ok(validation.unwrap())
   }
 
-  protected async executeValidated(input: ResetPasswordRequest): Promise<Result<ResetPasswordResponse, Error>> {
+  protected async executeValidated(
+    input: ResetPasswordRequest
+  ): Promise<Result<ResetPasswordResponse, Error>> {
     try {
       // Find user by password reset token
       const user = await this.userRepository.findByPasswordResetToken(input.token)
       if (!user) {
-        return Result.err(new Error('Invalid or expired reset token'))
+        return Result.err(new Error("Invalid or expired reset token"))
       }
 
       // Hash new password
@@ -74,28 +79,31 @@ export class ResetPasswordUseCase extends UseCaseWithValidation<ResetPasswordReq
       // Clear all user sessions to force re-login
       const sessionDeleteResult = await this.cacheService.delete(`session:${updatedUser.id}`)
       if (sessionDeleteResult.isErr()) {
-        console.error('Failed to clear user sessions:', sessionDeleteResult.unwrapErr())
+        console.error("Failed to clear user sessions:", sessionDeleteResult.unwrapErr())
       }
 
       // Send password reset confirmation email
       const confirmationResult = await this.emailService.sendCustomEmail({
         to: updatedUser.email,
-        subject: 'Password Reset Successful',
+        subject: "Password Reset Successful",
         html: `
           <h1>Password Reset Successful</h1>
           <p>Your password has been successfully reset.</p>
           <p>If you didn't make this change, please contact support immediately.</p>
           <p>You can now <a href="${process.env.FRONTEND_URL}/login">log in</a> with your new password.</p>
         `,
-        text: 'Your password has been successfully reset. If you didn\'t make this change, please contact support immediately.'
+        text: "Your password has been successfully reset. If you didn't make this change, please contact support immediately.",
       })
 
       if (confirmationResult.isErr()) {
-        console.error('Failed to send password reset confirmation email:', confirmationResult.unwrapErr())
+        console.error(
+          "Failed to send password reset confirmation email:",
+          confirmationResult.unwrapErr()
+        )
       }
 
       return Result.ok({
-        message: 'Password reset successful. You can now log in with your new password.'
+        message: "Password reset successful. You can now log in with your new password.",
       })
     } catch (error) {
       return Result.err(error as Error)

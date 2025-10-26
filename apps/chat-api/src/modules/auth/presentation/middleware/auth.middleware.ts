@@ -3,12 +3,12 @@
  * JWT token verification and user injection
  */
 
-import { FastifyRequest, FastifyReply } from 'fastify'
-import { AuthApplicationService } from '../../application/services/auth-application-service'
-import { ResponseBuilders, ErrorCodes } from '../dto/auth.dto'
+import type { FastifyReply, FastifyRequest } from "fastify"
+import type { AuthApplicationService } from "../../application/services/auth-application-service"
+import { ErrorCodes, ResponseBuilders } from "../dto/auth.dto"
 
 // Extend FastifyRequest to include user
-declare module 'fastify' {
+declare module "fastify" {
   interface FastifyRequest {
     user?: {
       id: string
@@ -30,13 +30,15 @@ export class AuthMiddleware {
     try {
       // Extract token from Authorization header
       const authHeader = request.headers.authorization
-      if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        reply.status(401).send(
-          ResponseBuilders.error(
-            ErrorCodes.UNAUTHORIZED,
-            'Missing or invalid authorization header'
+      if (!authHeader?.startsWith("Bearer ")) {
+        reply
+          .status(401)
+          .send(
+            ResponseBuilders.error(
+              ErrorCodes.UNAUTHORIZED,
+              "Missing or invalid authorization header"
+            )
           )
-        )
         return
       }
 
@@ -49,22 +51,14 @@ export class AuthMiddleware {
         const error = tokenResult.unwrapErr()
 
         // Handle specific token errors
-        if (error.message.includes('expired')) {
-          reply.status(401).send(
-            ResponseBuilders.error(
-              ErrorCodes.TOKEN_EXPIRED,
-              'Token has expired'
-            )
-          )
+        if (error.message.includes("expired")) {
+          reply
+            .status(401)
+            .send(ResponseBuilders.error(ErrorCodes.TOKEN_EXPIRED, "Token has expired"))
           return
         }
 
-        reply.status(401).send(
-          ResponseBuilders.error(
-            ErrorCodes.TOKEN_INVALID,
-            'Invalid token'
-          )
-        )
+        reply.status(401).send(ResponseBuilders.error(ErrorCodes.TOKEN_INVALID, "Invalid token"))
         return
       }
 
@@ -74,12 +68,7 @@ export class AuthMiddleware {
       const user = await this.authApplicationService.getUserById(userId)
 
       if (!user) {
-        reply.status(401).send(
-          ResponseBuilders.error(
-            ErrorCodes.USER_NOT_FOUND,
-            'User not found'
-          )
-        )
+        reply.status(401).send(ResponseBuilders.error(ErrorCodes.USER_NOT_FOUND, "User not found"))
         return
       }
 
@@ -88,17 +77,15 @@ export class AuthMiddleware {
         id: user.id,
         email: user.email,
         name: user.name,
-        isVerified: user.isVerified
+        isVerified: user.isVerified,
       }
-
     } catch (error) {
-      console.error('Authentication error:', error)
-      reply.status(500).send(
-        ResponseBuilders.error(
-          ErrorCodes.INTERNAL_SERVER_ERROR,
-          'Authentication service error'
+      console.error("Authentication error:", error)
+      reply
+        .status(500)
+        .send(
+          ResponseBuilders.error(ErrorCodes.INTERNAL_SERVER_ERROR, "Authentication service error")
         )
-      )
     }
   }
 
@@ -106,11 +93,11 @@ export class AuthMiddleware {
    * Optional authentication middleware
    * Attaches user to request if token is valid, but doesn't block if not
    */
-  optionalAuth = async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
+  optionalAuth = async (request: FastifyRequest, _reply: FastifyReply): Promise<void> => {
     try {
       const authHeader = request.headers.authorization
 
-      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      if (!authHeader?.startsWith("Bearer ")) {
         // No token provided, continue without user
         return
       }
@@ -127,15 +114,14 @@ export class AuthMiddleware {
             id: user.id,
             email: user.email,
             name: user.name,
-            isVerified: user.isVerified
+            isVerified: user.isVerified,
           }
         }
       }
 
       // If token is invalid, continue without user (optional auth)
-
     } catch (error) {
-      console.error('Optional authentication error:', error)
+      console.error("Optional authentication error:", error)
       // Continue without user for optional auth
     }
   }
@@ -146,22 +132,16 @@ export class AuthMiddleware {
    */
   requireVerifiedEmail = (request: FastifyRequest, reply: FastifyReply): void => {
     if (!request.user) {
-      reply.status(401).send(
-        ResponseBuilders.error(
-          ErrorCodes.UNAUTHORIZED,
-          'Authentication required'
-        )
-      )
+      reply
+        .status(401)
+        .send(ResponseBuilders.error(ErrorCodes.UNAUTHORIZED, "Authentication required"))
       return
     }
 
     if (!request.user.isVerified) {
-      reply.status(403).send(
-        ResponseBuilders.error(
-          ErrorCodes.USER_NOT_VERIFIED,
-          'Email verification required'
-        )
-      )
+      reply
+        .status(403)
+        .send(ResponseBuilders.error(ErrorCodes.USER_NOT_VERIFIED, "Email verification required"))
     }
   }
 }
@@ -174,7 +154,7 @@ export const createRateLimiter = (maxRequests: number, windowMs: number) => {
   const requests = new Map<string, { count: number; resetTime: number }>()
 
   return async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
-    const clientIp = request.ip || (request.headers['x-forwarded-for'] as string) || 'unknown'
+    const clientIp = request.ip || (request.headers["x-forwarded-for"] as string) || "unknown"
     const now = Date.now()
 
     // Clean up expired entries
@@ -190,7 +170,7 @@ export const createRateLimiter = (maxRequests: number, windowMs: number) => {
     if (!clientData || now > clientData.resetTime) {
       clientData = {
         count: 1,
-        resetTime: now + windowMs
+        resetTime: now + windowMs,
       }
       requests.set(clientIp, clientData)
     } else {
@@ -205,7 +185,7 @@ export const createRateLimiter = (maxRequests: number, windowMs: number) => {
           `Rate limit exceeded. Max ${maxRequests} requests per ${windowMs / 1000} seconds.`,
           {
             resetTime: clientData.resetTime,
-            retryAfter: Math.ceil((clientData.resetTime - now) / 1000)
+            retryAfter: Math.ceil((clientData.resetTime - now) / 1000),
           }
         )
       )
@@ -213,9 +193,9 @@ export const createRateLimiter = (maxRequests: number, windowMs: number) => {
     }
 
     // Set rate limit headers
-    reply.header('X-RateLimit-Limit', maxRequests)
-    reply.header('X-RateLimit-Remaining', Math.max(0, maxRequests - clientData.count))
-    reply.header('X-RateLimit-Reset', new Date(clientData.resetTime).toISOString())
+    reply.header("X-RateLimit-Limit", maxRequests)
+    reply.header("X-RateLimit-Remaining", Math.max(0, maxRequests - clientData.count))
+    reply.header("X-RateLimit-Reset", new Date(clientData.resetTime).toISOString())
   }
 }
 
@@ -226,5 +206,5 @@ export const RateLimiters = {
   forgotPassword: createRateLimiter(3, 60 * 60 * 1000), // 3 attempts per hour
   resetPassword: createRateLimiter(3, 60 * 60 * 1000), // 3 attempts per hour
   verifyEmail: createRateLimiter(10, 60 * 60 * 1000), // 10 attempts per hour
-  default: createRateLimiter(100, 60 * 1000) // 100 requests per minute
+  default: createRateLimiter(100, 60 * 1000), // 100 requests per minute
 }

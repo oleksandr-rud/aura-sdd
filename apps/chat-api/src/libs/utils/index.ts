@@ -26,7 +26,9 @@ export class Result<T, E = Error> {
   }
 
   unwrap(): T {
-    if (this._error) throw this._error
+    if (this._error) {
+      throw this._error
+    }
     return this._value!
   }
 
@@ -69,8 +71,8 @@ export class Option<T> {
 
 export const asyncRetry = async <T>(
   fn: () => Promise<T>,
-  maxAttempts: number = 3,
-  delay: number = 1000
+  maxAttempts = 3,
+  delay = 1000
 ): Promise<T> => {
   let lastError: Error
 
@@ -79,7 +81,9 @@ export const asyncRetry = async <T>(
       return await fn()
     } catch (error) {
       lastError = error as Error
-      if (attempt === maxAttempts) break
+      if (attempt === maxAttempts) {
+        break
+      }
 
       // Simple exponential backoff
       await new Promise(resolve => setTimeout(resolve, delay * attempt))
@@ -102,15 +106,15 @@ export const sanitizeEmail = (email: string): string => {
 }
 
 export const sanitizePhone = (phone: string): string => {
-  return phone.replace(/\D/g, '')
+  return phone.replace(/\D/g, "")
 }
 
 export const slugify = (text: string): string => {
   return text
     .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
 }
 
 export const parseJsonSafe = <T>(json: string): Option<T> => {
@@ -123,9 +127,17 @@ export const parseJsonSafe = <T>(json: string): Option<T> => {
 }
 
 export const isEmpty = (value: unknown): boolean => {
-  if (value === null || value === undefined) return true
-  if (typeof value === 'string') return value.trim().length === 0
-  if (Array.isArray(value)) return value.length === 0
-  if (typeof value === 'object') return Object.keys(value).length === 0
+  if (value === null || value === undefined) {
+    return true
+  }
+  if (typeof value === "string") {
+    return value.trim().length === 0
+  }
+  if (Array.isArray(value)) {
+    return value.length === 0
+  }
+  if (typeof value === "object") {
+    return Object.keys(value).length === 0
+  }
   return false
 }

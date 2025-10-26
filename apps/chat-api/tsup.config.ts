@@ -1,4 +1,4 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsup"
 
 export default defineConfig({
   entry: ["src/server.ts"],
@@ -9,6 +9,6 @@ export default defineConfig({
   clean: true,
   target: "es2020",
   env: {
-    NODE_ENV: process.env.NODE_ENV ?? "production"
-  }
-});
+    NODE_ENV: process.env.NODE_ENV ?? "production",
+  },
+})

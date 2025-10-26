@@ -1,8 +1,8 @@
-import type { FastifyPluginAsync } from "fastify";
-import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { z } from "zod";
+import type { FastifyPluginAsync } from "fastify"
+import type { ZodTypeProvider } from "fastify-type-provider-zod"
+import { z } from "zod"
 
-const healthRoutes: FastifyPluginAsync = async (app) => {
+const healthRoutes: FastifyPluginAsync = async app => {
   app.withTypeProvider<ZodTypeProvider>().get(
     "/",
     {
@@ -11,17 +11,17 @@ const healthRoutes: FastifyPluginAsync = async (app) => {
           200: z.object({
             status: z.literal("ok"),
             uptimeSeconds: z.number(),
-            timestamp: z.string()
-          })
-        }
-      }
+            timestamp: z.string(),
+          }),
+        },
+      },
     },
     async () => ({
       status: "ok",
       uptimeSeconds: process.uptime(),
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     })
-  );
-};
+  )
+}
 
-export default healthRoutes;
+export default healthRoutes

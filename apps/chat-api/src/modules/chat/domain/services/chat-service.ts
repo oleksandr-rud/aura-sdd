@@ -3,8 +3,8 @@
  * Domain layer - defines contract for chat business logic
  */
 
-import { Result } from '@/libs/utils'
-import { ChatSession, Message } from '../entities'
+import type { Result } from "@/libs/utils"
+import type { ChatSession, Message } from "../entities"
 
 export interface ChatContext {
   messages: Message[]
@@ -25,7 +25,7 @@ export interface ChatService {
   createSession(
     userId: string,
     title?: string,
-    aiProvider?: 'openai' | 'claude',
+    aiProvider?: "openai" | "claude",
     aiModel?: string,
     context?: string
   ): Promise<Result<ChatSession, Error>>
@@ -36,7 +36,7 @@ export interface ChatService {
   sendMessage(
     sessionId: string,
     content: string,
-    role: 'user' | 'system'
+    role: "user" | "system"
   ): Promise<Result<{ userMessage: Message; aiMessage?: Message }, Error>>
 
   /**
@@ -65,7 +65,7 @@ export interface ChatService {
     updates: {
       title?: string
       context?: string
-      aiProvider?: 'openai' | 'claude'
+      aiProvider?: "openai" | "claude"
       aiModel?: string
     }
   ): Promise<Result<ChatSession, Error>>
@@ -78,8 +78,5 @@ export interface ChatService {
   /**
    * Manage context window (trim old messages if needed)
    */
-  manageContextWindow(
-    messages: Message[],
-    maxTokens: number
-  ): Result<Message[], Error>
+  manageContextWindow(messages: Message[], maxTokens: number): Result<Message[], Error>
 }

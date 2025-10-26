@@ -1,30 +1,28 @@
+"use strict"
 module.exports = {
   root: true,
   env: {
     browser: true,
-    es2022: true
+    es2022: true,
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
-    sourceType: "module"
+    sourceType: "module",
   },
   plugins: ["@typescript-eslint", "react-refresh"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
-    "eslint-config-prettier"
+    "eslint-config-prettier",
   ],
   settings: {
     react: {
-      version: "detect"
-    }
+      version: "detect",
+    },
   },
   rules: {
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true }
-    ]
-  }
-};
+    "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+  },
+}

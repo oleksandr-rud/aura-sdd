@@ -3,19 +3,19 @@
  * API contracts for authentication operations
  */
 
-import { z } from 'zod'
+import { z } from "zod"
 
 // Base response schema
 export const BaseResponseSchema = z.object({
   success: z.boolean(),
-  message: z.string().optional()
+  message: z.string().optional(),
 })
 
 // Success response with data
 export const SuccessResponseSchema = <T extends z.ZodType<any>>(dataSchema: T) =>
   BaseResponseSchema.extend({
     success: z.literal(true),
-    data: dataSchema
+    data: dataSchema,
   })
 
 // Error response schema
@@ -24,16 +24,16 @@ export const ErrorResponseSchema = z.object({
   error: z.object({
     code: z.string(),
     message: z.string(),
-    details: z.any().optional()
-  })
+    details: z.any().optional(),
+  }),
 })
 
 // Auth DTOs
 export const AuthDTOs = {
   // Login DTOs
   LoginRequest: z.object({
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(1, 'Password is required')
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(1, "Password is required"),
   }),
 
   LoginResponse: z.object({
@@ -42,21 +42,21 @@ export const AuthDTOs = {
       email: z.string(),
       name: z.string(),
       isVerified: z.boolean(),
-      createdAt: z.string()
+      createdAt: z.string(),
     }),
     tokens: z.object({
       accessToken: z.string(),
       refreshToken: z.string(),
-      expiresIn: z.number()
-    })
+      expiresIn: z.number(),
+    }),
   }),
 
   // Register DTOs
   RegisterRequest: z.object({
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     name: z.string().min(2).max(50),
-    companyName: z.string().optional()
+    companyName: z.string().optional(),
   }),
 
   RegisterResponse: z.object({
@@ -66,23 +66,23 @@ export const AuthDTOs = {
       name: z.string(),
       companyName: z.string().nullable(),
       isVerified: z.boolean(),
-      createdAt: z.string()
+      createdAt: z.string(),
     }),
-    message: z.string()
+    message: z.string(),
   }),
 
   // Logout DTOs
   LogoutRequest: z.object({
-    refreshToken: z.string()
+    refreshToken: z.string(),
   }),
 
   LogoutResponse: z.object({
-    message: z.string()
+    message: z.string(),
   }),
 
   // Verify Email DTOs
   VerifyEmailRequest: z.object({
-    token: z.string().min(1, 'Token is required')
+    token: z.string().min(1, "Token is required"),
   }),
 
   VerifyEmailResponse: z.object({
@@ -91,27 +91,27 @@ export const AuthDTOs = {
       id: z.string(),
       email: z.string(),
       name: z.string(),
-      isVerified: z.boolean()
-    })
+      isVerified: z.boolean(),
+    }),
   }),
 
   // Forgot Password DTOs
   ForgotPasswordRequest: z.object({
-    email: z.string().email('Invalid email address')
+    email: z.string().email("Invalid email address"),
   }),
 
   ForgotPasswordResponse: z.object({
-    message: z.string()
+    message: z.string(),
   }),
 
   // Reset Password DTOs
   ResetPasswordRequest: z.object({
-    token: z.string().min(1, 'Token is required'),
-    password: z.string().min(8, 'Password must be at least 8 characters')
+    token: z.string().min(1, "Token is required"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
   }),
 
   ResetPasswordResponse: z.object({
-    message: z.string()
+    message: z.string(),
   }),
 
   // Get Current User DTOs
@@ -126,16 +126,20 @@ export const AuthDTOs = {
       timezone: z.string().nullable(),
       isVerified: z.boolean(),
       createdAt: z.string(),
-      updatedAt: z.string()
-    })
+      updatedAt: z.string(),
+    }),
   }),
 
   // Update Profile DTOs
   UpdateProfileRequest: z.object({
     name: z.string().min(2).max(50).optional(),
     avatar: z.string().url().nullable().optional(),
-    phone: z.string().regex(/^\+?[\d\s\-()]+$/, 'Invalid phone number').nullable().optional(),
-    timezone: z.string().nullable().optional()
+    phone: z
+      .string()
+      .regex(/^\+?[\d\s\-()]+$/, "Invalid phone number")
+      .nullable()
+      .optional(),
+    timezone: z.string().nullable().optional(),
   }),
 
   UpdateProfileResponse: z.object({
@@ -148,19 +152,19 @@ export const AuthDTOs = {
       phone: z.string().nullable(),
       timezone: z.string().nullable(),
       isVerified: z.boolean(),
-      updatedAt: z.string()
-    })
+      updatedAt: z.string(),
+    }),
   }),
 
   // Refresh Token DTOs
   RefreshTokenRequest: z.object({
-    refreshToken: z.string()
+    refreshToken: z.string(),
   }),
 
   RefreshTokenResponse: z.object({
     accessToken: z.string(),
-    expiresIn: z.number()
-  })
+    expiresIn: z.number(),
+  }),
 }
 
 // Type exports
@@ -192,7 +196,7 @@ export const ResponseBuilders = {
   success: <T>(data: T, message?: string) => ({
     success: true as const,
     data,
-    message
+    message,
   }),
 
   error: (code: string, message: string, details?: any) => ({
@@ -200,35 +204,35 @@ export const ResponseBuilders = {
     error: {
       code,
       message,
-      details
-    }
-  })
+      details,
+    },
+  }),
 }
 
 // Error codes
 export const ErrorCodes = {
   // Validation errors
-  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  VALIDATION_ERROR: "VALIDATION_ERROR",
 
   // Authentication errors
-  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
-  UNAUTHORIZED: 'UNAUTHORIZED',
-  TOKEN_EXPIRED: 'TOKEN_EXPIRED',
-  TOKEN_INVALID: 'TOKEN_INVALID',
+  INVALID_CREDENTIALS: "INVALID_CREDENTIALS",
+  UNAUTHORIZED: "UNAUTHORIZED",
+  TOKEN_EXPIRED: "TOKEN_EXPIRED",
+  TOKEN_INVALID: "TOKEN_INVALID",
 
   // User errors
-  USER_NOT_FOUND: 'USER_NOT_FOUND',
-  USER_ALREADY_EXISTS: 'USER_ALREADY_EXISTS',
-  USER_NOT_VERIFIED: 'USER_NOT_VERIFIED',
+  USER_NOT_FOUND: "USER_NOT_FOUND",
+  USER_ALREADY_EXISTS: "USER_ALREADY_EXISTS",
+  USER_NOT_VERIFIED: "USER_NOT_VERIFIED",
 
   // Token errors
-  TOKEN_NOT_FOUND: 'TOKEN_NOT_FOUND',
-  TOKEN_EXPIRED_OR_INVALID: 'TOKEN_EXPIRED_OR_INVALID',
+  TOKEN_NOT_FOUND: "TOKEN_NOT_FOUND",
+  TOKEN_EXPIRED_OR_INVALID: "TOKEN_EXPIRED_OR_INVALID",
 
   // Rate limiting
-  RATE_LIMIT_EXCEEDED: 'RATE_LIMIT_EXCEEDED',
+  RATE_LIMIT_EXCEEDED: "RATE_LIMIT_EXCEEDED",
 
   // Server errors
-  INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
-  SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE'
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+  SERVICE_UNAVAILABLE: "SERVICE_UNAVAILABLE",
 } as const

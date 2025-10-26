@@ -3,32 +3,32 @@
  * Sends a message and generates AI response
  */
 
-import { UseCaseWithValidation } from '@/shared/use-case'
-import { Result } from '@/libs/utils'
-import { chatSchemas, validateAndExtract } from '@/libs/validation'
-import { ChatSessionRepository, MessageRepository } from '../../domain/repositories'
-import { ChatService, AIService } from '../../domain/services'
-import { Message } from '../../domain/entities'
+import { Result } from "@/libs/utils"
+import { chatSchemas, validateAndExtract } from "@/libs/validation"
+import { UseCaseWithValidation } from "@/shared/use-case"
+import { Message } from "../../domain/entities"
+import type { ChatSessionRepository, MessageRepository } from "../../domain/repositories"
+import type { AIService, ChatService } from "../../domain/services"
 
 export interface SendMessageRequest {
   sessionId: string
   content: string
   userId: string
-  role?: 'user' | 'system'
+  role?: "user" | "system"
 }
 
 export interface SendMessageResponse {
   userMessage: {
     id: string
     sessionId: string
-    role: 'user' | 'system'
+    role: "user" | "system"
     content: string
     createdAt: Date
   }
   aiMessage?: {
     id: string
     sessionId: string
-    role: 'assistant'
+    role: "assistant"
     content: string
     model: string
     tokens?: number
@@ -36,7 +36,10 @@ export interface SendMessageResponse {
   }
 }
 
-export class SendMessageUseCase extends UseCaseWithValidation<SendMessageRequest, SendMessageResponse> {
+export class SendMessageUseCase extends UseCaseWithValidation<
+  SendMessageRequest,
+  SendMessageResponse
+> {
   constructor(
     private readonly chatSessionRepository: ChatSessionRepository,
     private readonly messageRepository: MessageRepository,
@@ -49,24 +52,26 @@ export class SendMessageUseCase extends UseCaseWithValidation<SendMessageRequest
   validate(input: SendMessageRequest): Result<SendMessageRequest, Error> {
     const validation = validateAndExtract(chatSchemas.sendMessage, {
       content: input.content,
-      sessionId: input.sessionId
+      sessionId: input.sessionId,
     })
 
     if (validation.isErr()) {
       const errors = validation.unwrapErr()
       const errorMessage = Object.entries(errors)
-        .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-        .join('; ')
+        .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+        .join("; ")
       return Result.err(new Error(errorMessage))
     }
 
     return Result.ok({
       ...input,
-      ...validation.unwrap()
+      ...validation.unwrap(),
     })
   }
 
-  protected async executeValidated(input: SendMessageRequest): Promise<Result<SendMessageResponse, Error>> {
+  protected async executeValidated(
+    input: SendMessageRequest
+  ): Promise<Result<SendMessageResponse, Error>> {
     try {
       // Verify session exists and user has access
       const sessionResult = await this.chatSessionRepository.findById(input.sessionId)
@@ -76,22 +81,19 @@ export class SendMessageUseCase extends UseCaseWithValidation<SendMessageRequest
 
       const session = sessionResult.unwrap()
       if (!session) {
-        return Result.err(new Error('Chat session not found'))
+        return Result.err(new Error("Chat session not found"))
       }
 
       if (session.userId !== input.userId) {
-        return Result.err(new Error('Access denied: You do not have access to this chat session'))
+        return Result.err(new Error("Access denied: You do not have access to this chat session"))
       }
 
       if (!session.isActive) {
-        return Result.err(new Error('Chat session is not active'))
+        return Result.err(new Error("Chat session is not active"))
       }
 
       // Create user message
-      const userMessage = Message.createUserMessage(
-        input.sessionId,
-        input.content
-      )
+      const userMessage = Message.createUserMessage(input.sessionId, input.content)
 
       // Save user message
       const savedUserMessage = await this.messageRepository.save(userMessage)
@@ -116,7 +118,7 @@ export class SendMessageUseCase extends UseCaseWithValidation<SendMessageRequest
         {
           model: session.aiModel,
           temperature: 0.7,
-          maxTokens: 2000
+          maxTokens: 2000,
         }
       )
 
@@ -147,8 +149,8 @@ export class SendMessageUseCase extends UseCaseWithValidation<SendMessageRequest
           sessionId: userMessageEntity.sessionId,
           role: userMessageEntity.role,
           content: userMessageEntity.content,
-          createdAt: userMessageEntity.createdAt
-        }
+          createdAt: userMessageEntity.createdAt,
+        },
       }
 
       if (aiMessageEntity) {
@@ -159,7 +161,7 @@ export class SendMessageUseCase extends UseCaseWithValidation<SendMessageRequest
           content: aiMessageEntity.content,
           model: aiMessageEntity.model ?? session.aiModel,
           tokens: aiMessageEntity.tokens,
-          createdAt: aiMessageEntity.createdAt
+          createdAt: aiMessageEntity.createdAt,
         }
       }
 
