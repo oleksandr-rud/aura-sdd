@@ -323,7 +323,7 @@ exec story=<ID> skill=research  # System determines template based on questions 
 - **Templates**: `.spec/templates/`
 
 ### Version Information
-- **Agent System Version**: 3.1
+- **Agent System Version**: 0.1
 - **Last Updated**: 2025-10-24
 - **Compatible With**: AURA Workflow System V0.1
 - **Key Changes**: Unified Skills System with template-based execution

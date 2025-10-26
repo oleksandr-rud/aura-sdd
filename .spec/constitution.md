@@ -1,8 +1,10 @@
-# AURA Constitution
+# [PROJECT_NAME] Constitution - AURA Implementation
 
 ## Metadata
-- **Version:** 3.1
-- **Last Updated:** 2025-10-24
+- **Version:** [AURA_VERSION: e.g., "3.1.0"]
+- **Last Updated:** [CONSTITUTION_DATE: e.g., "2025-10-24"]
+- **Project:** [PROJECT_NAME: e.g., "TaskMaster Pro", "DataFlow Analytics"]
+- **Domain:** [PROJECT_DOMAIN: e.g., "Project Management", "Data Analytics"]
 - **Owners:** Product Ops, Architect, Tech Lead, QA personas
 
 ## Purpose
