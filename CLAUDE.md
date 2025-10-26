@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide serves as the comprehensive manual for Claude AI assistants working within the Spec Gen monorepo environment. It provides the necessary context, workflows, and guidelines to effectively assist with development, architecture, product management, and quality assurance tasks.
+This guide serves as the comprehensive manual for Claude AI assistants working with the Spec Gen Workflow System. It provides the necessary context, workflows, and guidelines to effectively assist with development, architecture, product management, and quality assurance tasks.
 
 ## Quick Start
 
@@ -15,37 +15,6 @@ This guide serves as the comprehensive manual for Claude AI assistants working w
    - `As qa orchestrator, validate quality for SPEC-004`
 3. **Task Management**: Record task IDs and maintain Rolling Summaries
 4. **Context Reset**: Archive conclusions in Activity Log when switching tasks
-
-### Development Environment
-**🆕 Development Startup Script**: Use the comprehensive development script for managing all services:
-
-```bash
-# Start all services (API + Client)
-npm run dev:full
-# or: ./dev-startup.sh start
-
-# Stop all services
-npm run dev:stop
-# or: ./dev-startup.sh stop
-
-# Check service status
-npm run dev:status
-
-# Install dependencies and setup environment
-npm run dev:install
-
-# Show help
-npm run dev:help
-```
-
-**Services Started**:
-- **Chat API Server**: http://localhost:4000 (NestJS backend with demo endpoints)
-- **Chat App Frontend**: http://localhost:5173 (React application)
-- **Demo Endpoints**: Auth, CRM, Chat, Content Generation with realistic AI responses
-
-**Application Architectures**:
-- **Chat API**: Hexagonal architecture with domain/application/infrastructure/presentation layers
-- **Chat App**: Feature-based React architecture with Redux Toolkit state management
 
 ### 🆕 **Unified Skills System**
 The skill system has been reorganized into unified skills with multiple templates:
@@ -95,32 +64,11 @@ The skill system has been reorganized into unified skills with multiple template
 └── constitution.md   # Spec Workflow Gateway Protocol
 ```
 
-### Nested Applications Structure
-
-The monorepo contains nested applications with specific architectures:
-
-#### Chat API Backend (`apps/chat-api/`)
-- **Architecture**: Hexagonal architecture with domain/application/infrastructure/presentation layers
-- **Module Structure**: `apps/chat-api/src/modules/{auth,chat,content,users,workspace}/`
-- **Configuration**: `package.json`, `tsconfig.json`, `nest-cli.json`, environment configs
-
-#### Chat App Frontend (`apps/chat-app/`)
-- **Architecture**: Modern React with feature-based organization
-- **Structure**: `apps/chat-app/src/{components,pages,hooks,services,store,utils}/`
-- **Configuration**: `package.json`, `vite.config.ts`, `tsconfig.json`, environment files
-
-### Task-Application Mapping
-- **CHAT-001**: Project cleanup and app renaming
-- **CHAT-002**: Backend architecture migration (NestJS + hexagonal)
-- **CHAT-003**: Frontend modernization (React + Redux Toolkit)
-- **CHAT-004**: Real-time features (Socket.IO + SSE)
-- **CHAT-005**: Search and archive system
 
 ### Implementation Guidelines
 - **File References**: Use `ref=<path>` format instead of including code
-- **Application Boundaries**: Maintain clear separation between apps
-- **Cross-App Dependencies**: Document inter-application integrations
-- **Configuration Management**: Separate configs per application/environment
+- **Template Usage**: Follow established templates for consistency
+- **Documentation Standards**: Maintain clear, comprehensive documentation
 
 ## Core Concepts
 
@@ -378,23 +326,16 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 
 ### Required Tools
 - **Git**: Version control and collaboration
-- **Docker**: Containerization and environment management
-- **GitHub Actions**: CI/CD pipeline automation
-- **Node.js**: Runtime environment for applications
-- **Testing Frameworks**: Jest, Cypress, or equivalent
-- **Biome**: Code linting, formatting, and quality checks (required per constitution)
+- **Text Editor/IDE**: For editing specification files
+- **Markdown Viewer**: For reviewing documentation
+- **Node.js**: Optional, for validation scripts (>=20.10.0)
+- **Biome**: Code linting, formatting, and quality checks (for generated code)
 
 ### MCP Integration
 - **Context Management**: Maintain conversation context across sessions
 - **Tool Usage**: Leverage available tools for file operations, web access, etc.
 - **Skill Execution**: Use skill system for standardized procedures
 - **Agent Coordination**: Facilitate multi-agent collaboration
-
-### Development Environment
-- **Local Development**: Docker Compose with hot-reload
-- **CI/CD Pipeline**: Automated testing, building, and deployment
-- **Production**: Tesseract orchestration with monitoring
-- **Security**: Vulnerability scanning and secret management
 
 ## Best Practices
 
@@ -506,8 +447,7 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 - **Configuration**: `.spec/config.json` (if exists)
 
 ### Example Tasks
-- **SPEC-001**: Tesseract Deployment Configuration (completed)
-- **Reference**: Check `.spec/tasks/` directory for additional examples
+- **Reference**: Check `.spec/templates/task-template.md` for task structure examples
 
 ## Support and Contact
 

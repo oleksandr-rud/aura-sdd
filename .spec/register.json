@@ -1,7 +1,7 @@
 {
   "version": "3.1",
   "last_updated": "2025-10-24",
-  "description": "Workflow Transition System registry with structured phase workflow and persona coordination",
+  "description": "Spec Gen Workflow System registry - Complete agent coordination and task management framework",
   "state_machine": {
     "workflow_name": "Orient → Scope → Execute → Gate",
     "gate_order": [

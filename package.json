@@ -1,24 +1,29 @@
 {
-  "name": "spec-gen-monorepo",
-  "version": "0.1.0",
+  "name": "spec-gen-workflow",
+  "version": "3.1.0",
+  "description": "Spec Gen Workflow System - Complete agent coordination and task management framework",
   "private": true,
-  "packageManager": "pnpm@8.15.0",
+  "type": "module",
   "scripts": {
-    "build": "pnpm -r build",
-    "dev": "concurrently \"pnpm --filter @chat-app/app dev\" \"pnpm --filter @chat-app/api dev\"",
-    "dev:full": "./dev-startup.sh start",
-    "dev:stop": "./dev-startup.sh stop",
-    "dev:restart": "./dev-startup.sh restart",
-    "dev:status": "./dev-startup.sh status",
-    "dev:install": "./dev-startup.sh install",
-    "dev:help": "./dev-startup.sh help",
-    "lint": "pnpm -r lint",
-    "test": "pnpm -r test"
+    "validate": "node scripts/validate.js",
+    "docs:build": "node scripts/build-docs.js",
+    "version:check": "node scripts/check-version.js"
   },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
+  "keywords": [
+    "spec",
+    "workflow",
+    "agents",
+    "task-management",
+    "coordination",
+    "claude-ai"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/spec-gen-workflow"
   },
   "engines": {
     "node": ">=20.10.0"
-  }
+  },
+  "author": "Spec Gen Team",
+  "license": "MIT"
 }
