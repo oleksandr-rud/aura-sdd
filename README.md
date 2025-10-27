@@ -5,18 +5,20 @@ Build better software, faster, with structured workflows that ensure quality and
 
 ![AURA Logo](https://img.shields.io/badge/AURA-3.1.0-blue?style=for-the-badge)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-Ready-orange.svg)
 
 ## 🚀 Why AURA?
 
-Stop managing projects with spreadsheets and chaos. AURA provides **intelligent coordination** between specialized AI agents that guide your development from concept to delivery.
+Stop managing projects with spreadsheets and chaos. AURA provides **intelligent coordination** between specialized AI agents that guide your development from concept to delivery. Now with seamless **Claude Code integration** for enhanced development workflows.
 
 ### ✨ **Key Benefits**
 - **🤖 AI-Powered**: Automated agent orchestration handles complex workflows
 - **🎯 Quality-First**: Built-in gates prevent failures before deployment
-- **📋 Structured Process**: 9-gate workflow ensures comprehensive validation
+- **📋 Structured Process**: State-based workflow ensures comprehensive validation
 - **⚡ Faster Delivery**: Intelligent coordination reduces development time by 40%
 - **📊 Evidence-Based**: Every decision backed by data and clear rationale
 - **🔄 Continuous Learning**: System improves from every project and decision
+- **🔗 Claude Code Integration**: Native support for Claude Code assistants and skills
 
 ## 🏗️ How It Works
 
@@ -42,20 +44,29 @@ Stop managing projects with spreadsheets and chaos. AURA provides **intelligent 
 → Go/No-Go decisions with clear evidence
 → End-to-end validation & compliance
 
-### 9-Gate Quality Workflow
+### State-Based Workflow System
+
+AURA uses flexible state-based workflows rather than rigid linear sequences. The system supports parallel execution, context-aware routing, and iterative refinement.
 
 ```
-Discovery → Requirements → Planning → Implementation
-    ↓              ↓               ↓
-Validate        Capture         Build
-Problem          Needs            Features
-    ↓              ↓               ↓
-    ┌─────────────────────────────────────┐
-    ↓              ↓               ↓
-Review → QA Ready → QA Contract → E2E → Launch
-↓       ↓          ↓          ↓       ↑
-Verify     Prepare     Validate   Test    Success
-Quality    Tests        Products   Journeys
+INITIALIZATION CLUSTER
+├── product.discovery (Problem validation)
+├── requirements.gathering (User needs)
+└── technical.assessment (Feasibility)
+
+PLANNING CLUSTER
+├── architecture.design (System design)
+├── backlog.sequencing (Work prioritization)
+└── resource.allocation (Team coordination)
+
+EXECUTION CLUSTER
+├── development.implementation (Feature development)
+├── quality.validation (Quality assurance)
+└── stakeholder.coordination (Progress updates)
+
+COMPLETION CLUSTER
+├── delivery.validation (Readiness verification)
+└── knowledge.transfer (Documentation & handoff)
 ```
 
 ## 🚀 Quick Start
@@ -68,16 +79,35 @@ git clone https://github.com/your-org/aura-workflow
 cd aura-workflow
 
 # 2. Activate AI Agent (as Claude Assistant)
-As architect orchestrator, scope task AURA-001
+As architect, design system architecture with measurable NFR targets
 
 # 3. Create Your Project
-cp -r .spec ../your-project/
+cp -r .aura ../your-project/
 cd ../your-project
-npm install
-npm run dev
+# The framework is now ready for Claude Code integration
 ```
 
-**That's it!** AURA is now orchestrating your development with intelligent AI agents.
+**That's it!** AURA is now orchestrating your development with intelligent AI agents and Claude Code integration.
+
+### Claude Code Integration
+
+AURA provides native support for Claude Code through specialized agents and skills:
+
+```bash
+# Activate specialized agents
+As architect, design technical architecture and system guidance
+As product ops, manage product lifecycle and requirements
+As tech lead, coordinate engineering execution and quality
+As qa, design testing strategy and validate quality standards
+
+# Use specialized skills
+/planning # Create structured plans across domains
+/research # Conduct systematic investigation and analysis
+/qa # Comprehensive quality validation and testing
+/code # Code implementation and review
+/context-management # State preservation and handoffs
+/technical-writing # Documentation creation
+```
 
 ## 🎯 What You Can Build
 
@@ -101,11 +131,14 @@ npm run dev
 
 ## 🛠 Key Features
 
-### 🧠 Unified Skills
-- **Planning Templates** for agile, architecture, testing, implementation
-- **Research Templates** for product discovery, technical, market, competitive analysis
-- **Cross-Agent Collaboration** with clear handoffs and communication
-- **Template-Driven Execution** ensuring consistency and quality
+### 🧠 Unified Skills & Memory Architecture
+- **Planning Skills** for structured planning across multiple domains
+- **Research Skills** for systematic investigation and analysis
+- **QA Skills** for quality validation and testing strategies
+- **Code Skills** for implementation and code review
+- **Context Management** for state preservation and agent handoffs
+- **Technical Writing** for documentation creation and standards
+- **Memory Architecture** with working memory, persistent storage, and context snapshots
 
 ### 📋 Quality Management
 - **Automated Gates** with validation criteria and evidence requirements
@@ -122,16 +155,17 @@ npm run dev
 ## 📚 Documentation & Support
 
 ### 🚀 Quick Guides
-- **[Getting Started](./docs/getting-started.md)** - 3-minute setup guide
-- **[Agent Guide](./CLAUDE.md)** - Complete AI assistant manual
-- **[Skills Reference](./docs/skills.md)** - All template documentation
-- **[Best Practices](./docs/best-practices.md)** - Proven success patterns
+- **[Agent Guide](./CLAUDE.md)** - Complete Claude AI assistant manual
+- **[Agents Documentation](./AGENTS.md)** - Comprehensive agent documentation
+- **[Contribution Guide](./CONTRIBUTING.md)** - Development and contribution patterns
+- **[AURA Constitution](./.aura/constitution.md)** - Framework governance and workflow rules
+- **[AURA Glossary](./.aura/glossary.md)** - Domain terminology and definitions
 
-### 📖 Advanced Resources
-- **[Full Template](./README.TEMPLATE)** - Complete project template with 50+ placeholders
-- **[Developer Guide](./CONTRIBUTING.md)** - Contribution guidelines and patterns
-- **[Architecture Patterns](./docs/architecture.md)** - System design guidelines
-- **[Integration Examples](./docs/examples.md)** - Real-world implementation cases
+### 📖 Framework Resources
+- **[Agent Implementations](./.claude/agents/)** - Specialized agent configurations
+- **[Skill Implementations](./.claude/skills/)** - Domain-specific skill implementations
+- **[Task Templates](./.aura/templates/)** - Standardized templates for consistency
+- **[Memory Architecture](./.aura/)** - Persistent state and context management
 
 ### 🤝 Community & Help
 - **[GitHub Issues](https://github.com/your-org/aura-workflow/issues)** - Bug reports & feature requests
@@ -158,9 +192,27 @@ npm run dev
 **Transform your development process today:**
 
 1. **🌟 Clone AURA**: `git clone https://github.com/your-org/aura-workflow`
-2. **⚡ Quick Setup**: Follow 3-minute getting started guide
-3. **🤖 Activate Agents**: Start coordinated AI-assisted development
-4. **🎯 Build Better**: Deliver high-quality software with confidence
+2. **⚡ Quick Setup**: Follow the setup instructions above
+3. **🤖 Activate Agents**: Use Claude Code with specialized AURA agents
+4. **🎯 Build Better**: Deliver high-quality software with intelligent coordination
+
+### Project Structure
+
+```
+aura-workflow/
+├── .aura/                    # AURA framework core
+│   ├── constitution.md       # Framework governance and workflows
+│   ├── glossary.md          # Domain terminology and definitions
+│   ├── tasks/               # Active task files with lifecycle logs
+│   └── templates/           # Standardized templates
+├── .claude/                 # Claude Code integration
+│   ├── agents/              # Specialized agent implementations
+│   └── skills/              # Domain-specific skill implementations
+├── CLAUDE.md               # Claude AI assistant guide
+├── AGENTS.md               # Comprehensive agent documentation
+├── CONTRIBUTING.md         # Development and contribution patterns
+└── README.md               # This file
+```
 
 ---
 

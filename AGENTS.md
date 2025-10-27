@@ -1,184 +1,142 @@
-# AURA Agents Documentation
+# AURA Agents Guide
 
 ## Overview
 
-This document provides essential information about the AURA (Agent Unified Response Architecture) agents implemented in Claude Code. Each agent provides specialized capabilities within the AURA framework governance.
+This guide provides comprehensive information about the AURA (Agent Unified Response Architecture) agents - specialized AI assistants that coordinate within the framework to deliver structured workflows and quality outcomes.
 
-## Agent Architecture
+## Agent Framework
 
-### Dual Implementation System
+### Architecture Overview
+AURA agents operate through a dual-layer system:
+- **Framework Layer** (`.aura/`) - Constitution, glossary, and governance structures
+- **Implementation Layer** (`.claude/agents/`) - Agent execution and skill coordination
 
-AURA agents operate through:
+### Core Principles
+- **Specialization**: Each agent has defined domains of expertise
+- **Coordination**: Structured handoffs preserve context and maintain workflow integrity
+- **Quality**: Framework compliance and evidence-based decision making
+- **Auditability**: Complete lifecycle logging for transparency and accountability
 
-1. **AURA Framework** (`.aura/`) - Provides constitution, glossary, and governance
-2. **Claude Code Implementation** (`.claude/agents/`) - Provides actual agent execution
+## Agent Capabilities
 
-## Core Agents
+### Architect Agent
+- **Domain**: System architecture and technical design
+- **Expertise**: Technical guidance, system design decisions, NFR definition
+- **Key Skills**: Planning, Research, Context Management, Technical Writing
+- **Activation**: `As architect, [technical architecture task]`
 
-### 1. Architect Agent
+### Product Ops Agent
+- **Domain**: Product lifecycle and requirements management
+- **Expertise**: Problem validation, requirements capture, stakeholder coordination
+- **Key Skills**: Research, Planning, Technical Writing, Context Management
+- **Activation**: `As product ops, [product management task]`
 
-**File**: [`.claude/agents/architect.md`](.claude/agents/architect.md)
-**Model**: Sonnet | **Color**: Purple
+### Tech Lead Agent
+- **Domain**: Engineering execution and code quality
+- **Expertise**: Implementation coordination, architecture compliance, quality management
+- **Key Skills**: Planning, Research, Context Management, Code, Technical Writing
+- **Activation**: `As tech lead, [technical implementation task]`
 
-**Purpose**: Provide architectural guidance, system design decisions, and technical direction.
+### QA Agent
+- **Domain**: Quality assurance and testing strategy
+- **Expertise**: Testing design, quality validation, Go/No-Go decisions
+- **Key Skills**: Planning, Research, Context Management, QA, Code, Technical Writing
+- **Activation**: `As qa, [quality assurance task]`
 
-**Key Capabilities**:
-- System architecture analysis and design
-- NFR definition and validation
-- Technology evaluation and risk assessment
-- Architecture documentation and governance
-- Technical feasibility assessment
+## Framework Integration
 
-**Available Skills**: Planning, Research, Context Management, Technical Writing
+### Governance Structure
+All agents operate under AURA framework governance:
+- **Constitution**: Workflow rules and quality standards
+- **Glossary**: Domain terminology and consistent definitions
+- **Task Management**: Lifecycle logging and context preservation
 
-**Activation**: `As architect, [technical architecture task]`
-
----
-
-### 2. Product Ops Agent
-
-**File**: [`.claude/agents/product-ops.md`](.claude/agents/product-ops.md)
-**Model**: Sonnet | **Color**: Green
-
-**Purpose**: Own task file lifecycle, product framing, and stakeholder communication.
-
-**Key Capabilities**:
-- Problem validation and market analysis
-- Requirements capture and PRD creation
-- Stakeholder communication and coordination
-- KPI definition and success tracking
-- Product lifecycle management
-
-**Available Skills**: Research, Planning, Technical Writing, Context Management
-
-**Activation**: `As product ops, [product management task]`
-
----
-
-### 3. Tech Lead Agent
-
-**File**: [`.claude/agents/tech-lead.md`](.claude/agents/tech-lead.md)
-**Model**: Sonnet | **Color**: Orange
-
-**Purpose**: Coordinate engineering execution, code quality, and technical implementation.
-
-**Key Capabilities**:
-- Implementation planning and coordination
-- Code quality management and review
-- Technical coordination and team leadership
-- Architecture compliance validation
-- Quality assurance integration
-
-**Available Skills**: Planning, Research, Context Management, Code, Technical Writing
-
-**Activation**: `As tech lead, [technical implementation task]`
-
----
-
-### 4. QA Agent
-
-**File**: [`.claude/agents/qa.md`](.claude/agents/qa.md)
-**Model**: Sonnet | **Color**: Red
-
-**Purpose**: Validate quality standards, execute testing strategies, and provide Go/No-Go decisions.
-
-**Key Capabilities**:
-- Testing strategy design and execution
-- Quality validation and assurance
-- Test environment setup and maintenance
-- Go/No-Go decision making
-- End-to-end testing coordination
-
-**Available Skills**: Planning, Research, Context Management, QA, Code, Technical Writing
-
-**Activation**: `As qa, [quality assurance task]`
-
-## Common Agent Features
-
-### AURA Framework Integration
-All agents reference:
-- **Constitution**: [`.aura/constitution.md`](.aura/constitution.md) - Workflow Gateway Protocol
-- **Glossary**: [`.aura/glossary.md`](.aura/glossary.md) - Domain terminology
-
-### Available Tools
-All agents have access to:
-- **File Management**: Read, Write, Edit, Glob, Grep
-- **System Tools**: Bash, Task Management
-- **Research**: WebSearch, WebFetch, Context7
-- **Project Management**: TodoWrite, ExitPlanMode
-
-### Context Management
-- **Context Preservation**: Maintain state across agent transitions
-- **Lifecycle Logging**: Store decisions and progress in task files
-- **Handoff Coordination**: Structured transfer between agents
-
-## Agent Coordination
-
-### Workflow Integration
-Agents follow the AURA prescribed workflow sequence:
-1. **product.discovery** → Validate problem and market need
-2. **product.prd** → Capture requirements and acceptance criteria
-3. **agile.planning** → Sequence backlog and allocate capacity
-4. **code.implement** → Build feature with automated tests
-5. **code.review** → Verify code quality and architecture compliance
-6. **qa.ready** → Prepare test environment and fixtures
-7. **qa.contract** → Validate API/event contracts
-8. **qa.e2e** → Verify end-to-end user journeys
-9. **pm.sync** → Update stakeholders and close story
-
-### Handoff Patterns
+### Coordination Patterns
+- **State-Based Workflows**: Flexible transitions based on project needs
+- **Parallel Execution**: Multiple agents can work simultaneously
 - **Context Preservation**: Complete state transfer between agents
-- **Transition Logging**: Auditable handoff records in task files
-- **Responsibility Transfer**: Clear ownership changes with next steps
+- **Evidence-Based Decisions**: All choices supported by data and documentation
+
+### Memory Architecture
+- **Working Memory**: Current conversation context
+- **Persistent Memory**: Framework files and task history
+- **Context Snapshots**: Structured state preservation
+- **Lifecycle Logs**: Auditable transition history
+
+## Workflow System
+
+### State Clusters
+AURA uses flexible state-based workflows organized into clusters:
+
+**INITIALIZATION CLUSTER**
+- Product discovery and market validation
+- Requirements gathering and analysis
+- Technical assessment and feasibility
+
+**PLANNING CLUSTER**
+- Architecture design and technical approach
+- Backlog sequencing and capacity planning
+- Resource allocation and dependency management
+
+**EXECUTION CLUSTER**
+- Feature development and testing
+- Quality validation and compliance
+- Stakeholder coordination and feedback
+
+**COMPLETION CLUSTER**
+- Delivery validation and success verification
+- Knowledge transfer and documentation
+
+### Agent Handoffs
+- **Context Preservation**: Complete state transfer between agents
+- **Transition Logging**: Auditable handoff records
+- **Responsibility Transfer**: Clear ownership changes with defined next steps
+
+## Available Resources
+
+### Framework Files
+- **Constitution**: Workflow rules and governance protocols
+- **Glossary**: Domain terminology and definitions
+- **Tasks**: Active task files with lifecycle logs
+
+### Implementation Files
+- **Agents**: Specialized agent implementations
+- **Skills**: Shared skill capabilities across agents
+
+### Documentation
+- **CLAUDE.md**: AI assistant implementation guide
+- **CONTRIBUTING.md**: Contribution guidelines and standards
 
 ## Usage Examples
 
-### Architecture Design
+### Architecture Activation
 ```bash
-As architect, design the system architecture for our new feature with measurable NFR targets.
+As architect, design system architecture with measurable NFR targets and risk assessment.
 ```
 
-### Product Management
+### Product Management Activation
 ```bash
-As product ops, validate this product idea and capture comprehensive requirements.
+As product ops, validate product idea and capture comprehensive requirements.
 ```
 
-### Technical Implementation
+### Technical Leadership Activation
 ```bash
-As tech lead, coordinate the implementation of this feature and ensure code quality standards.
+As tech lead, coordinate implementation and ensure code quality standards.
 ```
 
-### Quality Assurance
+### Quality Assurance Activation
 ```bash
-As qa, design a comprehensive testing strategy and validate quality standards for delivery.
-```
-
-## File Structure
-
-```
-.claude/
-├── agents/
-│   ├── architect.md      # Architect agent implementation
-│   ├── product-ops.md    # Product Ops agent implementation
-│   ├── tech-lead.md      # Tech Lead agent implementation
-│   └── qa.md             # QA agent implementation
-└── skills/
-    ├── planning/          # Planning skill for all agents
-    ├── research/          # Research skill for all agents
-    ├── qa/                # QA skill for quality validation
-    ├── code/              # Code skill for implementation
-    ├── context-management/ # Context management for handoffs
-    └── technical-writing/  # Technical writing for documentation
+As qa, design testing strategy and validate quality standards for Go/No-Go decisions.
 ```
 
 ## Quality Standards
 
-- All agents follow AURA framework governance
-- Skills are executed with proper validation and evidence
-- Context is preserved across agent transitions
-- Quality gates are enforced before workflow progression
-- All decisions are documented in task lifecycle logs
+- **Framework Compliance**: All agents follow AURA constitution and standards
+- **Context Preservation**: Maintain state across agent transitions
+- **Evidence-Based**: Decisions supported by data and documentation
+- **Audit Trail**: Complete lifecycle logging for accountability
+- **Quality Gates**: Validation before workflow progression
 
 ---
 
-*For detailed implementation information, see individual agent files in `.claude/agents/`.*
+*For detailed implementation information, see individual agent files in `.claude/agents/` and framework documentation in `.aura/`.*
