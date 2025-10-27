@@ -44,6 +44,9 @@ Conduct systematic investigation and analysis to provide evidence-based insights
 - **Documentation Analysis**: Technical research, best practices investigation
 - **Data Analysis**: Analytics research, quantitative validation
 - **File Management**: Research documentation and evidence storage
+- **Task-Based Organization**: Store research outputs in task-specific folders under .aura/tasks/<task_name>/
+- **Reference Management**: Add references to research documents in the corresponding task file
+- **Unified Index**: Maintain single index.md in task root folder pointing to research and docs
 
 ### Prerequisites
 - **Story Context**: Current task state and requirements available
@@ -99,11 +102,29 @@ Conduct systematic investigation and analysis to provide evidence-based insights
    - **Output**: Research methodology documentation
    - **Validation**: Methodology clear and reproducible
 
-6. **Create Transition Log**
+6. **Store Research Outputs**
+   - **Purpose**: Store research documents in organized task folders
+   - **Tools**: FileSystem, Write
+   - **Output**: Research files in `.aura/tasks/<task_name>/research/`
+   - **Validation**: Files properly organized with naming conventions
+
+7. **Create Transition Log**
    - **Purpose**: Document research outcome in task lifecycle
    - **Tools**: Read, Write
    - **Output**: Transition log entry in task file
    - **Validation**: Log format matches persona and standards
+
+8. **Update Task References**
+   - **Purpose**: Add document references to task file
+   - **Tools**: Read, Write
+   - **Output**: Updated task file with research document links
+   - **Validation**: All research documents referenced and accessible
+
+9. **Update Unified Index**
+   - **Purpose**: Update unified index.md with research document references
+   - **Tools**: Read, Write
+   - **Output**: Updated index.md with all research and docs
+   - **Validation**: Index provides comprehensive navigation to all outputs
 
 ### Quality Gates
 - **Evidence Quality**: All findings supported by reliable evidence
@@ -121,10 +142,12 @@ Conduct systematic investigation and analysis to provide evidence-based insights
 ## Segment: Artifact Output
 
 ### Primary Outputs
-- **Research Summary**: Concise findings and recommendations
+- **Research Summary**: Concise findings and recommendations, stored in `.aura/tasks/<task_name>/research/`
 - **Evidence Documentation**: Source materials and citations
 - **Methodology Report**: Research process and methods used
 - **Actionable Recommendations**: Next steps based on findings
+- **Task File Updates**: References to all research documents added to corresponding task file
+- **Unified Index Update**: Single index.md in task root folder updated with all research and docs
 
 ### Evidence Requirements
 - **Quantitative Metrics**: Statistical validation, sample sizes, confidence intervals
@@ -146,12 +169,15 @@ OUTPUT:
 === Research Summary ===
 summary: Conducted {{research_type}} research and provided evidence-based recommendations.
 inputs: research_type={{research_type}} research_questions={{questions_ref}} research_context={{context_ref}}
-evidence: {{research_evidence_type}}|result=hypothesis_supported|ref={{research_path}}
+evidence: {{research_evidence_type}}|result=hypothesis_supported|ref=.aura/tasks/{{task_name}}/research/{{research_file}}
 risks: [ ]{{research_risk}}|owner={{actor}}|mitigation={{research_mitigation}}
 next_steps: Proceed with implementation using validated research findings.
 === END Research Summary ===
+RESEARCH_DOCUMENTS:
+- [{{research_title}}](.aura/tasks/{{task_name}}/research/{{research_file}}) - {{research_type}}
 FOLLOW-UP:
 - Apply research findings - owner={{actor}} - due={{follow_up_date}}
+- Update task file with research document references
 ```
 
 ### BLOCKED Protocol
@@ -230,6 +256,49 @@ exec story=PROJECT-001 skill=research research_type=technical research_topics="m
 - [Agent Specifications](../../../../../../.claude/agents/) - Agent-specific guidance
 - [Research Examples](../examples/) - Additional research skill examples
 
+## File Organization & Naming Conventions
+
+### Directory Structure
+```
+.aura/tasks/
+├── <task_name>/
+│   ├── <task_name>.md              # Main task file
+│   ├── index.md                   # Unified index pointing to research and docs
+│   ├── research/                   # All research outputs
+│   │   ├── YYYY-MM-DD-research-type.md  # Individual research documents
+│   │   ├── evidence/              # Source materials, screenshots, data
+│   │   └── assets/                # Research diagrams, charts, etc.
+│   └── docs/                      # Technical writing outputs
+```
+
+### Naming Conventions
+- **Research Files**: `YYYY-MM-DD-research-type.md` (e.g., `2025-10-27-market-analysis.md`)
+- **Unified Index**: Always named `index.md` in task root folder
+- **Evidence Files**: Organized by type in `evidence/` subfolder
+- **Asset Files**: Descriptive names with dates (e.g., `2025-10-27-competitive-matrix.png`)
+- **Task References**: Use relative paths from task file (e.g., `./research/2025-10-27-market-analysis.md`)
+
+### Task File Integration
+- Add `## Research Documents` section to task files
+- Include research document references with clickable markdown links
+- Update research status in task lifecycle logs
+- Maintain research metadata in task file for tracking
+
+### Unified Index Template
+The task's `index.md` should include:
+- Overview of task purpose and current status
+- **Research Documents** section with links to all research outputs
+- **Technical Documents** section with links to all docs
+- **Quick Navigation** with status indicators and creation dates
+- **Document Summary** with brief descriptions of each document's purpose
+- Cross-references between related research and writing documents
+
+### Evidence Management
+- Store all source materials, screenshots, and data files in `evidence/` subfolder
+- Maintain evidence log with source URLs and access dates
+- Organize evidence by research project or question
+- Include evidence quality assessment and reliability ratings
+
 ## Guardrails
 
 - Keep entries <=120 characters per line for CLI readability
@@ -238,6 +307,9 @@ exec story=PROJECT-001 skill=research research_type=technical research_topics="m
 - Limitations and assumptions must be explicitly stated
 - Conflicting information must be acknowledged and resolved
 - Update glossary if new terminology is introduced
+- Always store research outputs in task-specific folders with proper references
+- Research naming must follow established conventions for consistency
+- Evidence sources must be properly documented and accessible
 
 ---
 

@@ -47,6 +47,9 @@ Create professional-grade technical documentation using systematic methodologies
 - **Quality Analysis**: Check readability, completeness, and accessibility compliance
 - **Review Workflow**: Coordinate multi-stage review processes with stakeholders
 - **Version Control**: Track changes and maintain documentation history
+- **Task-Based Organization**: Store writings in task-specific folders under .aura/tasks/<task_name>/docs/
+- **Reference Management**: Add references to created documents in the corresponding task file
+- **Unified Index**: Maintain single index.md in task root folder pointing to research and docs
 
 ### Prerequisites
 - **Clear Objectives**: Documentation purpose and audience clearly defined
@@ -158,10 +161,17 @@ Create professional-grade technical documentation using systematic methodologies
    - Complete multi-stage review process
 
 2. **Publication and Maintenance**
-   - Publish to accessible location with proper version control
+   - Store documents in task-specific folder: `.aura/tasks/<task_name>/`
+   - Add document references to the corresponding task file
    - Implement maintenance schedule and update procedures
    - Establish changelog and version tracking
    - Plan for regular reviews (minimum every 8-12 months)
+
+3. **Document Organization**
+   - Create dedicated folder for each task: `.aura/tasks/<task_name>/docs/`
+   - Use descriptive filenames with date stamps: `YYYY-MM-DD-document-type.md`
+   - Update task file with references to all created documents
+   - Update unified index.md in task root folder with document references
 
 ### Quality Gates
 - **Audience Alignment**: Documentation meets defined audience needs
@@ -180,10 +190,12 @@ Create professional-grade technical documentation using systematic methodologies
 ## Segment: Artifact Output
 
 ### Primary Outputs
-- **Professional Documentation**: Complete document meeting all quality standards
+- **Professional Documentation**: Complete document meeting all quality standards, stored in `.aura/tasks/<task_name>/docs/`
 - **Quality Metrics Report**: Readability scores, completeness rates, accuracy validation
 - **Review Documentation**: Stakeholder feedback, approval records, change history
 - **Maintenance Plan**: Update schedule, version control procedures, changelog
+- **Task File Updates**: References to all created documents added to corresponding task file
+- **Unified Index Update**: Single index.md in task root folder updated with all research and docs
 
 ### Evidence Requirements
 - **Quality Metrics**: Readability scores (Flesch-Kincaid), completeness rates, error counts
@@ -206,12 +218,15 @@ OUTPUT:
 === Technical Documentation ===
 summary: Created {{document_type}} with professional quality standards and stakeholder approval.
 inputs: document_type={{document_type}} audience={{audience}} source_materials={{source_ref}}
-evidence: quality_metrics|result=readability_score={{score}} completeness={{completeness}}|ref={{doc_path}}
+evidence: quality_metrics|result=readability_score={{score}} completeness={{completeness}}|ref=.aura/tasks/{{task_name}}/docs/{{document_file}}
 risks: [ ]{{writing_risk}}|owner={{actor}}|mitigation={{writing_mitigation}}
 next_steps: Execute maintenance schedule and monitor user feedback.
 === END Technical Documentation ===
+DOCUMENTS_CREATED:
+- [{{document_title}}](.aura/tasks/{{task_name}}/docs/{{document_file}}) - {{document_type}}
 FOLLOW-UP:
 - Schedule first review - owner={{actor}} - due={{review_date}}
+- Update task file with document references
 ```
 
 ### BLOCKED Protocol
@@ -345,6 +360,41 @@ BLOCKED(missing_inputs=[source_materials, stakeholder_access], unblock_steps=[ga
 - [Style Guides](style-guides/) - Industry style guide references
 - [Quality Tools](tools/) - Quality measurement and validation tools
 
+## File Organization & Naming Conventions
+
+### Directory Structure
+```
+.aura/tasks/
+├── <task_name>/
+│   ├── <task_name>.md              # Main task file
+│   ├── index.md                   # Unified index pointing to research and writings
+│   ├── docs/                   # All technical writing outputs
+│   │   ├── YYYY-MM-DD-doc-type.md  # Individual documents
+│   │   └── assets/                # Images, diagrams, etc.
+│   └── research/                  # Research materials and notes
+```
+
+### Naming Conventions
+- **Document Files**: `YYYY-MM-DD-document-type.md` (e.g., `2025-10-27-PRD.md`)
+- **Unified Index**: Always named `index.md` in task root folder
+- **Asset Files**: Descriptive names with date stamps (e.g., `2025-10-27-architecture-diagram.png`)
+- **Task References**: Use relative paths from task file (e.g., `./docs/2025-10-27-PRD.md`)
+
+### Task File Integration
+- Add `## Created Documents` section to task files
+- Include document references with clickable markdown links
+- Update document status in task lifecycle logs
+- Maintain document metadata in task file for tracking
+
+### Unified Index Template
+The task's `index.md` should include:
+- Overview of task purpose and current status
+- **Research Documents** section with links to all research outputs
+- **Technical Documents** section with links to all docs
+- **Quick Navigation** with status indicators and creation dates
+- **Document Summary** with brief descriptions of each document's purpose
+- Cross-references between related research and writing documents
+
 ## Guardrails
 
 - Keep entries <=120 characters per line for CLI readability
@@ -354,6 +404,8 @@ BLOCKED(missing_inputs=[source_materials, stakeholder_access], unblock_steps=[ga
 - Accessibility compliance mandatory for all published content
 - Documentation treated as living product requiring regular maintenance
 - Style guide consistency enforced across all content types
+- Always store writings in task-specific folders with proper references
+- Document naming must follow established conventions for consistency
 
 ---
 
