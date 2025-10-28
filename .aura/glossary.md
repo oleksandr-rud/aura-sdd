@@ -10,12 +10,37 @@
 - **Orient → Scope → Execute → Gate**: Mandatory sequence for all agent deliverables ensuring consistent workflow execution.
 - **Task Package**: Single-file task package (`.aura/tasks/PROJECT-XXX.md`) containing all sections, embedded evidence, and lifecycle log.
 - **Context Management**: Process of capturing, preserving, and transferring context between agents and skills during workflow transitions.
+- **Document Organization**: Structured approach to organizing task outputs with dedicated folders for research and documentation.
+- **Unified Index**: Central navigation file (`index.md`) in task root folder pointing to all research and documentation outputs.
+- **Task Folder Structure**: Organized folder hierarchy within `.aura/tasks/<task_name>/` for research outputs and technical documents.
 - **Quality Gates**: Validation checkpoints ensuring standards compliance before progressing to next workflow phase.
 - **Constitution**: Framework governance document defining rules, principles, and quality standards for all AURA operations.
 - **Glossary**: Domain terminology and definitions ensuring consistent language across all agents and skills.
 - **Registry**: Coordination system mapping agents to authorized skills and managing workflow state transitions.
 - **Claude Code**: Implementation layer providing agents and skills for execution within AURA framework governance.
 - **Memory Architecture**: Claude's memory system operating through AURA structure for persistent context management.
+
+## Project Types and Naming Conventions
+
+### AURA Projects
+- **AURA (Agent Unified Response Architecture)**: Core framework projects focusing on framework development, skill creation, and agent coordination.
+- **AURA-XXX Pattern**: Naming convention for core framework tasks (e.g., AURA-001, AURA-003).
+- **AURA Project Scope**: Framework architecture, skill development, agent coordination, quality standards, and governance.
+- **AURA Task Structure**: Standardized folder organization with design/, research/, docs/, and index.md for comprehensive documentation.
+
+### VOIA Projects
+- **VOIA (Voice-AURA)**: Voice integration projects focusing on voice-enabled agents, voice processing, and voice interaction capabilities.
+- **VOIA-XXX Pattern**: Naming convention for voice integration tasks (e.g., VOIA-004, VOIA-005).
+- **VOIA Project Scope**: Voice processing, speech-to-text, text-to-speech, voice UI/UX design, voice security, and accessibility.
+- **Voice-First Design**: Design approach prioritizing voice interaction patterns and conversational user experiences.
+- **Voice Processing Pipeline**: End-to-end flow from audio capture through speech recognition, intent understanding, agent response, and voice output.
+- **Voice Accessibility**: Voice-specific accessibility features including voice commands, screen reader integration, and inclusive design.
+- **Voice Privacy**: Security and privacy standards specific to voice data including encryption, consent management, and data retention policies.
+
+### Project Organization
+- **Project Prefix**: Standardized identifier (AURA or VOIA) indicating project type and scope.
+- **Task Numbering**: Sequential numbering within each project type (AURA-001, AURA-002; VOIA-001, VOIA-002).
+- **Cross-Project Integration**: Coordination between AURA and VOIA projects for unified voice-enabled framework capabilities.
 
 ## Agent & Skill Terms
 
@@ -37,6 +62,22 @@
 - **Skill Integration**: Claude Code skills referencing AURA framework for governance, terminology, and quality standards.
 - **Agent Coordination**: Multi-agent collaboration with structured handoffs and context preservation.
 
+## Voice-Specific Terms
+
+- **Voice Agent**: AURA agent enhanced with voice interaction capabilities for voice-first user engagement.
+- **Voice Skill**: Specialized skill for voice processing, speech recognition, and voice interaction management.
+- **Speech-to-Text (STT)**: Technology for converting spoken language into written text for agent processing.
+- **Text-to-Speech (TTS)**: Technology for converting agent text responses into natural-sounding voice output.
+- **Natural Language Understanding (NLU)**: AI capability for interpreting user intent from voice commands and queries.
+- **Voice Session**: Continuous voice interaction between user and voice-enabled agent with context preservation.
+- **Voice Context Management**: Process of maintaining conversation context and history across voice interactions.
+- **Voice Activation**: Process of initiating voice interaction through wake words or voice commands.
+- **Voice Persona**: Characteristic voice style and personality defined for voice-enabled agents.
+- **Real-Time Voice Processing**: Sub-second voice interaction with minimal latency for natural conversation flow.
+- **Voice Error Recovery**: Graceful handling of voice recognition errors with clarification requests and fallback mechanisms.
+- **Voice Authentication**: Security mechanisms using voice biometrics for user identification and access control.
+- **Multi-Modal Interaction**: Combined voice and visual/text interaction patterns for enhanced user experience.
+
 ## Workflow Transition Terms
 
 - **Workflow Transition System**: The controlling workflow that governs all persona deliverables through Orient → Scope → Execute → Gate sequence.
@@ -55,7 +96,7 @@
 - **SpecStory**: Internal shorthand for the single source-of-truth feature documentation pattern. Now integrated into Workflow Transition System.
 - **Storylet**: BMAD story context packet; now managed through workflow transitions and Lifecycle Log.
 - **Specx**: Thin controller wrapping Spec Kit, BMAD, Specmatic, and PM adapters. Configured via `tools/specx/specx.config.yaml`.
-- **Task Package**: Single Markdown task file (`.aura/tasks/<PROJECT-XXX>.md`) containing all sections, embedded evidence, and Lifecycle Log for the initiative.
+- **Task Package**: Single Markdown task file (`.aura/tasks/<PROJECT-XXX>.md`) containing all sections, embedded evidence, and Lifecycle Log for the initiative. PROJECT follows AURA-XXX or VOIA-XXX patterns.
 - **Single File Documentation**: Documentation approach where all task information, evidence, metrics, and results are embedded directly in one markdown file without external artifacts.
 - **Rolling Summary**: One-line snapshot in the format `Context | Facts | Decisions | Risks | Next`, refreshed after meaningful changes. Now integrated into Lifecycle Log entries.
 - **Content Embedding**: Practice of including all evidence, metrics, and results directly in the task file using markdown code blocks, structured lists, and tables.
@@ -87,6 +128,8 @@
 - **Unified Skills**: Skills that contain multiple templates for flexible execution:
   - **Planning Skill**: 4 templates (agile, architect, testing, implementation) for domain-specific planning
   - **Research Skill**: 5 templates (product-discovery, analytics, technical, market, competitive) for systematic investigation
+  - **Technical Writing Skill**: Professional documentation creation supporting Diátaxis framework and 7-stage writing process
+  - **Context Management Skill**: State preservation, handoff coordination, and audit trail maintenance
 - **Template Selection**: Method of choosing appropriate template within unified skills via:
   - **Parameter Specification**: Direct selection using `planning_type` or `research_type` parameters
   - **Intent Interpretation**: Automatic selection based on agent role, context, and available inputs
@@ -100,14 +143,40 @@
 - **Cross-Agent Skills**: Ability for any agent to use any unified skill template with appropriate parameters
 - **Multi-Mode Execution**: Combined template execution for complex investigations (e.g., `research_type="market+competitive"`)
 
+## Document Organization Terms
+
+- **Task Folder Structure**: Standard organization pattern for task outputs:
+  ```
+  .aura/tasks/<task_name>/
+  ├── <task_name>.md              # Main task file
+  ├── index.md                   # Unified index
+  ├── research/                   # Research outputs
+  └── docs/                      # Technical documents
+  ```
+- **Research Folder**: Dedicated `./research/` subfolder for all research skill outputs and evidence materials.
+- **Documentation Folder**: Dedicated `./docs/` subfolder for all technical writing skill outputs and assets.
+- **Evidence Subfolder**: `./research/evidence/` directory for source materials, screenshots, and supporting data.
+- **Assets Subfolder**: `./docs/assets/` directory for images, diagrams, charts, and visual elements.
+- **Date-Stamped Naming**: File naming convention using `YYYY-MM-DD-document-type.md` format for chronological organization.
+- **Relative Path Referencing**: Using relative paths from task file (e.g., `./research/2025-10-27-market-analysis.md`) for document links.
+- **Document Reference Sections**: Task file sections (`## Research Documents`, `## Created Documents`) with clickable markdown links.
+- **Unified Index Maintenance**: Process of updating `index.md` with navigation to all research and documentation outputs.
+- **Cross-Document References**: Links between related research and documentation files for context preservation.
+- **Document Lifecycle Management**: Complete lifecycle from creation through updates to archival with proper version control.
+
 ## Quality and Compliance Terms
 
 - **Guardrails**: Quality standards and escalation protocols that enforce workflow compliance and artifact quality.
 - **CLI Readability**: Requirement to keep entries ≤120 chars per line for command line interface compatibility.
 - **Evidence Citation**: Practice of referencing artifacts with actionable formats (ref=path#Lx or URLs).
 - **Risk Escalation**: Protocol for surfacing scope gaps through Product persona and technical risks via Tech Lead.
-- **Constitution Update**: Requirement to update .spec/constitution.md when introducing new terminology, channels, or workflows.
-- **Glossary Update**: Requirement to update .spec/glossary.md when introducing new terms, channels, or artifacts.
+- **Constitution Update**: Requirement to update .aura/constitution.md when introducing new terminology, channels, or workflows.
+- **Glossary Update**: Requirement to update .aura/glossary.md when introducing new terms, channels, or artifacts.
+- **Document Quality Standards**: Framework requirements for document organization, naming conventions, and reference management.
+- **Skill Integration Standards**: Requirements for skill execution including file storage, task file updates, and unified index maintenance.
+- **Research Quality Requirements**: Evidence-based research with proper source documentation, citation standards, and validation criteria.
+- **Technical Writing Quality Requirements**: Professional documentation standards including readability targets, stakeholder review, and accessibility compliance.
+- **Context Preservation Requirements**: Standards for maintaining complete state during agent transitions and skill handoffs.
 
 ## Infrastructure and Development Terms
 

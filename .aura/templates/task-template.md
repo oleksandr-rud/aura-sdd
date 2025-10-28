@@ -21,6 +21,9 @@ DOMAIN: <domain-context>
 STATUS: <draft|in_progress|blocked|done>
 OWNER: <persona role from .claude/agents/>
 LAST UPDATED: <ISO 8601 timestamp>
+RESEARCH_DOCUMENTS: <links to research outputs in ./research/>
+CREATED_DOCUMENTS: <links to documents in ./docs/>
+UNIFIED_INDEX: <link to index.md in task root>
 ```
 
 ### Product Brief
@@ -61,6 +64,43 @@ YYYY-MM-DDTHH:MM:SS+TZ:TZ - persona-name - Detailed description of work complete
 ```
 
 **Special Skills**: Use specific skill templates for structured transitions (product.discovery, qa.e2e, etc.) and context.snapshot for handoffs/checkpoints/log organization.
+
+### Document Organization
+**TASK FOLDER STRUCTURE**: Each task creates organized folders for outputs:
+```
+.aura/tasks/
+├── <task_name>/                  # Task folder with organized outputs
+│   ├── <task_name>.md           # Main task file with lifecycle logs
+│   ├── index.md                 # Unified index pointing to all outputs
+│   ├── research/                # Research skill outputs
+│   │   ├── YYYY-MM-DD-research-type.md
+│   │   ├── evidence/            # Source materials, screenshots, data
+│   │   └── assets/              # Research diagrams, charts, etc.
+│   └── docs/                    # Technical writing outputs
+│       ├── YYYY-MM-DD-document-type.md
+│       └── assets/              # Images, diagrams, etc.
+```
+
+**FILE NAMING CONVENTIONS**:
+- Research files: `YYYY-MM-DD-research-type.md` (e.g., `2025-10-27-market-analysis.md`)
+- Document files: `YYYY-MM-DD-document-type.md` (e.g., `2025-10-27-PRD.md`)
+- Unified index: Always named `index.md` in task root folder
+- Asset files: Descriptive names with dates (e.g., `2025-10-27-architecture-diagram.png`)
+- Use relative paths from task file for references (e.g., `./research/2025-10-27-market-analysis.md`)
+
+**DOCUMENT REFERENCES**: Always update task file with:
+- `## Research Documents` section with clickable markdown links
+- `## Created Documents` section with document references
+- Update unified index.md with all research and docs
+- Maintain cross-references between related documents
+
+**UNIFIED INDEX TEMPLATE**: Each task's `index.md` should include:
+- Overview of task purpose and current status
+- **Research Documents** section with links to all research outputs
+- **Technical Documents** section with links to all docs
+- **Quick Navigation** with status indicators and creation dates
+- **Document Summary** with brief descriptions of each document's purpose
+- Cross-references between related research and writing documents
 
 Example Flow (replace with real entries)
 [TRANSITION|product.discovery] 2025-01-10 by product
@@ -118,6 +158,44 @@ FOLLOW-UP:
 - Provision ENG QA accounts - owner=qa - due=2025-01-19
 
 Use BLOCKED(missing_inputs=[...], unblock_steps=[...]) if prerequisites are absent. Update .aura/glossary.md and .aura/constitution.md when new terminology, channels, or workflows emerge during this story.
+
+### Document Reference Templates
+
+#### Research Documents Section
+```yaml
+## Research Documents
+- [2025-10-27-market-analysis.md](./research/2025-10-27-market-analysis.md) - Market research and competitive analysis
+- [2025-10-27-technical-feasibility.md](./research/2025-10-27-technical-feasibility.md) - Technical validation and feasibility study
+```
+
+#### Created Documents Section
+```yaml
+## Created Documents
+- [2025-10-27-PRD.md](./docs/2025-10-27-PRD.md) - Product Requirements Document
+- [2025-10-27-architecture-spec.md](./docs/2025-10-27-architecture-spec.md) - System architecture specification
+```
+
+#### Unified Index Template
+```markdown
+# Task: <task_name>
+
+## Overview
+<Brief description of task purpose and current status>
+
+## Research Documents
+- [Market Analysis](./research/2025-10-27-market-analysis.md) - Market research and competitive analysis
+- [Technical Feasibility](./research/2025-10-27-technical-feasibility.md) - Technical validation
+
+## Technical Documents
+- [PRD](./docs/2025-10-27-PRD.md) - Product Requirements Document
+- [Architecture Spec](./docs/2025-10-27-architecture-spec.md) - System architecture
+
+## Quick Navigation
+| Document | Type | Status | Created |
+|----------|------|--------|---------|
+| Market Analysis | Research | Completed | 2025-10-27 |
+| PRD | Documentation | Completed | 2025-10-27 |
+```
 
 ---
 

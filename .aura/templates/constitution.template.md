@@ -23,11 +23,17 @@
 - **Registry Authority**: Agents must route through registry to load personas/skills and respect prescribed gate order
 
 ### Task File Structure
-- Path template: `.aura/tasks/{{PROJECT_NAMING_PATTERN}}`
+- Path template: `.aura/tasks/{{PROJECT_NAMING_PATTERN}}/{{PROJECT_NAMING_PATTERN}}.md`
 - Required sections (ordered):
-  1. Header (DOMAIN, STATUS, OWNER, LAST UPDATED)
+  1. Header (DOMAIN, STATUS, OWNER, LAST UPDATED, STORY ID)
   2. Product Brief (Problem, Goals, Success Metrics, Constraints, Context)
-  3. Lifecycle Log (transition entries with structured format)
+  3. Rolling Summary (current state and next steps)
+  4. Research Objectives (for research-intensive tasks)
+  5. Lifecycle Log (transition entries with structured format)
+- Supporting files:
+  - `index.md` - Unified index pointing to all research and docs
+  - `research/` - Research skill outputs with evidence and assets
+  - `docs/` - Technical writing outputs with assets
 
 ### Gate Order (Prescribed Sequence)
 {{#each GATE_LIST}}
@@ -147,6 +153,9 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 - Evidence must be embedded directly in task files
 - Risk owners and mitigation strategies must be explicit
 - Decision rationale must be clearly documented
+- Research and writing outputs must be stored in organized folders
+- Unified index must be maintained for each task with all document references
+- Cross-references must be maintained between related documents
 
 ### Security Standards
 - Security scanning must be integrated into workflow
@@ -214,6 +223,8 @@ BLOCKED(missing_inputs=[prerequisite1, prerequisite2], unblock_steps=[step1, ste
 - `<<personas.active_assignments>>`: Active persona assignments
 - `<<recent_transition_log>>`: Recent transition history
 - `<<<GLOSSARY(term=...)>>>`: Relevant terminology lookups
+- `<<task.documents>>`: References to all research and docs in unified index
+- `<<task.evidence>>`: Links to evidence files in research/evidence/ folder
 
 ### Knowledge Preservation
 - All decisions must be documented with rationale

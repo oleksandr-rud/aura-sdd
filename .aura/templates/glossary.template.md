@@ -181,7 +181,8 @@ This glossary defines core terminology, concepts, and specialized vocabulary use
 - **Definition**: Standard Operating Procedure (SOP) that can be executed by authorized agents
 - **Structure**: Purpose, Target Agent, Trigger Scenarios, Required MCPs/Tools, Core Procedure
 - **Execution**: Follows orient → scope → execute → gate pattern with transition logging
-- **Usage**: "The analytics-research skill validated the market opportunity"
+- **Document Organization**: Stores outputs in task folders with unified index updates
+- **Usage**: "The analytics-research skill validated the market opportunity and stored findings in research folder"
 
 #### Skill Authorization
 - **Definition**: Permission system controlling which agents can execute specific skills
@@ -267,11 +268,31 @@ This glossary defines core terminology, concepts, and specialized vocabulary use
 - **Benefits**: Easy handoffs, complete audit trail, simplified maintenance
 - **Usage**: "Single file documentation keeps all task information in one place"
 
+#### Task-Based Organization
+- **Definition**: Practice of storing all task-related outputs in dedicated task folders
+- **Purpose**: Organized storage and navigation of research and documentation
+- **Structure**: Task folder with research/, docs/, and unified index.md
+- **Benefits**: Easy discovery, comprehensive navigation, maintained relationships
+- **Usage**: "Task-based organization ensures all outputs are properly structured and accessible"
+
 #### Rolling Summary
 - **Definition**: Evolving context summary with structured sections
 - **Format**: Context | Facts | Decisions | Risks | Next
 - **Purpose**: Maintain current state information for context restoration
 - **Usage**: "Rolling summary provides quick context overview for handoffs"
+
+#### Unified Index
+- **Definition**: Single navigation document in task root folder pointing to all research and docs
+- **Purpose**: Provide comprehensive navigation and cross-references for all task outputs
+- **Structure**: Overview, Research Documents, Technical Documents, Quick Navigation
+- **Usage**: "Unified index enables easy navigation between research findings and documentation"
+
+#### Document Organization
+- **Definition**: Structured approach to storing research and writing outputs in task folders
+- **Structure**: Task folders contain research/, docs/, and unified index.md
+- **Naming Conventions**: Date-stamped files with descriptive type identifiers
+- **Purpose**: Maintain organized, discoverable, and navigable task outputs
+- **Usage**: "Document organization ensures all research and docs are easily accessible"
 
 #### Activity Log
 - **Definition**: Append-only chronological record of all actions and decisions

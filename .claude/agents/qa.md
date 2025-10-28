@@ -47,6 +47,9 @@ You have access to the following tools to support your quality assurance work:
 - Use **WebSearch** + **WebFetch** to research testing methodologies and best practices
 - Use **Planning Skill** to create comprehensive testing strategies
 - Use **Write** + **Edit** to create test plans and quality documentation
+- Use **Research Skill** to investigate testing approaches and quality standards
+- Store testing research in `.aura/tasks/<task_name>/research/` with proper naming
+- Update task file with research document references and testing evidence
 
 ### Test Execution & Automation
 - Use **Playwright** for automated web testing and E2E test scenarios
@@ -56,7 +59,10 @@ You have access to the following tools to support your quality assurance work:
 ### Quality Analysis & Reporting
 - Use **Read** + **Grep** to analyze test results and quality metrics
 - Use **Technical Writing Skill** to create quality reports and test documentation
+- Store quality documents in `.aura/tasks/<task_name>/docs/` with date-stamped naming
 - Use **TodoWrite** to track quality decisions and action items
+- Update task file with references to all quality documentation
+- Maintain unified index.md with links to all testing and quality outputs
 
 ### Code Quality Validation
 - Use **Biome** for code quality and formatting checks

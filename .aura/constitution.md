@@ -1,11 +1,12 @@
 # AURA Framework Constitution
 
 ## Metadata
-- **Version:** 1.0.0
+- **Version:** 1.2.0
 - **Last Updated:** 2025-10-27
 - **Project:** AURA (Agent Unified Response Architecture)
 - **Domain:** AI Agent Orchestration and Task Management
 - **Owners:** Product Ops, Architect, Tech Lead, QA personas
+- **Updates**: Enhanced skills framework, VOIA voice integration project, document organization patterns, and research/technical-writing integration
 
 ## Purpose
 - Establish **AURA** as the authoritative framework for AI agent orchestration using the Agent Unified Response Architecture.
@@ -34,11 +35,121 @@
 ## Task File Structure
 
 ### Standard Task Format
-- Path template: `.aura/tasks/[PROJECT_PREFIX]-XXX.md` (e.g., "AURA-001.md", "VOICE-002.md", "TASK-003.md")
+- Path template: `.aura/tasks/[PROJECT_PREFIX]-XXX.md` (e.g., "AURA-001.md", "AURA-003.md", "VOIA-004.md")
 - Required sections (ordered):
-  1. Header (DOMAIN, STATUS, OWNER, LAST UPDATED)
+  1. Header (DOMAIN, STATUS, OWNER, LAST UPDATED, RESEARCH_DOCUMENTS, CREATED_DOCUMENTS, UNIFIED_INDEX)
   2. Product Brief (Problem, Goals, Success Metrics, Constraints, Context)
-  3. Lifecycle Log (transition entries with structured format)
+  3. Research Documents (links to research outputs in ./research/)
+  4. Created Documents (links to technical documents in ./docs/)
+  5. Lifecycle Log (transition entries with structured format)
+
+### Document Organization Structure
+**TASK FOLDER ORGANIZATION**: Each task maintains organized folder structure for outputs:
+```
+.aura/tasks/<task_name>/
+├── <task_name>.md              # Main task file with lifecycle logs
+├── index.md                   # Unified index pointing to all outputs
+├── research/                   # Research skill outputs
+│   ├── YYYY-MM-DD-research-type.md
+│   └── evidence/              # Source materials, screenshots, data
+└── docs/                      # Technical writing outputs
+    ├── YYYY-MM-DD-document-type.md
+    └── assets/                # Images, diagrams, charts
+```
+
+**FILE NAMING CONVENTIONS**:
+- Research files: `YYYY-MM-DD-research-type.md` (e.g., `2025-10-27-market-analysis.md`)
+- Document files: `YYYY-MM-DD-document-type.md` (e.g., `2025-10-27-PRD.md`)
+- Unified index: Always named `index.md` in task root folder
+- Relative paths: Use relative paths from task file (e.g., `./research/2025-10-27-market-analysis.md`)
+
+### Document Management Requirements
+- **Research Outputs**: All research skill outputs must be stored in `./research/` subfolder
+- **Technical Documents**: All technical writing skill outputs must be stored in `./docs/` subfolder
+- **Task File References**: Main task file must include sections with clickable markdown links
+- **Unified Index**: Each task must maintain `index.md` with navigation to all outputs
+- **Cross-References**: Related documents must reference each other for context
+- **Version Control**: All documents are version-controlled through git integration
+
+## Project Patterns and Naming Conventions
+
+### Project Prefix Definitions
+
+#### AURA Projects (Core Framework)
+- **Pattern**: `AURA-XXX`
+- **Purpose**: Core AURA framework development, skill creation, and framework enhancement
+- **Examples**:
+  - `AURA-001`: Initial framework establishment
+  - `AURA-003`: Implementation roadmap and framework development
+- **Scope**: Framework architecture, skill development, agent coordination, quality standards
+
+#### VOIA Projects (Voice Integration)
+- **Pattern**: `VOIA-XXX`
+- **Purpose**: Voice-AURA integration projects, voice-enabled agents, and voice interaction capabilities
+- **Examples**:
+  - `VOIA-004`: Voice-enabled agent implementation
+- **Scope**: Voice processing, speech-to-text, text-to-speech, voice UI/UX, voice security
+
+### Task File Structure by Project Type
+
+#### AURA Tasks
+```
+.aura/tasks/AURA-XXX/
+├── AURA-XXX.md              # Main task file with lifecycle logs
+├── index.md                   # Unified index pointing to all outputs
+├── design/                    # Design skill outputs (for UI/UX, architecture)
+│   ├── index.md             # Design work index and tracking
+│   ├── research/            # User research and analysis
+│   ├── wireframes/          # Low-fidelity design concepts
+│   ├── mockups/            # High-fidelity visual designs
+│   ├── prototypes/         # Interactive prototypes
+│   ├── assets/             # Design assets and resources
+│   ├── documentation/      # Design specifications
+│   └── reviews/            # Design reviews and feedback
+├── research/                 # Research skill outputs
+│   ├── YYYY-MM-DD-research-type.md
+│   └── evidence/           # Source materials, screenshots, data
+└── docs/                    # Technical writing outputs
+    ├── YYYY-MM-DD-document-type.md
+    └── assets/             # Images, diagrams, charts
+```
+
+#### VOIA Tasks
+```
+.aura/tasks/VOIA-XXX/
+├── VOIA-XXX.md              # Main task file with lifecycle logs
+├── index.md                   # Unified index pointing to all outputs
+├── design/                    # Design skill outputs (voice UI/UX, voice interactions)
+│   ├── index.md             # Design work index and tracking
+│   ├── research/            # Voice user research and analysis
+│   ├── wireframes/          # Voice interface wireframes and flows
+│   ├── mockups/            # Voice interaction mockups and prototypes
+│   ├── prototypes/         # Interactive voice prototypes
+│   ├── assets/             # Voice assets (recordings, sound files)
+│   ├── documentation/      # Voice design specifications
+│   └── reviews/            # Voice design reviews and testing
+├── research/                 # Research skill outputs
+│   ├── YYYY-MM-DD-research-type.md
+│   └── evidence/           # Source materials, voice data, user studies
+└── docs/                    # Technical writing outputs
+    ├── YYYY-MM-DD-document-type.md
+    └── assets/             # Voice diagrams, architecture charts
+```
+
+### Project-Specific Requirements
+
+#### AURA Project Requirements
+- **Framework Compliance**: Must follow AURA constitution and patterns
+- **Agent Integration**: Must integrate with existing AURA agents
+- **Skill Compatibility**: Must be compatible with AURA skill ecosystem
+- **Quality Standards**: Must meet AURA quality gates and validation criteria
+
+#### VOIA Project Requirements
+- **Voice-First Design**: Must prioritize voice interaction patterns
+- **Accessibility**: Must include voice accessibility features
+- **Performance**: Must meet real-time voice processing requirements
+- **Privacy**: Must follow voice data privacy and security standards
+- **Cross-Platform**: Must support web, mobile, and desktop voice interactions
 
 ### AURA Framework Requirements
 • **Agent Coordination**: All tasks must reference agent terminology and coordination workflows
@@ -48,6 +159,47 @@
 • **Governance Standards**: All tasks must comply with AURA framework guidelines and agent coordination protocols
 • **Documentation Standards**: All interfaces must meet framework documentation and traceability requirements
 • **Integration Requirements**: Seamless integration between Claude Code agents and AURA framework governance
+
+## AURA Skills Framework
+
+### Unified Skills System
+**CROSS-AGENT SKILLS**: Skills available to all agents with appropriate template selection:
+- **Planning Skill**: Structured planning across domains (agile, architect, testing, implementation)
+- **Research Skill**: Systematic investigation across domains (product-discovery, analytics, technical, market, competitive)
+- **Context Management Skill**: State preservation and handoff coordination
+- **Technical Writing Skill**: Professional documentation creation with industry best practices
+- **Code Skill**: Implementation and code review capabilities
+- **QA Skill**: Testing strategy and quality validation
+
+### Skill Execution Requirements
+**RESEARCH SKILL INTEGRATION**:
+- Must store outputs in `.aura/tasks/<task_name>/research/` subfolder
+- Use date-stamped file naming: `YYYY-MM-DD-research-type.md`
+- Update task file with Research Documents section and clickable links
+- Store evidence and source materials in `./research/evidence/` subfolder
+- Maintain unified index with research document references
+
+**TECHNICAL WRITING SKILL INTEGRATION**:
+- Must store outputs in `.aura/tasks/<task_name>/docs/` subfolder
+- Use date-stamped file naming: `YYYY-MM-DD-document-type.md`
+- Update task file with Created Documents section and clickable links
+- Store assets (images, diagrams) in `./docs/assets/` subfolder
+- Apply quality standards and stakeholder review processes
+
+**CONTEXT MANAGEMENT SKILL INTEGRATION**:
+- Must preserve complete state during agent transitions
+- Create structured handoff packages with all context
+- Maintain lifecycle logs with proper transition formatting
+- Update unified index during context preservation activities
+- Ensure audit trails for all context transfers
+
+### Skill Quality Standards
+- **Template Selection**: Automatic or parameter-based template selection must be documented
+- **Quality Gates**: Each skill must define and enforce quality standards
+- **Evidence Requirements**: All skill outputs must include supporting evidence
+- **Documentation**: Skill execution must be documented in lifecycle logs
+- **Cross-References**: Related outputs must reference each other
+- **Version Control**: All skill outputs must be version-controlled
 
 ## Workflow Gateway Protocol
 
@@ -226,4 +378,25 @@ The workflow follows a strict 9-gate sequence for all AURA framework projects:
 
 ---
 
-*This constitution establishes VoiceOps Assistant with Voice Automation & RPA specific adaptations while maintaining the core framework's integrity, safety-first principles, and quality standards.*
+---
+
+## Context Management Log
+
+**[TRANSITION|context-management] 2025-10-27 by tech-lead**
+**MODE**: strict
+**FROM_STATE**: v1.0.0
+**TO_STATE**: v1.1.0
+**WHY**:
+- Enhanced agents with research and technical-writing skill integration patterns
+- Updated task template with document organization and file storage guidance
+- Standardized document organization across all AURA framework outputs
+**OUTPUT**:
+=== Framework Update Summary ===
+**summary**: Updated AURA framework constitution and glossary with enhanced skills integration and document organization standards.
+**inputs**: agent_updates=true template_updates=true skill_integration=enforced
+**evidence**: framework_docs|result=updated|ref=.aura/constitution.md,.aura/glossary.md
+**risks**: [ ]Documentation complexity may require training|owner=tech-lead|mitigation=create_implementation_guide
+**next_steps**: Validate agent compliance with new document organization standards through testing and review.
+=== END Framework Update Summary ===
+
+*This constitution establishes AURA framework with enhanced skills integration, document organization patterns, and quality standards while maintaining the core framework's integrity, safety-first principles, and governance structure.*
